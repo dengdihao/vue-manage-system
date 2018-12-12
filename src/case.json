@@ -1,0 +1,325 @@
+﻿﻿{
+    "baseInfo": [
+        {
+            "id": "0cc175b9c0f1b6a831c399e269772661",
+            "priority": "高级",
+            "status": "接洽",
+            "type": "调查",
+            "caseNo": "JF00001",
+            "caseName": "***商标侵权案",
+            "currentParticipants": [
+                "张三",
+                "李四"
+            ],
+            "reason": "商标侵权",
+            "openDate": 1519862400000,
+            "closeDate": 1520862400000,
+            "closeMode": "和解",
+            "updateInfo": [{
+                "updateTime": 1519862400000,
+                "updatePerson": "李四",
+                "item": "暂无",
+                "content": "暂无",
+                "version": -1
+            }]
+        }
+    ],
+    "clientInfo": [{
+        "clientCaseNo": "HL000001",
+        "brands": "CAT",
+        "instructions": "调查****，获得侵权产品信息",
+        "authorizeDate": 1519862400000,
+        "note": "暂无",
+        "documents": [{
+            "documentName": "鉴定书",
+            "documentType": "鉴定书",
+            "issueDate": 1519862400000,
+            "documentPath": "C:/鉴定书.pdf",
+            "content": "暂无",
+            "receiveDate": 1519862400000,
+            "sendDate": 1519862400000,
+            "note": "暂无"
+        }]
+    }],
+    "targetInfo": [{
+        "targetName": "***销售有限公司",
+        "targetType": "有限公司",
+        "regNo": 110000450277805,
+        "creditNo": "91110000322283429E",
+        "targetAdd": "北京市海淀区西北旺东路10号院西区4号楼6层606室",
+        "targetContacts": [{
+            "website": "www.baidu.com",
+            "phone": 13641269217,
+            "email": "13641269217@163.com",
+            "note": "暂无",
+            "networks": [{
+                "networkName": "QQ",
+                "networkNo": 1234567,
+                "note": "暂无"
+            }]
+        }],
+        "targetPrincipal": [{
+            "name": "张三",
+            "position": "法人",
+            "ID": "320300*****1206",
+            "contacts": [{
+                "phone": "021-13140400",
+                "email": "1234567@qq.com",
+                "networks": [{
+                    "networkName": "百科",
+                    "networkNo": 1234567,
+                    "note": "暂无"
+                }],
+                "note": "暂无"
+            }],
+            "isRecidivism": true,
+            "note": "暂无"
+        }],
+        "affiliateCompany": [{
+            "companyName": "ABC网路科技有限公司",
+            "principal": [{
+                "name": "张三",
+                "position": "法人",
+                "ID": "320300*****1206",
+                "contacts": [{
+                    "phone": [
+                        "021-54631200"
+                    ],
+                    "email": [
+                        "123@123.com"
+                    ],
+                    "networks": [{
+                        "networkName": "QQ",
+                        "networkNo": 1234567,
+                        "note": "暂无"
+                    }],
+                    "note": "暂无"
+                }],
+                "note": "暂无"
+            }],
+            "note": "暂无"
+        }],
+        "productInfo": [{
+            "productName": "发动机",
+            "productNo": "E321456",
+            "productQty": 100,
+            "note": "暂无"
+        }],
+        "note": "暂无"
+    }],
+    "participants": {
+        "discoverer": [{
+            "name": "李四",
+            "progress": "进行中",
+            "reportDate": 1519862400000,
+            "contacts": [
+                "021-12340500",
+                "110"
+            ],
+            "reports": [{
+                "reportType": "sighting",
+                "submitDate": 1519862400000,
+                "reportContent": "暂无",
+                "reportPath": "/report/abc.txt",
+                "note": "暂无"
+            }],
+            "attachments": [{
+                "attachmentName": "现场视频",
+                "attachmentType": "视频",
+                "attachmentPath": "/video/abc.mp4",
+                "note": "暂无"
+            }],
+            "note": "暂无"
+        }],
+        "investigator": [{
+            "name": "王五",
+            "progress": "已完成",
+            "appointDate": 1519862400000,
+            "contacts": [
+                "135233445566", "123"
+            ],
+            "reports": [{
+                "submitDate": 1519862400000,
+                "reportType": "调查报告",
+                "reportContent": "此处省略1千字",
+                "reportPath": "/report/bcd.doc",
+                "note": "暂无"
+            }],
+            "attachments": [{
+                "attachmentName": "现场照片",
+                "attachmentType": "图片",
+                "attachmentPath": "image/abc.jpg",
+                "note": "暂无"
+            }],
+            "note": "暂无"
+        }],
+        "reports": [{
+            "name": "王五",
+            "progress": "进行中",
+            "appointDate": 1519862400000,
+            "contacts": [
+                13522334455
+            ],
+            "reports": {
+                "submitDate": 1519862400000,
+                "reportType": "调查报告",
+                "reportContent": "此处省略1w字",
+                "reportPath": "/report/investigation/JF001.pdf",
+                "note": "暂无"
+            },
+            "attachments": [{
+                "attachmentName": "现场视频",
+                "attachmentType": "视频",
+                "attachmentPath": "/video/abc.mp4",
+                "note": "暂无"
+            }],
+            "note": "暂无"
+        }],
+        "raider": [{
+            "name": "王五",
+            "progress": "已完成",
+            "appointDate": 1519862400000,
+            "contacts": [
+                133233889900
+            ],
+            "reports": [{
+                "submitDate": 1519862400000,
+                "reportType": "行动报告",
+                "reportContent": "此处省略百字",
+                "reportPath": "/report/abc.txt",
+                "note": "暂无"
+            }],
+            "note": "暂无",
+            "attachments": [{
+                "attachmentName": "****照片",
+                "attachmentType": "现场照片",
+                "attachmentPath": "/image/on-site photos/abc.jpg",
+                "备注": "暂无"
+            }]
+        }],
+        "litigator": [{
+            "name": "张三",
+            "progress": "进行中",
+            "agency": "**律师事务所",
+            "role": "合伙人",
+            "appointDate": 1519862400000,
+            "contacts": [
+                13233445566
+            ],
+            "reports": [{
+                "submitDate": 1519862400000,
+                "reportType": "诉讼",
+                "reportContent": "此处省略百字",
+                "reportPath": "/report/abc.doc",
+                "note": "暂无"
+            }],
+            "note": "暂无"
+        }],
+        "organ": [{
+            "organName": "**工商局",
+            "progress": "进行中",
+            "organAdd": "**省**市**区**号",
+            "openDate": 1519862400000,
+            "openFile": [{
+                "filedPerson": "张三",
+                "filedContacts": [
+                    "021-12345600"
+                ],
+                "fileName": "客户授权书",
+                "fileType": "授权书",
+                "note": "备注"
+            }],
+            "caseType": "行政",
+            "organCaseNo": "PD12345",
+            "contacts": [{
+                "name": "王五",
+                "position": "局长",
+                "phone": 13322445566,
+                "note": "暂无"
+            }],
+            "action": [{
+                "raidAction": [{
+                    "actionDate": 1519862400000,
+                    "progress": "进行中",
+                    "actionResult": [{
+                        "seizeProductName": "发动机",
+                        "seizeProductNo": "EN3214",
+                        "seizeProductQty": 20,
+                        "note": "暂无"
+                    }],
+                    "note": "暂无"
+                }],
+                "judge": [{
+                    "trialDate": 1519862400000,
+                    "progress": "进行中",
+                    "trialPerson": [{
+                        "name": "王五",
+                        "caseRole": "律师",
+                        "note": "暂无"
+                    }],
+                    "trialResult": "休庭，待判决",
+                    "note": "暂无"
+                }],
+                "otherAction": [{
+                    "actionType": "公证",
+                    "actionDate": 1519862400000,
+                    "progress": "进行中",
+                    "actionName": "现场公证",
+                    "actionResult": "公证书",
+                    "note": "暂无"
+                }]
+            }],
+            "document": [{
+                "documentNo": "PD32176",
+                "documentType": "行政处罚",
+                "documentName": "行政处罚决定书",
+                "documentContent": "**年*月*日**机关",
+                "documentPath": "/PD",
+                "attachments": [{
+                    "attachmentName": "行政处罚决定",
+                    "attachmentType": "照片",
+                    "attachmentPath": "/image/PD.jpg",
+                    "note": "暂无"
+                }],
+                "note": "暂无"
+            }],
+            "note": "暂无"
+        }]
+    },
+    "accounting": [{
+        "deposit": [{
+            "isPaid": true,
+            "amount": "500元",
+            "paidPerson": "王五",
+            "paidDate": 1519862400000,
+            "note": "暂无"
+        }],
+        "advancePayment": [{
+            "isPaid": true,
+            "amount": "500元",
+            "paidPerson": "王五",
+            "paidDate": 1519862400000,
+            "note": "暂无"
+        }],
+        "refund": [{
+            "isApplyRefund": true,
+            "applyPerson": "王五",
+            "applyReason": "未完成",
+            "applyDate": 1519862400000,
+            "note": "暂无"
+        }],
+        "repay": [{
+            "applyPerson": "王五",
+            "applyReason": "未完成",
+            "applyDate": 1519862400000,
+            "note": "暂无"
+        }],
+        "invoice": [{
+            "name": "ABC公司",
+            "issueDate": 1519862400000,
+            "cancelDate": 1519862400000,
+            "note": "暂无"
+        }],
+        "note": "暂无"
+    }]
+}
