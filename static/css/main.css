@@ -153,6 +153,11 @@ a {
     font-style: normal;
 }
 
+.el-input__inner {
+  border: 1px solid transparent !important;
+  border-radius: 4px;
+}
+
 /*VueEditor*/
 
 .ql-container {
