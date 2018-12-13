@@ -55,6 +55,11 @@ export default {
           title: "系统首页"
         },
         {
+          icon: "el-icon-lx-home",
+          index: "vue",
+          title: "vue"
+        },
+        {
           icon: "el-icon-question",
           index: "powersearch",
           title: "高级搜索"

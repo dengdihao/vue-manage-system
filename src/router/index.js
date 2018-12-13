@@ -22,6 +22,12 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
+                    path: '/vue',
+                    name: 'vue',
+                    component: resolve => require(['../components/page/vue.vue'], resolve),
+                    meta: { title: 'vue' }
+                },
+                {
                     path: '/casedetail',
                     name: 'casedetail',
                     component: resolve => require(['../components/page/CaseDetail.vue'], resolve),
@@ -43,7 +49,7 @@ export default new Router({
                     path: '/fileskeeping',
                     name: 'fileskeeping',
                     component: resolve => require(['../components/page/Fileskeeping.vue'], resolve),
-                    meta: {title: '文档管理'}
+                    meta: { title: '文档管理' }
                 },
                 {
                     path: '/table',
@@ -83,7 +89,7 @@ export default new Router({
                     path: '/yuread',
                     name: 'yuread',
                     component: resolve => require(['../components/page/Yuread.vue'], resolve),
-                    meta: { title: '预览'}
+                    meta: { title: '预览' }
                 },
                 {
                     // 拖拽列表组件
