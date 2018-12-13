@@ -15,6 +15,8 @@
     </el-dialog>
     <el-button @click="complete()">预览</el-button>
     <!-- http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf -->
+    <!-- http://www.junctionip.com/Report1.pdf -->
+    <!-- http://www.junctionip.com/Report2.pdf -->
     <!-- https://docs.google.com/gview?url=http://ieee802.org/secmail/docIZSEwEqHFr.doc -->
     <!-- http://view.officeapps.live.com/op/view.aspx?src=http://video.ch9.ms/build/2011/slides/TOOL-532T_Sutter.pptx -->
     <div class="tab-div">
