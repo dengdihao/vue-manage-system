@@ -52,10 +52,32 @@ export default new Router({
                     meta: { title: '文档管理' }
                 },
                 {
-                    path: '/table',
-                    component: resolve => require(['../components/page/BaseTable.vue'], resolve),
-                    meta: { title: '基础表格' }
+                    path: '/filecontent',
+                    name: 'filecontent',
+                    component:resolve=>require(['../components/page/Filecontent.vue'],resolve),
+                    meta: {title: '文档内容'}
                 },
+                {
+                    path: '/fileredact',
+                    name: 'fileredact',
+                    component: resolve => require(['../components/page/Fileredact.vue'], resolve),
+                    meta: {
+                        title: '文档内容'
+                    }
+                },
+                {
+                    path: '/wangeditor',
+                    name: 'wangeditor',
+                    component: resolve => require(['../components/page/wangeditor.vue'], resolve),
+                    meta: {
+                        title: 'wangeditor'
+                    }
+                },
+                // {
+                //     path: '/table',
+                //     component: resolve => require(['../components/page/BaseTable.vue'], resolve),
+                //     meta: { title: '基础表格' }
+                // },
                 {
                     path: '/tabs',
                     component: resolve => require(['../components/page/Tabs.vue'], resolve),

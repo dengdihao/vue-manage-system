@@ -17,689 +17,6 @@
 
     <!-- <div>{{data}}</div> -->
     <el-tabs type="border-card" @tab-click="handleClick" v-model="activename">
-      <el-tab-pane label="案件流程">
-        <div class="clearfix btn-border">
-          <el-button
-            class="detail-btn"
-            style="color:#409EFF;font-size:14px;cursor: pointer;"
-            @click="bianji()"
-          >
-            <i class="el-icon-edit-outline"></i>编辑该信息模块
-          </el-button>
-
-          <el-button
-            class="detail-btn"
-            style="color:#409EFF;font-size:14px;cursor: pointer;"
-            @click="submit(paticipants)"
-          >
-            <i class="el-icon-edit-outline"></i>提交
-          </el-button>
-
-          <el-button
-            class="detail-btn"
-            style="color:#409EFF;font-size:14px;cursor: pointer;"
-            @click="bianji()"
-          >
-            <i class="el-icon-edit-outline"></i>阶段选择
-          </el-button>
-
-          <el-button
-            class="detail-btn"
-            style="color:#409EFF;font-size:14px;cursor: pointer;"
-            @click="disbianji()"
-          >
-            <i class="el-icon-edit-outline"></i>取消
-          </el-button>
-
-          <el-button
-            class="detail-btn"
-            style="color:#409EFF;font-size:14px;cursor: pointer;"
-            @click="disbianji()"
-          >
-            <i class="el-icon-edit-outline"></i>取消
-          </el-button>
-
-          <!-- 消息对话框 -->
-          <el-button
-            class="detail-btn"
-            @click="dialogFormVisible = true"
-            style="color:#409EFF;font-size:14px;cursor: pointer;"
-          >打开嵌套表单的 Dialog</el-button>
-          <el-dialog title="消息提醒" :visible.sync="dialogFormVisible">
-            <el-form :model="form">
-              <el-form-item label="消息内容" :label-width="formLabelWidth">
-                <el-input v-model="form.name" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="消息时间" :label-width="formLabelWidth">
-                <el-select v-model="form.region" placeholder="请选择活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-              <!-- <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>-->
-            </div>
-          </el-dialog>
-        </div>
-        <!-- 接洽阶段 -->
-        <el-form :model="discoverer[0]" v-if="discoverer" label-width="100px" id="discoverer">
-          <el-form-item style="background: #f1f1fa;">
-            <h2>接洽阶段</h2>
-          </el-form-item>
-          <el-form-item label="姓名">
-            <el-input
-              type="text"
-              v-model="discoverer[0].name"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="进行情况">
-            <el-input
-              type="text"
-              v-model="discoverer[0].progress"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="汇报日期">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="discoverer[0].reportDate"
-              :readonly="isread"
-              clear-icon="''"
-              :class="{border:!isread}"
-            ></el-date-picker>
-          </el-form-item>
-
-          <el-form-item label="联系方式">
-            <el-input
-              type="text"
-              v-model="discoverercontacts"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="报告">
-            <div class="popover-div">
-              <el-popover trigger="click">
-                <el-form-item label="提交日期">
-                  <el-date-picker
-                    type="date"
-                    placeholder="选择日期"
-                    v-model="discoverer[0].reports[0].submitDate"
-                    :class="{border:!isread}"
-                    :readonly="isread"
-                  ></el-date-picker>
-                </el-form-item>
-                <el-form-item label="类型">
-                  <el-input
-                    v-model="discoverer[0].reports[0].reportType"
-                    :readonly="isread"
-                    :class="{border:!isread}"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="内容">
-                  <el-input
-                    v-model="discoverer[0].reports[0].reportContent"
-                    :readonly="isread "
-                    :class="{border:!isread}"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="文件">
-                  <el-input
-                    v-model="discoverer[0].reports[0].reportPath"
-                    :readonly="isread"
-                    :class="{border:!isread}"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="备注">
-                  <el-input
-                    v-model="discoverer[0].reports[0].note"
-                    :readonly="isread"
-                    :class="{border:!isread}"
-                  ></el-input>
-                </el-form-item>
-                <el-button slot="reference">详情</el-button>
-              </el-popover>
-            </div>
-          </el-form-item>
-
-          <el-form-item label="附件">
-            <el-popover trigger="click">
-              <el-form-item label="提交日期">
-                <el-input
-                  v-model="discoverer[0].attachments[0].attachmentName"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="附件类型">
-                <el-input
-                  v-model="discoverer[0].attachments[0].attachmentType"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="附件路径">
-                <el-input
-                  v-model="discoverer[0].attachments[0].attachmentPath"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-
-              <el-form-item label="备注">
-                <el-input
-                  v-model="discoverer[0].reports[0].note"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-button slot="reference">详情</el-button>
-            </el-popover>
-          </el-form-item>
-
-          <el-form-item label="备注">
-            <el-input v-model="discoverer[0].note" :readonly="isread" :class="{border:!isread}"></el-input>
-          </el-form-item>
-        </el-form>
-        <!-- 调查阶段 -->
-        <el-form :model="investigator[0]" v-if="investigator" label-width="100px" id="investigator">
-          <el-form-item style="background: #f1f1fa;">
-            <h2>调查阶段</h2>
-          </el-form-item>
-          <el-form-item label="姓名">
-            <el-input
-              type="text"
-              v-model="investigator[0].name"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="进行情况">
-            <el-input
-              type="text"
-              v-model="investigator[0].progress"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="汇报日期">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="investigator[0].appointDate"
-              :class="{border:!isread}"
-              :readonly="isread"
-            ></el-date-picker>
-          </el-form-item>
-
-          <el-form-item label="联系方式">
-            <el-input
-              type="text"
-              v-model="discoverercontacts"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="报告">
-            <el-popover trigger="click">
-              <el-form-item label="提交日期">
-                <el-date-picker
-                  type="date"
-                  placeholder="选择日期"
-                  v-model="investigator[0].reports[0].submitDate"
-                  :class="{border:!isread}"
-                  :readonly="isread"
-                ></el-date-picker>
-              </el-form-item>
-              <el-form-item label="类型">
-                <el-input
-                  v-model="investigator[0].reports[0].reportType"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="内容">
-                <el-input
-                  v-model="investigator[0].reports[0].reportContent"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="文件">
-                <el-input
-                  v-model="investigator[0].reports[0].reportPath"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="备注">
-                <el-input
-                  v-model="investigator[0].reports[0].note"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-button slot="reference">详情</el-button>
-            </el-popover>
-          </el-form-item>
-
-          <el-form-item label="附件">
-            <el-popover trigger="click">
-              <el-form-item label="提交日期">
-                <el-input
-                  v-model="investigator[0].attachments[0].attachmentName"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="附件类型">
-                <el-input
-                  v-model="investigator[0].attachments[0].attachmentType"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="附件路径">
-                <el-input
-                  v-model="investigator[0].attachments[0].attachmentPath"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-
-              <el-form-item label="备注">
-                <el-input
-                  v-model="investigator[0].reports[0].note"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-button slot="reference">详情</el-button>
-            </el-popover>
-          </el-form-item>
-
-          <el-form-item label="备注">
-            <el-input v-model="investigator[0].note" :readonly="isread" :class="{border:!isread}"></el-input>
-          </el-form-item>
-        </el-form>
-        <!-- 报告阶段 -->
-        <el-form :model="reports[0]" v-if="reports" label-width="100px" id="reports">
-          <el-form-item style="background: #f1f1fa;">
-            <h2>报告阶段</h2>
-          </el-form-item>
-          <el-form-item label="姓名">
-            <el-input
-              type="text"
-              v-model="reports[0].name"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="进行情况">
-            <el-input
-              type="text"
-              v-model="reports[0].progress"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="汇报日期">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="reports[0].appointDate"
-              :class="{border:!isread}"
-              :readonly="isread"
-            ></el-date-picker>
-          </el-form-item>
-
-          <el-form-item label="联系方式">
-            <el-input
-              type="text"
-              v-model="reportscontacts"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="报告">
-            <el-popover trigger="click">
-              <el-form-item label="提交日期">
-                <el-date-picker
-                  type="date"
-                  placeholder="选择日期"
-                  v-model="reports[0].reports.submitDate"
-                  :class="{border:!isread}"
-                  :readonly="isread"
-                ></el-date-picker>
-              </el-form-item>
-              <el-form-item label="类型">
-                <el-input
-                  v-model="reports[0].reports.reportType"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="内容">
-                <el-input
-                  v-model="reports[0].reports.reportContent"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="文件">
-                <el-input
-                  v-model="reports[0].reports.reportPath"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="备注">
-                <el-input
-                  v-model="reports[0].reports.note"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-button slot="reference">详情</el-button>
-            </el-popover>
-          </el-form-item>
-
-          <el-form-item label="其他附件">
-            <el-popover trigger="click">
-              <el-form-item label="类型名称">
-                <el-input
-                  v-model="reports[0].attachments[0].attachmentName"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-
-              <el-form-item label="附件类型">
-                <el-input
-                  v-model="reports[0].attachments[0].attachmentType"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-
-              <el-form-item label="附件路径">
-                <el-input
-                  v-model="reports[0].attachments[0].attachmentPath"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-
-              <el-form-item label="备注">
-                <el-input
-                  v-model="reports[0].attachments[0].note"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-button slot="reference">详情</el-button>
-            </el-popover>
-          </el-form-item>
-
-          <el-form-item label="备注">
-            <el-input v-model="reports[0].note" :readonly="isread" :class="{border:!isread}"></el-input>
-          </el-form-item>
-        </el-form>
-        <!-- 法务阶段 -->
-        <el-form :model="raider[0]" v-if="raider" label-width="100px" id="raider">
-          <el-form-item style="background: #f1f1fa;">
-            <h2>法务阶段</h2>
-          </el-form-item>
-          <el-form-item label="姓名">
-            <el-input
-              type="text"
-              v-model="raider[0].name"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="进行情况">
-            <el-input
-              type="text"
-              v-model="raider[0].progress"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="汇报日期">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="raider[0].appointDate"
-              :class="{border:!isread}"
-              :readonly="isread"
-            ></el-date-picker>
-          </el-form-item>
-
-          <el-form-item label="联系方式">
-            <el-input
-              type="text"
-              v-model="raidercontacts"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="报告">
-            <el-popover trigger="click">
-              <el-form-item label="提交日期">
-                <el-date-picker
-                  type="date"
-                  placeholder="选择日期"
-                  v-model="raider[0].reports[0].submitDate"
-                  :class="{border:!isread}"
-                  :readonly="isread"
-                ></el-date-picker>
-              </el-form-item>
-              <el-form-item label="类型">
-                <el-input
-                  v-model="raider[0].reports[0].reportType"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="内容">
-                <el-input
-                  v-model="raider[0].reports[0].reportContent"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="文件">
-                <el-input
-                  v-model="raider[0].reports[0].reportPath"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="备注">
-                <el-input
-                  v-model="raider[0].reports[0].note"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-button slot="reference">详情</el-button>
-            </el-popover>
-          </el-form-item>
-
-          <el-form-item label="附件">
-            <el-popover trigger="click">
-              <el-form-item label="提交日期">
-                <el-input
-                  v-model="raider[0].attachments[0].attachmentName"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="附件类型">
-                <el-input
-                  v-model="raider[0].attachments[0].attachmentType"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="附件路径">
-                <el-input
-                  v-model="raider[0].attachments[0].attachmentPath"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-
-              <el-form-item label="备注">
-                <el-input
-                  v-model="raider[0].reports[0].note"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-button slot="reference">详情</el-button>
-            </el-popover>
-          </el-form-item>
-
-          <el-form-item label="备注">
-            <el-input v-model="raider[0].note" :readonly="isread" :class="{border:!isread}"></el-input>
-          </el-form-item>
-        </el-form>
-        <!-- 诉讼阶段 -->
-        <el-form :model="litigator[0]" v-if="litigator" label-width="100px" id="litigator">
-          <el-form-item style="background: #f1f1fa;">
-            <h2>诉讼阶段</h2>
-          </el-form-item>
-          <el-form-item label="姓名">
-            <el-input
-              type="text"
-              v-model="litigator[0].name"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="进行情况">
-            <el-input
-              type="text"
-              v-model="litigator[0].progress"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="代理机构">
-            <el-input
-              type="text"
-              v-model="litigator[0].agency"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="身份">
-            <el-input
-              type="text"
-              v-model="litigator[0].role"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="汇报日期">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="litigator[0].appointDate"
-              style="border: none;width: 100%;"
-              :readonly="isread"
-            ></el-date-picker>
-          </el-form-item>
-
-          <el-form-item label="联系方式">
-            <el-input
-              type="text"
-              v-model="raidercontacts"
-              :readonly="isread"
-              :class="{border:!isread}"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="报告">
-            <el-popover trigger="click">
-              <el-form-item label="提交日期">
-                <el-date-picker
-                  type="date"
-                  placeholder="选择日期"
-                  v-model="litigator[0].reports[0].submitDate"
-                  style="border: none;width: 100%;"
-                  :class="{border:!isread}"
-                  :readonly="isread"
-                ></el-date-picker>
-              </el-form-item>
-              <el-form-item label="类型">
-                <el-input
-                  v-model="litigator[0].reports[0].reportType"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="内容">
-                <el-input
-                  v-model="litigator[0].reports[0].reportContent"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="文件">
-                <el-input
-                  v-model="litigator[0].reports[0].reportPath"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="备注">
-                <el-input
-                  v-model="litigator[0].reports[0].note"
-                  :readonly="isread"
-                  :class="{border:!isread}"
-                ></el-input>
-              </el-form-item>
-              <el-button slot="reference">详情</el-button>
-            </el-popover>
-          </el-form-item>
-
-          <el-form-item label="备注">
-            <el-input v-model="litigator[0].note" :readonly="isread" :class="{border:!isread}"></el-input>
-          </el-form-item>
-        </el-form>
-        <div class="tab-div-btn">
-          <el-button @click="submit(paticipants)">提交</el-button>
-          <el-button @click="disbianji()">取消</el-button>
-          <el-button>选择阶段</el-button>
-          <el-button>新建</el-button>
-          <!-- <el-button type="primary">选择阶段</el-button> -->
-        </div>
-      </el-tab-pane>
       <el-tab-pane label="案件基本信息">
         <div class="clearfix btn-border">
           <el-button
@@ -716,7 +33,7 @@
               type="text"
               v-model="baseInfo[0].id"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -725,7 +42,7 @@
               type="text"
               v-model="baseInfo[0].status"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -734,7 +51,7 @@
               type="text"
               v-model="baseInfo[0].priority"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -743,7 +60,7 @@
               type="text"
               v-model="baseInfo[0].type"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -752,7 +69,7 @@
               type="text"
               v-model="baseInfo[0].caseNo"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -761,7 +78,7 @@
               type="text"
               v-model="baseInfo[0].caseName"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -770,7 +87,7 @@
               type="text"
               v-model="currentParticipants"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -779,7 +96,7 @@
               type="text"
               v-model="baseInfo[0].reason"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -788,7 +105,7 @@
               type="date"
               placeholder="选择日期"
               v-model="baseInfo[0].openDate"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
               :readonly="isread"
             ></el-date-picker>
           </el-form-item>
@@ -798,7 +115,7 @@
               type="date"
               placeholder="选择日期"
               v-model="baseInfo[0].closeDate"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
               :readonly="isread"
             ></el-date-picker>
           </el-form-item>
@@ -808,7 +125,7 @@
               type="text"
               v-model="baseInfo[0].caseNo"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -820,7 +137,7 @@
                   placeholder="选择日期"
                   v-model="baseInfo[0].updateInfo[0].updateTime"
                   style="border: none;width: 100%;"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                   :readonly="isread"
                 ></el-date-picker>
               </el-form-item>
@@ -828,28 +145,28 @@
                 <el-input
                   v-model="baseInfo[0].updateInfo[0].updatePerson"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="更新项目">
                 <el-input
                   v-model="baseInfo[0].updateInfo[0].item"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="更新内容">
                 <el-input
                   v-model="baseInfo[0].updateInfo[0].content"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="版本">
                 <el-input
                   v-model="baseInfo[0].updateInfo[0].version"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-button slot="reference">详情</el-button>
@@ -857,14 +174,18 @@
           </el-form-item>
 
           <el-form-item label="备注">
-            <el-input v-model="baseInfo[0].note" :readonly="isread" :class="{border:!isread}"></el-input>
+            <el-input
+              v-model="baseInfo[0].note"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
           </el-form-item>
         </el-form>
         <div class="tab-div-btn">
           <el-button @click="submit(baseInfo)">提交</el-button>
           <el-button @click="disbianji()">取消</el-button>
           <el-button>选择阶段</el-button>
-          <el-button>新建</el-button>
+          <el-button @click="newupdate(baseInfo[0])">新建</el-button>
         </div>
       </el-tab-pane>
       <el-tab-pane label="客户信息">
@@ -883,7 +204,7 @@
               type="text"
               v-model="clientInfo[0].clientCaseNo"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -892,7 +213,7 @@
               type="text"
               v-model="clientInfo[0].brands"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -901,7 +222,7 @@
               type="text"
               v-model="clientInfo[0].instructions"
               :readonly="isread"
-              :class="{border:!isread}"
+              :class="{showborder:true, border:!isread}"
             ></el-input>
           </el-form-item>
 
@@ -930,14 +251,14 @@
                 <el-input
                   v-model="clientInfo[0].documents[0].documentName"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="文书类型">
                 <el-input
                   v-model="clientInfo[0].documents[0].documentType"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="出具时间">
@@ -945,7 +266,7 @@
                   type="date"
                   placeholder="选择日期"
                   v-model="clientInfo[0].documents[0].issueDate"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                   :readonly="isread"
                 ></el-date-picker>
               </el-form-item>
@@ -953,14 +274,14 @@
                 <el-input
                   v-model="clientInfo[0].documents[0].documentPath"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="文书内容">
                 <el-input
                   v-model="clientInfo[0].documents[0].content"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="收到时间">
@@ -968,7 +289,7 @@
                   type="date"
                   placeholder="选择日期"
                   v-model="clientInfo[0].documents[0].receiveDate"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                   :readonly="isread"
                 ></el-date-picker>
               </el-form-item>
@@ -977,7 +298,7 @@
                   type="date"
                   placeholder="选择日期"
                   v-model="clientInfo[0].documents[0].sendDate"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                   :readonly="isread"
                 ></el-date-picker>
               </el-form-item>
@@ -985,7 +306,7 @@
                 <el-input
                   v-model="clientInfo[0].documents[0].note"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-button slot="reference">详情</el-button>
@@ -993,7 +314,11 @@
           </el-form-item>
 
           <el-form-item label="备注">
-            <el-input v-model="clientInfo[0].note" :readonly="isread" :class="{border:!isread}"></el-input>
+            <el-input
+              v-model="clientInfo[0].note"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
           </el-form-item>
         </el-form>
         <div class="tab-div-btn">
@@ -1022,7 +347,7 @@
                   type="date"
                   placeholder="选择日期"
                   v-model="accounting[0].deposit[0].paidDate"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                   :readonly="isread"
                 ></el-date-picker>
               </el-form-item>
@@ -1030,7 +355,7 @@
                 <el-radio-group
                   v-model="accounting[0].deposit[0].isPaid"
                   :disabled="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 >
                   <el-radio :label="true">已缴纳</el-radio>
                   <el-radio :label="false">未缴纳</el-radio>
@@ -1040,7 +365,7 @@
                 <el-input
                   v-model="accounting[0].deposit[0].amount"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
 
@@ -1048,14 +373,14 @@
                 <el-input
                   v-model="accounting[0].deposit[0].paidPerson"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="备注">
                 <el-input
                   v-model="accounting[0].deposit[0].note"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-button slot="reference">详情</el-button>
@@ -1070,14 +395,14 @@
                   type="date"
                   placeholder="选择日期"
                   v-model="accounting[0].advancePayment[0].paidDate"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-date-picker>
               </el-form-item>
               <el-form-item label="是否缴纳">
                 <el-radio-group
                   v-model="accounting[0].advancePayment[0].isPaid"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 >
                   <el-radio :label="true">已缴纳</el-radio>
                   <el-radio :label="false">未缴纳</el-radio>
@@ -1087,7 +412,7 @@
                 <el-input
                   v-model="accounting[0].advancePayment[0].amount"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
 
@@ -1095,14 +420,14 @@
                 <el-input
                   v-model="accounting[0].advancePayment[0].paidPerson"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="备注">
                 <el-input
                   v-model="accounting[0].advancePayment[0].note"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-button slot="reference">详情</el-button>
@@ -1117,7 +442,7 @@
                 <el-radio-group
                   v-model="accounting[0].refund[0].isApplyRefund"
                   :disabled="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 >
                   <el-radio :label="true">已申请</el-radio>
                   <el-radio :label="false">未申请</el-radio>
@@ -1127,7 +452,7 @@
                 <el-input
                   v-model="accounting[0].refund[0].applyPerson"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
 
@@ -1135,7 +460,7 @@
                 <el-input
                   v-model="accounting[0].refund[0].applyReason"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="申请日期">
@@ -1143,7 +468,7 @@
                   type="date"
                   placeholder="选择日期"
                   v-model="accounting[0].refund[0].applyDate"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                   :readonly="isread"
                 ></el-date-picker>
               </el-form-item>
@@ -1151,7 +476,7 @@
                 <el-input
                   v-model="accounting[0].refund[0].note"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-button slot="reference">详情</el-button>
@@ -1166,7 +491,7 @@
                 <el-input
                   v-model="accounting[0].repay[0].applyPerson"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
 
@@ -1174,7 +499,7 @@
                 <el-input
                   v-model="accounting[0].repay[0].applyReason"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-form-item label="申请日期">
@@ -1182,7 +507,7 @@
                   type="date"
                   placeholder="选择日期"
                   v-model="accounting[0].repay[0].applyDate"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                   :readonly="isread"
                 ></el-date-picker>
               </el-form-item>
@@ -1190,7 +515,7 @@
                 <el-input
                   v-model="accounting[0].repay[0].note"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-button slot="reference">详情</el-button>
@@ -1204,7 +529,7 @@
                 <el-input
                   v-model="accounting[0].invoice[0].name"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
 
@@ -1213,7 +538,7 @@
                   type="date"
                   placeholder="选择日期"
                   v-model="accounting[0].invoice[0].issueDate"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                   :readonly="isread"
                 ></el-date-picker>
               </el-form-item>
@@ -1223,7 +548,7 @@
                   type="date"
                   placeholder="选择日期"
                   v-model="accounting[0].invoice[0].cancelDate"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                   :readonly="isread"
                 ></el-date-picker>
               </el-form-item>
@@ -1231,18 +556,986 @@
                 <el-input
                   v-model="accounting[0].invoice[0].note"
                   :readonly="isread"
-                  :class="{border:!isread}"
+                  :class="{showborder:true, border:!isread}"
                 ></el-input>
               </el-form-item>
               <el-button slot="reference">详情</el-button>
             </el-popover>
           </el-form-item>
           <el-form-item label="备注">
-            <el-input v-model="accounting[0].note" :readonly="isread" :class="{border:!isread}"></el-input>
+            <el-input
+              v-model="accounting[0].note"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
           </el-form-item>
         </el-form>
         <div class="tab-div-btn">
           <el-button @click="submit(accounting)">提交</el-button>
+          <el-button @click="disbianji()">取消</el-button>
+          <el-button>选择阶段</el-button>
+          <el-button>新建</el-button>
+          <!-- <el-button type="primary">选择阶段</el-button> -->
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="财务信息">
+        <div class="clearfix btn-border">
+          <el-button
+            class="detail-btn"
+            style="color:#409EFF;font-size:14px;cursor: pointer;"
+            @click="bianji()"
+          >
+            <i class="el-icon-edit-outline"></i>编辑该信息模块
+          </el-button>
+        </div>
+        <el-form :model="accounting[0]" v-if="accounting" label-width="100px">
+          <el-form-item label="保证金">
+            <el-popover trigger="click">
+              <el-form-item label="保证金"></el-form-item>
+              <el-form-item label="提交日期">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="accounting[0].deposit[0].paidDate"
+                  :class="{showborder:true, border:!isread}"
+                  :readonly="isread"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="是否缴纳">
+                <el-radio-group
+                  v-model="accounting[0].deposit[0].isPaid"
+                  :disabled="isread"
+                  :class="{showborder:true, border:!isread}"
+                >
+                  <el-radio :label="true">已缴纳</el-radio>
+                  <el-radio :label="false">未缴纳</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label="金额">
+                <el-input
+                  v-model="accounting[0].deposit[0].amount"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="缴纳人">
+                <el-input
+                  v-model="accounting[0].deposit[0].paidPerson"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input
+                  v-model="accounting[0].deposit[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="预付款">
+            <el-popover trigger="click">
+              <el-form-item label="预付款"></el-form-item>
+              <el-form-item label="提交日期">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="accounting[0].advancePayment[0].paidDate"
+                  :class="{showborder:true, border:!isread}"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="是否缴纳">
+                <el-radio-group
+                  v-model="accounting[0].advancePayment[0].isPaid"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                >
+                  <el-radio :label="true">已缴纳</el-radio>
+                  <el-radio :label="false">未缴纳</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label="金额">
+                <el-input
+                  v-model="accounting[0].advancePayment[0].amount"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="缴纳人">
+                <el-input
+                  v-model="accounting[0].advancePayment[0].paidPerson"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input
+                  v-model="accounting[0].advancePayment[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="退款">
+            <el-popover trigger="click">
+              <el-form-item label="保证金"></el-form-item>
+
+              <el-form-item label="是否申请">
+                <el-radio-group
+                  v-model="accounting[0].refund[0].isApplyRefund"
+                  :disabled="isread"
+                  :class="{showborder:true, border:!isread}"
+                >
+                  <el-radio :label="true">已申请</el-radio>
+                  <el-radio :label="false">未申请</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label="申请人">
+                <el-input
+                  v-model="accounting[0].refund[0].applyPerson"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="申请事由">
+                <el-input
+                  v-model="accounting[0].refund[0].applyReason"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="申请日期">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="accounting[0].refund[0].applyDate"
+                  :class="{showborder:true, border:!isread}"
+                  :readonly="isread"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input
+                  v-model="accounting[0].refund[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="发票">
+            <el-popover trigger="click">
+              <el-form-item label="报销"></el-form-item>
+
+              <el-form-item label="申请人">
+                <el-input
+                  v-model="accounting[0].repay[0].applyPerson"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="申请事由">
+                <el-input
+                  v-model="accounting[0].repay[0].applyReason"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="申请日期">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="accounting[0].repay[0].applyDate"
+                  :class="{showborder:true, border:!isread}"
+                  :readonly="isread"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input
+                  v-model="accounting[0].repay[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+          <el-form-item label="发票">
+            <el-popover trigger="click">
+              <el-form-item label="报销"></el-form-item>
+
+              <el-form-item label="抬头">
+                <el-input
+                  v-model="accounting[0].invoice[0].name"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="出票日期">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="accounting[0].invoice[0].issueDate"
+                  :class="{showborder:true, border:!isread}"
+                  :readonly="isread"
+                ></el-date-picker>
+              </el-form-item>
+
+              <el-form-item label="销账日期">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="accounting[0].invoice[0].cancelDate"
+                  :class="{showborder:true, border:!isread}"
+                  :readonly="isread"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input
+                  v-model="accounting[0].invoice[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input
+              v-model="accounting[0].note"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <div class="tab-div-btn">
+          <el-button @click="submit(accounting)">提交</el-button>
+          <el-button @click="disbianji()">取消</el-button>
+          <el-button>选择阶段</el-button>
+          <el-button>新建</el-button>
+          <!-- <el-button type="primary">选择阶段</el-button> -->
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane label="案件流程">
+        <div class="clearfix btn-border">
+          <el-button
+            class="detail-btn"
+            style="color:#409EFF;font-size:14px;cursor: pointer;"
+            @click="bianji()"
+          >
+            编辑该信息模块
+          </el-button>
+
+          <el-button
+            class="detail-btn"
+            style="color:#409EFF;font-size:14px;cursor: pointer;"
+            @click="submit(paticipants)"
+          >
+            提交
+          </el-button>
+
+          <el-button
+            class="detail-btn"
+            style="color:#409EFF;font-size:14px;cursor: pointer;"
+            @click="bianji()"
+          >
+            阶段选择
+          </el-button>
+
+          <el-button
+            class="detail-btn"
+            style="color:#409EFF;font-size:14px;cursor: pointer;"
+            @click="disbianji()"
+          >
+            取消
+          </el-button>
+
+          <el-button
+            class="detail-btn"
+            style="color:#409EFF;font-size:14px;cursor: pointer;"
+            @click="add()"
+          >
+            新建
+          </el-button>
+
+          <!-- 消息对话框 -->
+          <el-button
+            class="detail-btn"
+            @click="dialogFormVisible = true"
+            style="color:#409EFF;font-size:14px;cursor: pointer;"
+          >新建消息</el-button>
+          <el-dialog title="消息提醒" :visible.sync="dialogFormVisible">
+            <el-form :model="news" class="news">
+              <el-form-item label="消息内容" :label-width="formLabelWidth">
+                <el-input v-model="news.content" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="消息时间" :label-width="formLabelWidth">
+                <el-date-picker
+                  v-model="news.date"
+                  type="date"
+                  placeholder="选择日期"
+                  format="yyyy 年 MM 月 dd 日"
+                  value-format="timestamp"
+                ></el-date-picker>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="commitnews(news)">确 定</el-button>
+            </div>
+          </el-dialog>
+        </div>
+        <!-- 接洽阶段 -->
+        <el-form :model="discoverer[0]" v-if="discoverer" ref="discovererForm" label-width="100px" id="discoverer">
+          <el-button
+            class="detail-btn"
+            style="color:#409EFF;font-size:14px;cursor: pointer;"
+            @click="add('discoverer[0]')"
+          >
+            新建
+          </el-button>
+          <el-form-item style="background: #f1f1fa;">
+            <h2>接洽阶段</h2>
+          </el-form-item>
+          <el-form-item label="姓名">
+            <el-input
+              type="text"
+              v-model="discoverer[0].name"
+              :readonly="isread"
+              :class=" {showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="进行情况">
+            <el-input
+              type="text"
+              v-model="discoverer[0].progress"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="汇报日期">
+            <el-date-picker
+              type="date"
+              placeholder="选择日期"
+              v-model="discoverer[0].reportDate"
+              :readonly="isread"
+              clear-icon="''"
+              :class="{showborder:true, border:!isread}"
+            ></el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="联系方式">
+            <el-input
+              type="text"
+              v-model="discoverercontacts"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="报告">
+            <div class="popover-div">
+              <el-popover trigger="click">
+                <el-form-item label="提交日期">
+                  <el-date-picker
+                    type="date"
+                    placeholder="选择日期"
+                    v-model="discoverer[0].reports[0].submitDate"
+                    :class="{showborder:true, border:!isread}"
+                    :readonly="isread"
+                  ></el-date-picker>
+                </el-form-item>
+                <el-form-item label="类型">
+                  <el-input
+                    v-model="discoverer[0].reports[0].reportType"
+                    :readonly="isread"
+                    :class="{showborder:true, border:!isread}"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="内容">
+                  <el-input
+                    v-model="discoverer[0].reports[0].reportContent"
+                    :readonly="isread "
+                    :class="{showborder:true, border:!isread}"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="文件">
+                  <el-input
+                    v-model="discoverer[0].reports[0].reportPath"
+                    :readonly="isread"
+                    :class="{showborder:true, border:!isread}"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="备注">
+                  <el-input
+                    v-model="discoverer[0].reports[0].note"
+                    :readonly="isread"
+                    :class="{showborder:true, border:!isread}"
+                  ></el-input>
+                </el-form-item>
+                <el-button slot="reference">详情</el-button>
+              </el-popover>
+            </div>
+          </el-form-item>
+
+          <el-form-item label="附件">
+            <el-popover trigger="click">
+              <el-form-item label="提交日期">
+                <el-input
+                  v-model="discoverer[0].attachments[0].attachmentName"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="附件类型">
+                <el-input
+                  v-model="discoverer[0].attachments[0].attachmentType"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="附件路径">
+                <el-input
+                  v-model="discoverer[0].attachments[0].attachmentPath"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="备注">
+                <el-input
+                  v-model="discoverer[0].reports[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="备注">
+            <el-input
+              v-model="discoverer[0].note"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <!-- 调查阶段 -->
+        <el-form :model="investigator[0]" v-if="investigator" label-width="100px" id="investigator">
+          <el-form-item style="background: #f1f1fa;">
+            <h2>调查阶段</h2>
+          </el-form-item>
+          <el-form-item label="姓名">
+            <el-input
+              type="text"
+              v-model="investigator[0].name"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="进行情况">
+            <el-input
+              type="text"
+              v-model="investigator[0].progress"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="汇报日期">
+            <el-date-picker
+              type="date"
+              placeholder="选择日期"
+              v-model="investigator[0].appointDate"
+              :class="{showborder:true, border:!isread}"
+              :readonly="isread"
+            ></el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="联系方式">
+            <el-input
+              type="text"
+              v-model="discoverercontacts"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="报告">
+            <el-popover trigger="click">
+              <el-form-item label="提交日期">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="investigator[0].reports[0].submitDate"
+                  :class="{showborder:true, border:!isread}"
+                  :readonly="isread"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="类型">
+                <el-input
+                  v-model="investigator[0].reports[0].reportType"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="内容">
+                <el-input
+                  v-model="investigator[0].reports[0].reportContent"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="文件">
+                <el-input
+                  v-model="investigator[0].reports[0].reportPath"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input
+                  v-model="investigator[0].reports[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="附件">
+            <el-popover trigger="click">
+              <el-form-item label="提交日期">
+                <el-input
+                  v-model="investigator[0].attachments[0].attachmentName"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="附件类型">
+                <el-input
+                  v-model="investigator[0].attachments[0].attachmentType"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="附件路径">
+                <el-input
+                  v-model="investigator[0].attachments[0].attachmentPath"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="备注">
+                <el-input
+                  v-model="investigator[0].reports[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="备注">
+            <el-input
+              v-model="investigator[0].note"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <!-- 报告阶段 -->
+        <el-form :model="reports[0]" v-if="reports" label-width="100px" id="reports">
+          <el-form-item style="background: #f1f1fa;">
+            <h2>报告阶段</h2>
+          </el-form-item>
+          <el-form-item label="姓名">
+            <el-input
+              type="text"
+              v-model="reports[0].name"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="进行情况">
+            <el-input
+              type="text"
+              v-model="reports[0].progress"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="汇报日期">
+            <el-date-picker
+              type="date"
+              placeholder="选择日期"
+              v-model="reports[0].appointDate"
+              :class="{showborder:true, border:!isread}"
+              :readonly="isread"
+            ></el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="联系方式">
+            <el-input
+              type="text"
+              v-model="reportscontacts"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="报告">
+            <el-popover trigger="click">
+              <el-form-item label="提交日期">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="reports[0].reports.submitDate"
+                  :class="{showborder:true, border:!isread}"
+                  :readonly="isread"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="类型">
+                <el-input
+                  v-model="reports[0].reports.reportType"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="内容">
+                <el-input
+                  v-model="reports[0].reports.reportContent"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="文件">
+                <el-input
+                  v-model="reports[0].reports.reportPath"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input
+                  v-model="reports[0].reports.note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="其他附件">
+            <el-popover trigger="click">
+              <el-form-item label="类型名称">
+                <el-input
+                  v-model="reports[0].attachments[0].attachmentName"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="附件类型">
+                <el-input
+                  v-model="reports[0].attachments[0].attachmentType"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="附件路径">
+                <el-input
+                  v-model="reports[0].attachments[0].attachmentPath"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="备注">
+                <el-input
+                  v-model="reports[0].attachments[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="备注">
+            <el-input
+              v-model="reports[0].note"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <!-- 法务阶段 -->
+        <el-form :model="raider[0]" v-if="raider" label-width="100px" id="raider">
+          <el-form-item style="background: #f1f1fa;">
+            <h2>法务阶段</h2>
+          </el-form-item>
+          <el-form-item label="姓名">
+            <el-input
+              type="text"
+              v-model="raider[0].name"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="进行情况">
+            <el-input
+              type="text"
+              v-model="raider[0].progress"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="汇报日期">
+            <el-date-picker
+              type="date"
+              placeholder="选择日期"
+              v-model="raider[0].appointDate"
+              :class="{showborder:true, border:!isread}"
+              :readonly="isread"
+            ></el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="联系方式">
+            <el-input
+              type="text"
+              v-model="raidercontacts"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="报告">
+            <el-popover trigger="click">
+              <el-form-item label="提交日期">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="raider[0].reports[0].submitDate"
+                  :class="{showborder:true, border:!isread}"
+                  :readonly="isread"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="类型">
+                <el-input
+                  v-model="raider[0].reports[0].reportType"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="内容">
+                <el-input
+                  v-model="raider[0].reports[0].reportContent"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="文件">
+                <el-input
+                  v-model="raider[0].reports[0].reportPath"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input
+                  v-model="raider[0].reports[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="附件">
+            <el-popover trigger="click">
+              <el-form-item label="提交日期">
+                <el-input
+                  v-model="raider[0].attachments[0].attachmentName"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="附件类型">
+                <el-input
+                  v-model="raider[0].attachments[0].attachmentType"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="附件路径">
+                <el-input
+                  v-model="raider[0].attachments[0].attachmentPath"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+
+              <el-form-item label="备注">
+                <el-input
+                  v-model="raider[0].reports[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="备注">
+            <el-input
+              v-model="raider[0].note"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <!-- 诉讼阶段 -->
+        <el-form :model="litigator[0]" v-if="litigator" label-width="100px" id="litigator">
+          <el-form-item style="background: #f1f1fa;">
+            <h2>诉讼阶段</h2>
+          </el-form-item>
+          <el-form-item label="姓名">
+            <el-input
+              type="text"
+              v-model="litigator[0].name"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="进行情况">
+            <el-input
+              type="text"
+              v-model="litigator[0].progress"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="代理机构">
+            <el-input
+              type="text"
+              v-model="litigator[0].agency"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="身份">
+            <el-input
+              type="text"
+              v-model="litigator[0].role"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="汇报日期">
+            <el-date-picker
+              type="date"
+              placeholder="选择日期"
+              v-model="litigator[0].appointDate"
+              style="border: none;width: 100%;"
+              :readonly="isread"
+            ></el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="联系方式">
+            <el-input
+              type="text"
+              v-model="raidercontacts"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="报告">
+            <el-popover trigger="click">
+              <el-form-item label="提交日期">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="litigator[0].reports[0].submitDate"
+                  style="border: none;width: 100%;"
+                  :class="{showborder:true, border:!isread}"
+                  :readonly="isread"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="类型">
+                <el-input
+                  v-model="litigator[0].reports[0].reportType"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="内容">
+                <el-input
+                  v-model="litigator[0].reports[0].reportContent"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="文件">
+                <el-input
+                  v-model="litigator[0].reports[0].reportPath"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input
+                  v-model="litigator[0].reports[0].note"
+                  :readonly="isread"
+                  :class="{showborder:true, border:!isread}"
+                ></el-input>
+              </el-form-item>
+              <el-button slot="reference">详情</el-button>
+            </el-popover>
+          </el-form-item>
+
+          <el-form-item label="备注">
+            <el-input
+              v-model="litigator[0].note"
+              :readonly="isread"
+              :class="{showborder:true, border:!isread}"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <div class="tab-div-btn">
+          <el-button @click="submit(paticipants)">提交</el-button>
           <el-button @click="disbianji()">取消</el-button>
           <el-button>选择阶段</el-button>
           <el-button>新建</el-button>
@@ -1265,7 +1558,7 @@ import {
 } from "../../services/service";
 
 export default {
-  data () {
+  data() {
     return {
       isread: true,
       data: {},
@@ -1321,23 +1614,28 @@ export default {
 
       activename: "0", // tab 切换的角标
 
-
       /* 对话框 */
       dialogFormVisible: false,
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
         delivery: false,
         type: [],
-        resource: '',
-        desc: ''
+        resource: "",
+        desc: ""
       },
-      formLabelWidth: '120px'
+      formLabelWidth: "120px",
+
+      /* 消息提醒 */
+      news:{
+        content:'',
+        date:''
+      }
     };
   },
-  created () {
+  created() {
     this.getPaticipants();
     this.getbaseInfo();
     this.getclientInfo();
@@ -1346,49 +1644,49 @@ export default {
   },
   computed: {
     discoverercontacts: {
-      get () {
+      get() {
         return this.discoverer[0].contacts.toString();
       },
-      set (val) {
+      set(val) {
         this.discoverer[0].contacts = val.split(",");
       }
     },
     investigatorcontacts: {
-      get () {
+      get() {
         return this.investigator[0].contacts.toString();
       },
-      set (val) {
+      set(val) {
         this.investigator[0].contacts = val.split(",");
       }
     },
     reportscontacts: {
-      get () {
+      get() {
         return this.reports[0].contacts.toString();
       },
-      set (val) {
+      set(val) {
         this.reports[0].contacts = val.split(",");
       }
     },
     raidercontacts: {
-      get () {
+      get() {
         return this.raider[0].contacts.toString();
       },
-      set (val) {
+      set(val) {
         this.raider[0].contacts = val.split(",");
       }
     },
     currentParticipants: {
-      get () {
+      get() {
         return this.baseInfo[0].currentParticipants.toString();
       },
-      set (val) {
+      set(val) {
         this.baseInfo[0].currentParticipants = val.split(",");
       }
     }
   },
   methods: {
     /* 获取案件流程数据 */
-    getPaticipants () {
+    getPaticipants() {
       _getpaticipants().then(res => {
         console.info(res);
 
@@ -1414,67 +1712,90 @@ export default {
     },
 
     // 获取各个表接口 赋值
-    getbaseInfo () {
+    getbaseInfo() {
       _getbaseInfo().then(res => {
         this.baseInfo = res;
       });
     },
-    getclientInfo () {
+    getclientInfo() {
       _getclientInfo().then(res => {
         this.clientInfo = res;
       });
     },
-    gettargetInfo () {
+    gettargetInfo() {
       _gettargetInfo().then(res => {
         this.targetInfo = res;
       });
     },
-    getaccounting () {
+    getaccounting() {
       _getaccounting().then(res => {
         this.accounting = res;
       });
     },
 
     /* 锚点跳转 */
-    returnTop: function (item) {
+    returnTop: function(item) {
       // this.data = this[item];
       let tomao = "#" + item; // 锚点跳转
       console.info(item + " " + tomao);
-      this.activename = "0";
+      this.activename = "4";
       /* $ref 当前文档流 */
 
       let t;
       clearTimeout(t);
-      t = setTimeout(function () {
+      t = setTimeout(function() {
         document.querySelector(tomao).scrollIntoView(true);
       }, 100);
     },
 
     /* tab切换事件 */
-    handleClick (tab, event) {
+    handleClick(tab, event) {
       // console.info(tab + " " + event);
       // console.info(tab);
     },
 
     /* 编辑 */
-    bianji () {
+    bianji() {
       this.isread = false;
     },
 
     /* 取消 */
-    disbianji () {
+    disbianji() {
       this.isread = false;
     },
 
     /* 提交 */
-    submit (item) {
+    submit(item) {
       this.isread = true;
       console.info(item);
       alert("提交成功！");
-    }
+    },
+    /* 新建 */
+    add(discovererForm){
+      console.info(discovererForm)
+      console.info(this.$refs.discovererForm)
 
+      this.$nextTick(()=>{
+        this.$refs[discovererForm].resetFields()
+      })
+      this.$refs[discovererForm].resetFields()
+    },
+    /* 提交消息 */
+    commitnews(item){
+      console.info(item)
+      this.dialogFormVisible = false
+    },
     /* 处理数组字符串 */
-  }
+    /* 新建 */
+    newupdate(item){
+      for (const key in item) {
+        // console.info(key)
+        console.info(item[key])
+        item[key]=''
+      }
+    }
+  },
+  
 };
 </script>
 
@@ -1531,7 +1852,10 @@ export default {
     margin-bottom: 15px;
   }
 }
-
+.showborder {
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
 .border {
   border: 1px solid #dcdfe6;
   border-radius: 4px;

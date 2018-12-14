@@ -1,8 +1,9 @@
 <template>
   <div style>
     <div class="phui-two-column-header">
-      <div>
-        <i class="el-icon-warning"></i>
+      <div style="display: flex;justify-content: space-between;">
+        <div><i class="el-icon-warning"></i>测试数据</div>
+        <button>导出内容</button>
       </div>
     </div>
 
@@ -12,33 +13,33 @@
         <div>
           <div class="phui-div-content">
             <div>案件状态</div>
-            <div></div>
+            <div>测试数据</div>
             <div>案件类型</div>
-            <div></div>
+            <div>测试数据测试数据</div>
           </div>
           <div class="phui-div-content div-active">
             <div>案件号</div>
-            <div></div>
+            <div>测试数据测试数据</div>
             <div>案件名称</div>
-            <div></div>
+            <div>测试数据测试数据</div>
           </div>
           <div class="phui-div-content">
             <div>当前参与人</div>
-            <div></div>
+            <div>测试数据测试数据</div>
             <div>案由</div>
-            <div></div>
+            <div>测试数据测试数据</div>
           </div>
           <div class="phui-div-content div-active">
             <div>立案时间</div>
-            <div></div>
+            <div>测试数据测试数据</div>
             <div>结案方式</div>
-            <div></div>
+            <div>测试数据测试数据</div>
           </div>
           <div class="phui-div-content">
             <div>结案日期</div>
-            <div></div>
+            <div>测试数据</div>
             <div>更新信息</div>
-            <div></div>
+            <div>测试数据</div>
           </div>
         </div>
       </div>

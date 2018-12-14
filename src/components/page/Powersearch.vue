@@ -60,7 +60,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="案件时间：">
-            <el-col :span="4">
+            <el-col :span="6">
               <el-date-picker
                 type="date"
                 placeholder="选择日期"
@@ -83,7 +83,7 @@
           <div class="crumbs">
             <el-breadcrumb separator="/">
               <el-breadcrumb-item>
-                <i class="el-icon-lx-cascades"></i> 基础表格
+                <i class="el-icon-lx-cascades"></i> 案件列表
               </el-breadcrumb-item>
             </el-breadcrumb>
           </div>
@@ -98,18 +98,27 @@
               <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
             <el-table
-              :data="data"
+              :data="tableData"
               border
               class="table"
               ref="multipleTable"
               @selection-change="handleSelectionChange"
+              :default-sort = "{prop: 'openDate'}"
             >
               <el-table-column type="selection" width="55" align="center"></el-table-column>
-              <el-table-column prop="date" label="日期" sortable width="150"></el-table-column>
-              <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-              <el-table-column prop="address" label="地址" :formatter="formatter"></el-table-column>
+              <el-table-column prop="caseNo" label="案件号" sortable width="150"></el-table-column>
+              <el-table-column prop="caseName" label="案件名称" width="120"></el-table-column>
+              <el-table-column prop="openDate" label="立案时间" width="120" :formatter="formatter"></el-table-column>
+              <el-table-column prop="brands" label="客户品牌" width="120"></el-table-column>
+              <el-table-column prop="clientCaseNo" label="客户案件号" width="120"></el-table-column>
+              <el-table-column prop="participants" label="案件参与人" ></el-table-column>
               <el-table-column label="操作" width="180" align="center">
                 <template slot-scope="scope">
+                  <el-button
+                    type="text"
+                    icon="el-icon-edit"
+                    @click="toPathid()"
+                  >查看</el-button>
                   <el-button
                     type="text"
                     icon="el-icon-edit"
@@ -310,7 +319,11 @@ export default {
 
       /* 表单 */
       url: "./static/vuetable.json",
-      tableData: [],
+      tableData: [{
+        caseNo:'T168',caseName:'21313',openDate:131213000,brands:'Cat',clientCaseNo:'你好',participants:'张三，王宇'
+      },{
+        caseNo:'T168',caseName:'21313',openDate:131213000,brands:'Cat',clientCaseNo:'你好',participants:'张三，王宇'
+      }],
       cur_page: 1,
       multipleSelection: [],
       select_cate: "",
@@ -380,14 +393,15 @@ export default {
     // 获取 easy-mock 的模拟数据
     getData() {
       //开发环境使用 easy-mock 数据，正式环境使用 json 文件
-      if (process.env.NODE_ENV === "development") {
-        this.url = "/ms/table/list";
-      }
+      // if (process.env.NODE_ENV === "development") {
+      //   this.url = "/ms/table/list";
+      // }
       this.$axios
         .post(this.url, {
           page: this.cur_page
         })
         .then(res => {
+          console.info(res)
           this.tableData = res.data.list;
         });
     },
@@ -412,6 +426,7 @@ export default {
     },
     handleDelete(index, row) {
       this.idx = index;
+      console.info(index)
       this.delVisible = true;
     },
     delAll() {

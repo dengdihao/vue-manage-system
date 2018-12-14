@@ -75,10 +75,16 @@ export default {
           title: "文档管理"
         },
         {
-          icon: "el-icon-lx-cascades",
-          index: "table",
-          title: "基础表格"
+          icon: "el-icon-tickets",
+          index: "wangeditor",
+          title: "wangeditor"
         },
+        //wangeditor
+        // {
+        //   icon: "el-icon-lx-cascades",
+        //   index: "table",
+        //   title: "基础表格"
+        // },
         {
           icon: "el-icon-lx-copy",
           index: "tabs",

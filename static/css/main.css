@@ -153,9 +153,18 @@ a {
     font-style: normal;
 }
 
-.el-input__inner {
-  border: 1px solid transparent !important;
-  border-radius: 4px;
+.box-card .el-input__inner {
+    border: 1px solid transparent !important;
+    border-radius: 4px;
+}
+
+.power .el-input__inner {
+    border: 1px solid #dcdfe6 !important;
+    border-radius: 4px;
+}
+.news .el-input__inner{
+    border: 1px solid #dcdfe6 !important;
+    border-radius: 4px;
 }
 
 /*VueEditor*/
