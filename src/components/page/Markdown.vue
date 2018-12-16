@@ -12,7 +12,10 @@
       <div class="plugins-tips">
         mavonEditor：基于Vue的markdown编辑器。
         访问地址：
-        <a href="https://github.com/hinesboy/mavonEditor" target="_blank">mavonEditor</a>
+        <a
+          href="https://github.com/hinesboy/mavonEditor"
+          target="_blank"
+        >mavonEditor</a>
       </div>
       <div
         class="upload_warp_right"
@@ -20,16 +23,9 @@
         @dragenter="dragenter($event)"
         @dragover="dragover($event)"
       >
-        <mavon-editor
-          v-model="content"
-          ref="md"
-          @imgAdd="$imgAdd"
-          @change="change"
-          
-        />
+        <mavon-editor v-model="content" ref="md" @imgAdd="$imgAdd" @change="change"/>
       </div>
 
-      <mavon-editor @change="change"/>
       <el-button class="editor-btn" type="primary" @click="submit">提交</el-button>
     </div>
   </div>
@@ -40,11 +36,15 @@ import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 export default {
   name: "markdown",
-  data: function() {
+  data: function () {
     return {
       content: "",
       html: "",
-      configs: {}
+      configs: {},
+      toolbars: {
+        undo: true, // 上一步
+        redo: true, // 下一步
+      }
     };
   },
   components: {
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     // 将图片上传到服务器，返回地址替换到md中
-    $imgAdd(pos, $file) {
+    $imgAdd (pos, $file) {
       var formdata = new FormData();
       formdata.append("file", $file);
       // 这里没有服务器供大家尝试，可将下面上传接口替换为你自己的服务器接口
@@ -65,31 +65,32 @@ export default {
         this.$refs.md.$img2Url(pos, url);
       });
     },
-    change(value, render) {
+    change (value, render) {
       // render 为 markdown 解析后的结果
       this.html = render;
     },
-    submit() {
+    submit () {
       console.log(this.content);
       console.log(this.html);
       this.$message.success("提交成功！");
     },
 
     /* 拖拽上传 */
-    dragenter(el) {
+    dragenter (el) {
       el.stopPropagation();
       el.preventDefault();
     },
-    dragover(el) {
+    dragover (el) {
       el.stopPropagation();
       el.preventDefault();
     },
-    drop(el) {
+    drop (el) {
       el.stopPropagation();
       el.preventDefault();
-    //   this.fileList(el.dataTransfer);
+      //   this.fileList(el.dataTransfer);
     }
-  }
+  },
+
 };
 </script>
 <style scoped>

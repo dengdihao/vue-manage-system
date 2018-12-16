@@ -828,48 +828,37 @@
           <!-- <el-button type="primary">选择阶段</el-button> -->
         </div>
       </el-tab-pane>
-
       <el-tab-pane label="案件流程">
         <div class="clearfix btn-border">
           <el-button
             class="detail-btn"
             style="color:#409EFF;font-size:14px;cursor: pointer;"
             @click="bianji()"
-          >
-            编辑该信息模块
-          </el-button>
+          >编辑该信息模块</el-button>
 
           <el-button
             class="detail-btn"
             style="color:#409EFF;font-size:14px;cursor: pointer;"
             @click="submit(paticipants)"
-          >
-            提交
-          </el-button>
+          >提交</el-button>
 
           <el-button
             class="detail-btn"
             style="color:#409EFF;font-size:14px;cursor: pointer;"
             @click="bianji()"
-          >
-            阶段选择
-          </el-button>
+          >阶段选择</el-button>
 
           <el-button
             class="detail-btn"
             style="color:#409EFF;font-size:14px;cursor: pointer;"
             @click="disbianji()"
-          >
-            取消
-          </el-button>
+          >取消</el-button>
 
           <el-button
             class="detail-btn"
             style="color:#409EFF;font-size:14px;cursor: pointer;"
             @click="add()"
-          >
-            新建
-          </el-button>
+          >新建</el-button>
 
           <!-- 消息对话框 -->
           <el-button
@@ -899,14 +888,18 @@
           </el-dialog>
         </div>
         <!-- 接洽阶段 -->
-        <el-form :model="discoverer[0]" v-if="discoverer" ref="discovererForm" label-width="100px" id="discoverer">
+        <el-form
+          :model="discoverer[0]"
+          v-if="discoverer"
+          ref="discovererForm"
+          label-width="100px"
+          id="discoverer"
+        >
           <el-button
             class="detail-btn"
             style="color:#409EFF;font-size:14px;cursor: pointer;"
             @click="add('discoverer[0]')"
-          >
-            新建
-          </el-button>
+          >新建</el-button>
           <el-form-item style="background: #f1f1fa;">
             <h2>接洽阶段</h2>
           </el-form-item>
@@ -1558,7 +1551,7 @@ import {
 } from "../../services/service";
 
 export default {
-  data() {
+  data () {
     return {
       isread: true,
       data: {},
@@ -1629,13 +1622,13 @@ export default {
       formLabelWidth: "120px",
 
       /* 消息提醒 */
-      news:{
-        content:'',
-        date:''
+      news: {
+        content: '',
+        date: ''
       }
     };
   },
-  created() {
+  created () {
     this.getPaticipants();
     this.getbaseInfo();
     this.getclientInfo();
@@ -1644,49 +1637,49 @@ export default {
   },
   computed: {
     discoverercontacts: {
-      get() {
+      get () {
         return this.discoverer[0].contacts.toString();
       },
-      set(val) {
+      set (val) {
         this.discoverer[0].contacts = val.split(",");
       }
     },
     investigatorcontacts: {
-      get() {
+      get () {
         return this.investigator[0].contacts.toString();
       },
-      set(val) {
+      set (val) {
         this.investigator[0].contacts = val.split(",");
       }
     },
     reportscontacts: {
-      get() {
+      get () {
         return this.reports[0].contacts.toString();
       },
-      set(val) {
+      set (val) {
         this.reports[0].contacts = val.split(",");
       }
     },
     raidercontacts: {
-      get() {
+      get () {
         return this.raider[0].contacts.toString();
       },
-      set(val) {
+      set (val) {
         this.raider[0].contacts = val.split(",");
       }
     },
     currentParticipants: {
-      get() {
+      get () {
         return this.baseInfo[0].currentParticipants.toString();
       },
-      set(val) {
+      set (val) {
         this.baseInfo[0].currentParticipants = val.split(",");
       }
     }
   },
   methods: {
     /* 获取案件流程数据 */
-    getPaticipants() {
+    getPaticipants () {
       _getpaticipants().then(res => {
         console.info(res);
 
@@ -1712,29 +1705,29 @@ export default {
     },
 
     // 获取各个表接口 赋值
-    getbaseInfo() {
+    getbaseInfo () {
       _getbaseInfo().then(res => {
         this.baseInfo = res;
       });
     },
-    getclientInfo() {
+    getclientInfo () {
       _getclientInfo().then(res => {
         this.clientInfo = res;
       });
     },
-    gettargetInfo() {
+    gettargetInfo () {
       _gettargetInfo().then(res => {
         this.targetInfo = res;
       });
     },
-    getaccounting() {
+    getaccounting () {
       _getaccounting().then(res => {
         this.accounting = res;
       });
     },
 
     /* 锚点跳转 */
-    returnTop: function(item) {
+    returnTop: function (item) {
       // this.data = this[item];
       let tomao = "#" + item; // 锚点跳转
       console.info(item + " " + tomao);
@@ -1743,59 +1736,59 @@ export default {
 
       let t;
       clearTimeout(t);
-      t = setTimeout(function() {
+      t = setTimeout(function () {
         document.querySelector(tomao).scrollIntoView(true);
       }, 100);
     },
 
     /* tab切换事件 */
-    handleClick(tab, event) {
+    handleClick (tab, event) {
       // console.info(tab + " " + event);
       // console.info(tab);
     },
 
     /* 编辑 */
-    bianji() {
+    bianji () {
       this.isread = false;
     },
 
     /* 取消 */
-    disbianji() {
+    disbianji () {
       this.isread = false;
     },
 
     /* 提交 */
-    submit(item) {
+    submit (item) {
       this.isread = true;
       console.info(item);
       alert("提交成功！");
     },
     /* 新建 */
-    add(discovererForm){
+    add (discovererForm) {
       console.info(discovererForm)
       console.info(this.$refs.discovererForm)
 
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.$refs[discovererForm].resetFields()
       })
       this.$refs[discovererForm].resetFields()
     },
     /* 提交消息 */
-    commitnews(item){
+    commitnews (item) {
       console.info(item)
       this.dialogFormVisible = false
     },
     /* 处理数组字符串 */
     /* 新建 */
-    newupdate(item){
+    newupdate (item) {
       for (const key in item) {
         // console.info(key)
         console.info(item[key])
-        item[key]=''
+        item[key] = ''
       }
     }
   },
-  
+
 };
 </script>
 
@@ -1843,6 +1836,8 @@ export default {
   display: flex;
   justify-content: center;
   margin: 20px 0px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .btn-border {

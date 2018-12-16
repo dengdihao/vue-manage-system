@@ -1,350 +1,826 @@
+
 <template>
-  <div>
-    <el-card class="box-card">
-      <div class="detail-header clearfix" slot="header">
-        <div class="border-bottom"></div>
-        <ul class="detail-div">
-          <li v-for="(item,index) in stage" :key="index">
-            <div class="detail-ul-content">{{item.stagename}}</div>
+  <el-card>
+    <div class="detail-header clearfix" slot="header">
+      <div class="border-bottom"></div>
+      <ul class="detail-div">
+        <li v-for="(item,index) in stage" :key="index">
+          <div class="detail-ul-content">{{item.stagename}}</div>
+          <!-- div 锚点跳转 -->
+          <div
+            class="detail-ul-icon"
+            :class="{colorred:item.isshow,colorgreen:item.isshowg}"
+            @click="returnTop(item.id)"
+          ></div>
+        </li>
+      </ul>
+    </div>
 
-            <a :href="'#'+item.id">
-              <div
-                class="detail-ul-icon"
-                :class="{colorred:item.isshow,colorgreen:item.isshowg}"
-                @mousemove="show(index)"
-                @mouseout="disshow(index)"
-                @click="toList()"
-              ></div>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <el-tabs type="border-card">
-        <el-tab-pane label="案件流程">
-          <form action model>
-            
-
-            <!-- 接洽阶段 -->
-            <div class="detail-btn-div">
-              <div
+    <el-tabs>
+      <el-dialog title="消息提醒" :visible.sync="dialogFormVisible">
+        <el-form :model="news" class="news">
+          <el-form-item label="消息内容" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="消息时间" :label-width="formLabelWidth">
+            <el-date-picker
+              v-model="news.date"
+              type="date"
+              placeholder="选择日期"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="timestamp"
+            ></el-date-picker>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="commitnews(news)">确 定</el-button>
+        </div>
+      </el-dialog>
+      <!-- 案件基本信息 -->
+      <el-tab-pane label="案件流程">
+        <el-collapse v-model="activeNames">
+          <el-collapse-item title="接洽阶段" name="1" v-model="discoverer" v-if="discoverer">
+            <div class="clearfix btn-border">
+              <el-button
                 class="detail-btn"
                 style="color:#409EFF;font-size:14px;cursor: pointer;"
-                @click="bianji(discoverertab)"
-              >
-                <i class="el-icon-edit-outline"></i>编辑该信息模块
-              </div>
-            </div>
-            <div id="discoverer">
-              <div class="phui-main-header">接洽阶段</div>
-              <div class="phui-main-column">
-                <!-- <div class="phui-header-shell">信息</div> -->
-                <div class="phui-div-content" v-for="(item,index) in discoverertab" :key="index">
-                  <div class="div-active">{{item.title}}</div>
-                  <div>
-                    <input
-                      autofocus
-                      class="input-new-tag"
-                      :class="{isboder:item.inputVisible}"
-                      v-model="item.content"
-                      :readonly="item.inputVisible ? false : 'readonly'"
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="tab-div-btn">
-              <el-button @click="submit(discoverertab,discoverer)">提交</el-button>
-              <el-button @click="disbianji(discoverertab)">取消</el-button>
-              <el-button>选择阶段</el-button>
-              <el-button>新建</el-button>
-              <!-- <el-button type="primary">选择阶段</el-button> -->
-            </div>
-            
+                @click="bianji()"
+              >编辑</el-button>
 
-            <!-- 调查阶段 -->
-            <div id="investigator">
-              <div class="detail-btn-div">
-              <div
+              <el-button
                 class="detail-btn"
                 style="color:#409EFF;font-size:14px;cursor: pointer;"
-                @click="bianji(investigatortab)"
-              >
-                <i class="el-icon-edit-outline"></i>编辑该信息模块
-              </div>
-            </div>
-              <div class="phui-main-header">调查阶段</div>
-              <div class="phui-main-column">
-                <!-- <div class="phui-header-shell">信息</div> -->
-                <div class="phui-div-content" v-for="(item,index) in investigatortab" :key="index">
-                  <div class="div-active">{{item.title}}</div>
-                  <div>
-                    <input
-                      autofocus
-                      class="input-new-tag"
-                      :class="{isboder:item.inputVisible}"
-                      v-model="item.content"
-                      :readonly="item.inputVisible ? false : 'readonly'"
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="tab-div-btn">
-              <el-button @click="submit(investigatortab,investigator)">提交</el-button>
-              <el-button @click="disbianji(investigatortab)">取消</el-button>
-              <el-button>选择阶段</el-button>
-              <el-button>新建</el-button>
-              <!-- <el-button type="primary">选择阶段</el-button> -->
-            </div>
+                @click="add()"
+              >新建</el-button>
 
-            <!-- 报告阶段 -->
-            
-            <div id="reports">
-              <div class="detail-btn-div">
-              <div
+              <!-- 消息对话框 -->
+              <el-button
+                class="detail-btn"
+                @click="dialogFormVisible = true"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+              >新建消息</el-button>
+            </div>
+            <table class="ntable">
+              <tr>
+                <td class="tb" width="20%">姓名</td>
+                <td width="30%">{{discoverer[0].name}}</td>
+                <td class="tb" width="20%">进行情况</td>
+                <td width="30%">{{discoverer[0].progress}}</td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">汇报日期</td>
+                <td width="30%">{{discoverer[0].reportDate}}</td>
+                <td class="tb" width="20%">联系方式</td>
+                <td width="30%">{{discoverer[0].contacts}}</td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">报告</td>
+                <td width="30%">
+                  <el-popover trigger="click" width="400" placement="right">
+                    <table class="ntable">
+                      <tr>
+                        <td width="35%">提交日期</td>
+                        <td width="65%">{{discoverer[0].reports[0].submitDate}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">类型</td>
+                        <td width="65%">{{discoverer[0].reports[0].reportType}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">内容</td>
+                        <td width="65%">{{discoverer[0].reports[0].reportContent}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">文件</td>
+                        <td width="65%">{{discoverer[0].reports[0].reportPath}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">备注</td>
+                        <td width="65%">{{discoverer[0].reports[0].note}}</td>
+                      </tr>
+                    </table>
+                    <el-button slot="reference">详情</el-button>
+                  </el-popover>
+                </td>
+                <td class="tb" width="20%">附件</td>
+                <td width="30%">
+                  <el-popover trigger="click" width="400" placement="right">
+                    <table class="ntable">
+                      <tr>
+                        <td width="35%">附件名称</td>
+                        <td width="65%">{{discoverer[0].attachments[0].attachmentName}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">附件类型</td>
+                        <td width="65%">{{discoverer[0].attachments[0].attachmentType}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">附件路径</td>
+                        <td width="65%">{{discoverer[0].attachments[0].attachmentPath}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">备注</td>
+                        <td width="65%">{{discoverer[0].attachments[0].note}}</td>
+                      </tr>
+                    </table>
+                    <el-button slot="reference">详情</el-button>
+                  </el-popover>
+                </td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">备注</td>
+                <td width="30%">{{discoverer[0].note}}</td>
+                <td class="tb" width="20%"></td>
+                <td width="30%"></td>
+              </tr>
+            </table>
+          </el-collapse-item>
+          <el-collapse-item title="调查阶段" name="2" v-model="investigator" v-if="investigator">
+            <div class="clearfix btn-border">
+              <el-button
                 class="detail-btn"
                 style="color:#409EFF;font-size:14px;cursor: pointer;"
-                @click="bianji(reportstab)"
-              >
-                <i class="el-icon-edit-outline"></i>编辑该信息模块
-              </div>
-            </div>
-              <div class="phui-main-header">报告阶段</div>
-              <div class="phui-main-column">
-                <!-- <div class="phui-header-shell">信息</div> -->
-                <div class="phui-div-content" v-for="(item,index) in reportstab" :key="index">
-                  <div class="div-active">{{item.title}}</div>
-                  <div>
-                    <input
-                      autofocus
-                      class="input-new-tag"
-                      :class="{isboder:item.inputVisible}"
-                      v-model="item.content"
-                      :readonly="item.inputVisible ? false : 'readonly'"
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="tab-div-btn">
-              <el-button @click="submit(reportstab,reports)">提交</el-button>
-              <el-button @click="disbianji(reportstab)">取消</el-button>
-              <el-button>选择阶段</el-button>
-              <el-button>新建</el-button>
-              <!-- <el-button type="primary">选择阶段</el-button> -->
-            </div>
+                @click="bianji()"
+              >编辑</el-button>
 
-            <!-- 法务阶段 -->
-            
-            <div id="raider">
-              <div class="detail-btn-div">
-              <div
+              <el-button
                 class="detail-btn"
                 style="color:#409EFF;font-size:14px;cursor: pointer;"
-                @click="bianji(raidertab)"
-              >
-                <i class="el-icon-edit-outline"></i>编辑该信息模块
-              </div>
-            </div>
-              <div class="phui-main-header">法务阶段</div>
-              <div class="phui-main-column">
-                <!-- <div class="phui-header-shell">信息</div> -->
-                <div class="phui-div-content" v-for="(item,index) in raidertab" :key="index">
-                  <div class="div-active">{{item.title}}</div>
-                  <div>
-                    <input
-                      autofocus
-                      class="input-new-tag"
-                      :class="{isboder:item.inputVisible}"
-                      v-model="item.content"
-                      :readonly="item.inputVisible ? false : 'readonly'"
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="tab-div-btn">
-              <el-button @click="submit(raidertab,raider)">提交</el-button>
-              <el-button @click="disbianji(raidertab)">取消</el-button>
-              <el-button>选择阶段</el-button>
-              <el-button>新建</el-button>
-              <!-- <el-button type="primary">选择阶段</el-button> -->
-            </div>
+                @click="add()"
+              >新建</el-button>
 
-            <!-- 诉讼阶段 -->
-            <div id="litigator">
-              <div class="detail-btn-div">
-                <div
-                  class="detail-btn"
-                  style="color:#409EFF;font-size:14px;cursor: pointer;"
-                  @click="bianji(litigatortab)"
-                >
-                  <i class="el-icon-edit-outline"></i>编辑该信息模块
-                </div>
-              </div>
-              <div class="phui-main-header">诉讼阶段</div>
-              <div class="phui-main-column">
-                <!-- <div class="phui-header-shell">信息</div> -->
-                <div class="phui-div-content" v-for="(item,index) in litigatortab" :key="index">
-                  <div class="div-active">{{item.title}}</div>
-                  <div>
-                    <input
-                      autofocus
-                      class="input-new-tag"
-                      :class="{isboder:item.inputVisible}"
-                      v-model="item.content"
-                      :readonly="item.inputVisible ? false : 'readonly'"
-                    >
-                  </div>
-                </div>
-              </div>
+              <!-- 消息对话框 -->
+              <el-button
+                class="detail-btn"
+                @click="dialogFormVisible = true"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+              >新建消息</el-button>
             </div>
+            <table class="ntable">
+              <tr>
+                <td class="tb" width="20%">姓名</td>
+                <td width="30%">{{investigator[0].name}}</td>
+                <td class="tb" width="20%">进行情况</td>
+                <td width="30%">{{investigator[0].progress}}</td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">汇报日期</td>
+                <td width="30%">{{investigator[0].appointDate}}</td>
+                <td class="tb" width="20%">联系方式</td>
+                <td width="30%">{{investigator[0].contacts}}</td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">报告</td>
+                <td width="30%">
+                  <el-popover trigger="click" width="400" placement="right">
+                    <table class="ntable">
+                      <tr>
+                        <td width="35%">提交日期</td>
+                        <td width="65%">{{investigator[0].reports[0].submitDate}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">类型</td>
+                        <td width="65%">{{investigator[0].reports[0].reportType}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">内容</td>
+                        <td width="65%">{{investigator[0].reports[0].reportContent}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">文件</td>
+                        <td width="65%">{{investigator[0].reports[0].reportPath}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">备注</td>
+                        <td width="65%">{{investigator[0].reports[0].note}}</td>
+                      </tr>
+                    </table>
+                    <el-button slot="reference">详情</el-button>
+                  </el-popover>
+                </td>
+                <td class="tb" width="20%">附件</td>
+                <td width="30%">
+                  <el-popover trigger="click" width="400" placement="right">
+                    <table class="ntable">
+                      <tr>
+                        <td width="35%">附件名称</td>
+                        <td width="65%">{{investigator[0].attachments[0].attachmentName}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">附件类型</td>
+                        <td width="65%">{{investigator[0].attachments[0].attachmentType}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">附件路径</td>
+                        <td width="65%">{{investigator[0].attachments[0].attachmentPath}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">备注</td>
+                        <td width="65%">{{investigator[0].attachments[0].note}}</td>
+                      </tr>
+                    </table>
+                    <el-button slot="reference">详情</el-button>
+                  </el-popover>
+                </td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">备注</td>
+                <td width="30%">{{investigator[0].note}}</td>
+                <td class="tb" width="20%"></td>
+                <td width="30%"></td>
+              </tr>
+            </table>
+          </el-collapse-item>
+          <el-collapse-item title="报告阶段" name="3" v-model="reports" v-if="reports">
+            <div class="clearfix btn-border">
+              <el-button
+                class="detail-btn"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+                @click="bianji()"
+              >编辑</el-button>
 
-            <div class="tab-div-btn">
-              <el-button @click="submit(litigatortab,litigator)">提交</el-button>
-              <el-button @click="disbianji(litigatortab)">取消</el-button>
-              <!-- <el-button type="primary">选择阶段</el-button> -->
-            </div>
-          </form>
-        </el-tab-pane>
+              <el-button
+                class="detail-btn"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+                @click="add()"
+              >新建</el-button>
 
-        <el-tab-pane label="案件基本信息">
-          <div class="detail-btn-div">
-            <div
+              <!-- 消息对话框 -->
+              <el-button
+                class="detail-btn"
+                @click="dialogFormVisible = true"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+              >新建消息</el-button>
+            </div>
+            <table class="ntable">
+              <tr>
+                <td class="tb" width="20%">姓名</td>
+                <td width="30%">{{reports[0].name}}</td>
+                <td class="tb" width="20%">进行情况</td>
+                <td width="30%">{{reports[0].progress}}</td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">汇报日期</td>
+                <td width="30%">{{reports[0].appointDate}}</td>
+                <td class="tb" width="20%">联系方式</td>
+                <td width="30%">{{reports[0].contacts}}</td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">报告</td>
+                <td width="30%">
+                  <el-popover trigger="click" width="400" placement="right">
+                    <table class="ntable">
+                      <tr>
+                        <td width="35%">提交日期</td>
+                        <td width="65%">{{reports[0].report.submitDate}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">类型</td>
+                        <td width="65%">{{reports[0].report.reportType}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">内容</td>
+                        <td width="65%">{{reports[0].report.reportContent}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">文件</td>
+                        <td width="65%">{{reports[0].report.reportPath}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">备注</td>
+                        <td width="65%">{{reports[0].report.note}}</td>
+                      </tr>
+                    </table>
+                    <el-button slot="reference">详情</el-button>
+                  </el-popover>
+                </td>
+                <td class="tb" width="20%">附件</td>
+                <td width="30%">
+                  <el-popover trigger="click" width="400" placement="right">
+                    <table class="ntable">
+                      <tr>
+                        <td width="35%">附件名称</td>
+                        <td width="65%">{{reports[0].attachments[0].attachmentName}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">附件类型</td>
+                        <td width="65%">{{reports[0].attachments[0].attachmentType}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">附件路径</td>
+                        <td width="65%">{{reports[0].attachments[0].attachmentPath}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">备注</td>
+                        <td width="65%">{{reports[0].attachments[0].note}}</td>
+                      </tr>
+                    </table>
+                    <el-button slot="reference">详情</el-button>
+                  </el-popover>
+                </td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">备注</td>
+                <td width="30%">{{reports[0].note}}</td>
+                <td class="tb" width="20%"></td>
+                <td width="30%"></td>
+              </tr>
+            </table>
+          </el-collapse-item>
+          <el-collapse-item title="法务阶段" name="4" v-model="raider" v-if="raider">
+            <div class="clearfix btn-border">
+              <el-button
+                class="detail-btn"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+                @click="bianji()"
+              >编辑</el-button>
+
+              <el-button
+                class="detail-btn"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+                @click="add()"
+              >新建</el-button>
+
+              <!-- 消息对话框 -->
+              <el-button
+                class="detail-btn"
+                @click="dialogFormVisible = true"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+              >新建消息</el-button>
+            </div>
+            <table class="ntable">
+              <tr>
+                <td class="tb" width="20%">姓名</td>
+                <td width="30%">{{raider[0].name}}</td>
+                <td class="tb" width="20%">进行情况</td>
+                <td width="30%">{{raider[0].progress}}</td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">汇报日期</td>
+                <td width="30%">{{raider[0].appointDate}}</td>
+                <td class="tb" width="20%">联系方式</td>
+                <td width="30%">{{raider[0].contacts}}</td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">报告</td>
+                <td width="30%">
+                  <el-popover trigger="click" width="400" placement="right">
+                    <table class="ntable">
+                      <tr>
+                        <td width="35%">提交日期</td>
+                        <td width="65%">{{raider[0].reports[0].submitDate}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">类型</td>
+                        <td width="65%">{{raider[0].reports[0].reportType}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">内容</td>
+                        <td width="65%">{{raider[0].reports[0].reportContent}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">文件</td>
+                        <td width="65%">{{raider[0].reports[0].reportPath}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">备注</td>
+                        <td width="65%">{{raider[0].reports[0].note}}</td>
+                      </tr>
+                    </table>
+                    <el-button slot="reference">详情</el-button>
+                  </el-popover>
+                </td>
+                <td class="tb" width="20%">附件</td>
+                <td width="30%">
+                  <el-popover trigger="click" width="400" placement="right">
+                    <table class="ntable">
+                      <tr>
+                        <td width="35%">附件名称</td>
+                        <td width="65%">{{raider[0].attachments[0].attachmentName}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">附件类型</td>
+                        <td width="65%">{{raider[0].attachments[0].attachmentType}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">附件路径</td>
+                        <td width="65%">{{raider[0].attachments[0].attachmentPath}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">备注</td>
+                        <td width="65%">{{raider[0].attachments[0].note}}</td>
+                      </tr>
+                    </table>
+                    <el-button slot="reference">详情</el-button>
+                  </el-popover>
+                </td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">备注</td>
+                <td width="30%">{{raider[0].note}}</td>
+                <td class="tb" width="20%"></td>
+                <td width="30%"></td>
+              </tr>
+            </table>
+          </el-collapse-item>
+          <el-collapse-item title="诉讼阶段" name="5" v-model="litigator" v-if="litigator">
+            <div class="clearfix btn-border">
+              <el-button
+                class="detail-btn"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+                @click="bianji()"
+              >编辑</el-button>
+
+              <el-button
+                class="detail-btn"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+                @click="add()"
+              >新建</el-button>
+
+              <!-- 消息对话框 -->
+              <el-button
+                class="detail-btn"
+                @click="dialogFormVisible = true"
+                style="color:#409EFF;font-size:14px;cursor: pointer;"
+              >新建消息</el-button>
+            </div>
+            <table class="ntable">
+              <tr>
+                <td class="tb" width="20%">姓名</td>
+                <td width="30%">{{litigator[0].name}}</td>
+                <td class="tb" width="20%">进行情况</td>
+                <td width="30%">{{litigator[0].progress}}</td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">汇报日期</td>
+                <td width="30%">{{litigator[0].appointDate}}</td>
+                <td class="tb" width="20%">联系方式</td>
+                <td width="30%">{{litigator[0].contacts}}</td>
+              </tr>
+              <tr>
+                <td class="tb" width="20%">报告</td>
+                <td width="30%">
+                  <el-popover trigger="click" width="400" placement="right">
+                    <table class="ntable">
+                      <tr>
+                        <td width="35%">提交日期</td>
+                        <td width="65%">{{litigator[0].reports[0].submitDate}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">类型</td>
+                        <td width="65%">{{litigator[0].reports[0].reportType}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">内容</td>
+                        <td width="65%">{{litigator[0].reports[0].reportContent}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">文件</td>
+                        <td width="65%">{{litigator[0].reports[0].reportPath}}</td>
+                      </tr>
+                      <tr>
+                        <td width="35%">备注</td>
+                        <td width="65%">{{litigator[0].reports[0].note}}</td>
+                      </tr>
+                    </table>
+                    <el-button slot="reference">详情</el-button>
+                  </el-popover>
+                </td>
+                <td class="tb" width="20%">备注</td>
+                <td width="30%">{{litigator[0].note}}</td>
+              </tr>
+            </table>
+          </el-collapse-item>
+        </el-collapse>
+      </el-tab-pane>
+
+      <!-- 案件信息 -->
+      <el-tab-pane label="案件信息">
+        <form :model="baseInfo" v-if="baseInfo">
+          <div class="clearfix btn-border">
+            <el-button
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="bianji(baseInfotab)"
-            >
-              <i class="el-icon-edit-outline"></i>编辑该信息模块
-            </div>
-          </div>
-          <form action model>
-            <div class="phui-main-column">
-              <!-- <div class="phui-header-shell">信息</div> -->
-              <div class="phui-div-content" v-for="(item,index) in baseInfotab" :key="index">
-                <div class="div-active">{{item.title}}</div>
-                <div>
-                  <input
-                    autofocus
-                    class="input-new-tag"
-                    :class="{isboder:item.inputVisible}"
-                    v-model="item.content"
-                    :readonly="item.inputVisible ? false : 'readonly'"
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="tab-div-btn">
-              <el-button @click="submit(baseInfotab,baseInfo)">提交</el-button>
-              <el-button @click="disbianji(baseInfotab)">取消</el-button>
-              <!-- <el-button type="primary">选择阶段</el-button> -->
-            </div>
-          </form>
-        </el-tab-pane>
-        <el-tab-pane label="客户信息">
-          <div class="detail-btn-div">
-            <div
+              @click="bianji()"
+            >编辑</el-button>
+
+            <el-button
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="bianji(clientInfotab)"
-            >
-              <i class="el-icon-edit-outline"></i>编辑该信息模块
-            </div>
+              @click="add()"
+            >新建</el-button>
+
+            <!-- 消息对话框 -->
+            <el-button
+              class="detail-btn"
+              @click="dialogFormVisible = true"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+            >新建消息</el-button>
           </div>
-          <form action model>
-            <div class="phui-main-column">
-              <!-- <div class="phui-header-shell">信息</div> -->
-              <div class="phui-div-content" v-for="(item,index) in clientInfotab" :key="index">
-                <div class="div-active">{{item.title}}</div>
-                <div>
-                  <input
-                    autofocus
-                    class="input-new-tag"
-                    :class="{isboder:item.inputVisible}"
-                    v-model="item.content"
-                    :readonly="item.inputVisible ? false : 'readonly'"
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="tab-div-btn">
-              <el-button @click="submit(clientInfotab,clientInfo)">提交</el-button>
-              <el-button @click="disbianji(clientInfotab)">取消</el-button>
-              <!-- <el-button type="primary">选择阶段</el-button> -->
-            </div>
-          </form>
-        </el-tab-pane>
-        <el-tab-pane label="目标信息">
-          <div class="detail-btn-div">
-            <div
+          <table class="ntable">
+            <tr>
+              <td class="tb" width="20%">案件ID</td>
+              <td width="30%">{{baseInfo[0].id}}</td>
+              <td class="tb" width="20%">案件状态</td>
+              <td width="30%">{{baseInfo[0].status}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">优先级</td>
+              <td width="30%">{{baseInfo[0].priority}}</td>
+              <td class="tb" width="20%">案件类型</td>
+              <td width="30%">{{baseInfo[0].type}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">案件号</td>
+              <td width="30%">{{baseInfo[0].caseNo}}</td>
+              <td class="tb" width="20%">案件名称</td>
+              <td width="30%">{{baseInfo[0].caseName}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">当前参与人</td>
+              <td width="30%">{{baseInfo[0].currentParticipants}}</td>
+              <td class="tb" width="20%">案由</td>
+              <td width="30%">{{baseInfo[0].reason}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">立案日期</td>
+              <td width="30%">{{baseInfo[0].openDate}}</td>
+              <td class="tb" width="20%">结案方式</td>
+              <td width="30%">{{baseInfo[0].closeMode}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">结案日期</td>
+              <td width="30%">{{baseInfo[0].closeDate}}</td>
+              <td class="tb" width="20%">更新信息</td>
+              <td width="30%">
+                <el-popover trigger="click" width="400" placement="right">
+                  <table class="ntable">
+                    <tr>
+                      <td width="35%">更新时间</td>
+                      <td width="65%">{{baseInfo[0].updateInfo[0].updateTime}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">更新人</td>
+                      <td width="65%">{{baseInfo[0].updateInfo[0].updatePerson}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">更新项目</td>
+                      <td width="65%">{{baseInfo[0].updateInfo[0].item}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">更新内容</td>
+                      <td width="65%">{{baseInfo[0].updateInfo[0].content}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">版本</td>
+                      <td width="65%">{{baseInfo[0].updateInfo[0].version}}</td>
+                    </tr>
+                  </table>
+                  <el-button slot="reference">详情</el-button>
+                </el-popover>
+              </td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">备注</td>
+              <td width="30%">{{baseInfo[0].note}}</td>
+            </tr>
+          </table>
+        </form>
+      </el-tab-pane>
+
+      <!-- 客户信息 -->
+      <el-tab-pane label="客户信息">
+        <form action :model="clientInfo" v-if="clientInfo">
+          <div class="clearfix btn-border">
+            <el-button
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="bianji(targetInfotab)"
-            >
-              <i class="el-icon-edit-outline"></i>编辑该信息模块
-            </div>
-          </div>
-          <form action model>
-            <div class="phui-main-column">
-              <!-- <div class="phui-header-shell">信息</div> -->
-              <div class="phui-div-content" v-for="(item,index) in targetInfotab" :key="index">
-                <div class="div-active">{{item.title}}</div>
-                <div>
-                  <input
-                    autofocus
-                    class="input-new-tag"
-                    :class="{isboder:item.inputVisible}"
-                    v-model="item.content"
-                    :readonly="item.inputVisible ? false : 'readonly'"
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="tab-div-btn">
-              <el-button @click="submit(targetInfotab,targetInfo)">提交</el-button>
-              <el-button @click="disbianji(targetInfotab)">取消</el-button>
-              <!-- <el-button type="primary">选择阶段</el-button> -->
-            </div>
-          </form>
-        </el-tab-pane>
-        <el-tab-pane label="财务信息">
-          <div class="detail-btn-div">
-            <div
+              @click="bianji()"
+            >编辑</el-button>
+
+            <el-button
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="bianji(accountingtab)"
-            >
-              <i class="el-icon-edit-outline"></i>编辑该信息模块
-            </div>
+              @click="add()"
+            >新建</el-button>
+
+            <!-- 消息对话框 -->
+            <el-button
+              class="detail-btn"
+              @click="dialogFormVisible = true"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+            >新建消息</el-button>
           </div>
-          <form action model>
-            <div class="phui-main-column">
-              <!-- <div class="phui-header-shell">信息</div> -->
-              <div class="phui-div-content" v-for="(item,index) in accountingtab" :key="index">
-                <div class="div-active">{{item.title}}</div>
-                <div>
-                  <input
-                    autofocus
-                    class="input-new-tag"
-                    :class="{isboder:item.inputVisible}"
-                    v-model="item.content"
-                    :readonly="item.inputVisible ? false : 'readonly'"
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="tab-div-btn">
-              <el-button @click="submit(accountingtab,accounting)">提交</el-button>
-              <el-button @click="disbianji(accountingtab)">取消</el-button>
-              <!-- <el-button type="primary">选择阶段</el-button> -->
-            </div>
-          </form>
-        </el-tab-pane>
-      </el-tabs>
-    </el-card>
-  </div>
+          <table class="ntable">
+            <tr>
+              <td class="tb" width="20%">客户案件号</td>
+              <td width="30%">{{clientInfo[0].clientCaseNo}}</td>
+              <td class="tb" width="20%">客户品牌</td>
+              <td width="30%">{{clientInfo[0].brands}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">客户指示</td>
+              <td width="30%">{{clientInfo[0].instructions}}</td>
+              <td class="tb" width="20%">授权日期</td>
+              <td width="30%">{{clientInfo[0].authorizeDate}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">出具法律文书</td>
+              <td width="30%">
+                <el-popover trigger="click" width="400" placement="right">
+                  <table class="ntable">
+                    <tr>
+                      <td width="35%">文书名称</td>
+                      <td width="65%">{{clientInfo[0].documents[0].documentName}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">文书类型</td>
+                      <td width="65%">{{clientInfo[0].documents[0].documentType}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">出具时间</td>
+                      <td width="65%">{{clientInfo[0].documents[0].issueDate}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">扫描文件</td>
+                      <td width="65%">{{clientInfo[0].documents[0].documentPath}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">文书内容</td>
+                      <td width="65%">{{clientInfo[0].documents[0].content}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">收到时间</td>
+                      <td width="65%">{{clientInfo[0].documents[0].receiveDate}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">邮寄时间</td>
+                      <td width="65%">{{clientInfo[0].documents[0].sendDate}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">备注</td>
+                      <td width="65%">{{clientInfo[0].documents[0].note}}</td>
+                    </tr>
+                  </table>
+                  <el-button slot="reference">详情</el-button>
+                </el-popover>
+              </td>
+              <td class="tb" width="20%"></td>
+              <td width="30%"></td>
+            </tr>
+          </table>
+        </form>
+      </el-tab-pane>
+
+      <el-tab-pane label="目标信息">
+        <form action :model="targetInfo" v-if="targetInfo">
+          <div class="clearfix btn-border">
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="bianji()"
+            >编辑</el-button>
+
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="add()"
+            >新建</el-button>
+
+            <!-- 消息对话框 -->
+            <el-button
+              class="detail-btn"
+              @click="dialogFormVisible = true"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+            >新建消息</el-button>
+          </div>
+          <table class="ntable">
+            <tr>
+              <td class="tb" width="20%">目标名称</td>
+              <td width="30%">{{targetInfo[0].targetName}}</td>
+              <td class="tb" width="20%">目标类型</td>
+              <td width="30%">{{targetInfo[0].targetType}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">工商注册号</td>
+              <td width="30%">{{targetInfo[0].regNo}}</td>
+              <td class="tb" width="20%">统一社会信用代码</td>
+              <td width="30%">{{targetInfo[0].creditNo}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">目标地址</td>
+              <td width="30%">{{targetInfo[0].targetAdd}}</td>
+              <td class="tb" width="20%">目标联系方式</td>
+              <!-- 目标网址	website		
+目标电话	phone		
+目标邮箱	email		
+社交号	networks	社交工具	networkName
+		号码	networkNo
+		备注	note
+备注	note		
+              -->
+              <td width="30%">
+                <el-popover trigger="click" width="400" placement="right">
+                  <table class="ntable">
+                    <tr>
+                      <td width="35%">目标网址</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].website}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">目标电话</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].phone}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">目标邮箱</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].email}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%" rowspan="3">社交号</td>
+                      <td>社交工具</td>
+                      <td>{{targetInfo[0].targetContacts[0].networks[0].networkName}}</td>
+                    </tr>
+                    <tr>
+                      <td>号码</td>
+                      <td>{{targetInfo[0].targetContacts[0].networks[0].networkNo}}</td>
+                    </tr>
+                    <tr>
+                      <td>备注</td>
+                      <td>{{targetInfo[0].targetContacts[0].networks[0].note}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">备注</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].note}}</td>
+                    </tr>
+                  </table>
+                  <el-button slot="reference">详情</el-button>
+                </el-popover>
+              </td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">目标人员</td>
+              <td width="30%">{{targetInfo[0].targetPrincipal[0]}}</td>
+              <td class="tb" width="20%">关联公司</td>
+              <td width="30%">{{targetInfo[0].affiliateCompany[0]}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">目标产品信息</td>
+              <td width="30%">{{targetInfo[0].productInfo[0]}}</td>
+              <td class="tb" width="20%">备注</td>
+              <td width="30%">{{targetInfo[0].note}}</td>
+            </tr>
+          </table>
+        </form>
+      </el-tab-pane>
+      <el-tab-pane label="财务信息">
+        <form :model="accounting" v-if="accounting">
+          <div class="clearfix btn-border">
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="bianji()"
+            >编辑</el-button>
+
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="add()"
+            >新建</el-button>
+
+            <!-- 消息对话框 -->
+            <el-button
+              class="detail-btn"
+              @click="dialogFormVisible = true"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+            >新建消息</el-button>
+          </div>
+          <table class="ntable">
+            <tr>
+              <td class="tb" width="20%">保证金</td>
+              <td width="30%">{{accounting[0].deposit}}</td>
+              <td class="tb" width="20%">预付款</td>
+              <td width="30%">{{accounting[0].advancePayment}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">退款</td>
+              <td width="30%">{{accounting[0].refund}}</td>
+              <td class="tb" width="20%">报销</td>
+              <td width="30%">{{accounting[0].repay}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">发票</td>
+              <td width="30%">{{accounting[0].invoice}}</td>
+              <td class="tb" width="20%">备注</td>
+              <td width="30%">{{accounting[0].note}}</td>
+            </tr>
+          </table>
+        </form>
+      </el-tab-pane>
+    </el-tabs>
+  </el-card>
 </template>
+
+
 
 <script>
 import {
@@ -354,10 +830,9 @@ import {
   _gettargetInfo,
   _getaccounting
 } from "../../services/service";
-// import common from '../../../static/js/common.js'
-import { timeFormat } from "../../../static/js/common.js";
+
 export default {
-  data() {
+  data () {
     return {
       stage: [
         {
@@ -386,805 +861,129 @@ export default {
           isshow: false,
           isshowg: false,
           obj: "",
-          id: "litigator"
+          id: "raider"
         },
         {
           stagename: "诉讼阶段",
           isshow: false,
           isshowg: false,
           obj: "",
-          id: "raider"
+          id: "litigator"
         }
       ],
-      baseInfotab: [
-        {
-          title: "案件状态",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "status"
-        },
-        {
-          title: "案由",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "reason"
-        },
-        {
-          title: "客户案件号",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "caseNo"
-        },
-        {
-          title: "立案日期",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "openDate"
-        },
-        {
-          title: "案件优先级",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "priority"
-        },
-        {
-          title: "结案方式",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "closeMode"
-        },
-        {
-          title: "案件类型",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "type"
-        },
-        {
-          title: "结案时间",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "closeDate"
-        },
-        {
-          title: "案件号",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "caseNo"
-        },
-        {
-          title: "更新时间",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "updateInfo"
-        },
-        {
-          title: "案件名称",
-          inputValue: "",
-          content: "111",
-          inputVisible: false,
-          key: "caseName"
-        },
-        {
-          title: "当前参与人",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "currentParticipants"
-        }
-      ],
-      clientInfotab: [
-        {
-          title: "客户案件号",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "clientCaseNo"
-        },
-        {
-          title: "客户品牌",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "brands"
-        },
-        {
-          title: "客户指示",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "instructions"
-        },
-        {
-          title: "授权日期",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "authorizeDate"
-        },
-        {
-          title: "出具法律文书",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "documents"
-        }
-      ],
-      targetInfotab: [
-        {
-          title: "目标名称",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "targetName"
-        },
-        {
-          title: "目标类型",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "targetType"
-        },
-        {
-          title: "工商注册号",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "regNo"
-        },
-        {
-          title: "统一社会信用代码",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "creditNo"
-        },
-        {
-          title: "目标地址",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "targetAdd"
-        },
-        {
-          title: "目标联系方式",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "targetContacts"
-        },
-        {
-          title: "目标人员",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "targetPrincipal"
-        },
-        {
-          title: "关联公司",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "affiliateCompany"
-        },
-        {
-          title: "目标产品信息",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "productInfo"
-        }
-      ],
-      accountingtab: [
-        {
-          title: "保证金",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "deposit"
-        },
-        {
-          title: "预付款",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "advancePayment"
-        },
-        {
-          title: "退款",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "refund"
-        },
-        {
-          title: "报销",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "repay"
-        },
-        {
-          title: "发票",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "invoice"
-        }
-      ],
-      discoverertab: [
-        {
-          title: "姓名",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "name"
-        },
-        {
-          title: "进行情况",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "progress"
-        },
-        {
-          title: "汇报日期",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "reportDate"
-        },
-        {
-          title: "联系方式",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "contacts"
-        },
-        {
-          title: "报告",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "report"
-        },
-        {
-          title: "附件",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "attachments"
-        },
-        {
-          title: "备注",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "note"
-        }
-      ],
-      investigatortab: [
-        {
-          title: "姓名",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "name"
-        },
-        {
-          title: "进行情况",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "progress"
-        },
-        {
-          title: "指派日期",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "appointDate"
-        },
-        {
-          title: "联系方式",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "contacts"
-        },
-        {
-          title: "报告",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "report"
-        },
-        {
-          title: "附件",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "attachments"
-        },
-        {
-          title: "备注",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "note"
-        }
-      ],
-      reportstab: [
-        {
-          title: "姓名",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "name"
-        },
-        {
-          title: "进行情况",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "progress"
-        },
-        {
-          title: "指派日期",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "appointDate"
-        },
-        {
-          title: "联系方式",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "contacts"
-        },
-        {
-          title: "报告",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "report"
-        },
-        {
-          title: "附件",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "attachments"
-        },
-        {
-          title: "备注",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "note"
-        }
-      ],
-      raidertab: [
-        {
-          title: "姓名",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "name"
-        },
-        {
-          title: "进行情况",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "progress"
-        },
-        {
-          title: "指派日期",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "appointDate"
-        },
-        {
-          title: "联系方式",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "contacts"
-        },
-        {
-          title: "报告",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "report"
-        },
-        {
-          title: "附件",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "attachments"
-        },
-        {
-          title: "备注",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "note"
-        }
-      ],
-      raidertab: [
-        {
-          title: "姓名",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "name"
-        },
-        {
-          title: "进行情况",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "progress"
-        },
-        {
-          title: "指派日期",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "appointDate"
-        },
-        {
-          title: "联系方式",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "contacts"
-        },
-        {
-          title: "报告",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "report"
-        },
-        {
-          title: "附件",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "attachments"
-        },
-        {
-          title: "备注",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "note"
-        }
-      ],
-      litigatortab: [
-        {
-          title: "姓名",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "name"
-        },
-        {
-          title: "进行情况",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "progress"
-        },
-        {
-          title: "代理机构",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "agency"
-        },
-        {
-          title: "身份",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "role"
-        },
+      paticipants: null,
+      discoverer: null,
+      investigator: null,
+      reports: null,
+      raider: null,
+      litigator: null,
 
-        {
-          title: "指派日期",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "appointDate"
-        },
-        {
-          title: "联系方式",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "contacts"
-        },
-        {
-          title: "报告",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "report"
-        },
-        {
-          title: "附件",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "attachments"
-        },
-        {
-          title: "备注",
-          inputValue: "",
-          content: "",
-          inputVisible: false,
-          key: "note"
-        }
-      ],
-      baseInfo: "", // 案件基本信息
-      clientInfo: "", // 客户信息
-      targetInfo: "", // 目标信息
-      accounting: "", // 财务信息
-      paticipants: "", // 流程
-      discoverer: "", // 接洽
-      investigator: "", // 调查
-      reports: "", //报告
-      raider: "", // 法务
-      litigator: "" // 诉讼
-    };
-  },
-  created() {
-    this.getpaticipants(); // 案件流程
-    this.getbaseInfo(); // 基本信息
-    this.getclientInfo(); //客户信息
-    this.gettargetInfo(); // 目标信息
-    this.getaccounting(); // 财务信息
-  },
-  computed: {
-    content: {
-      get: function() {
-        return this.content;
-      },
-      set: function(val) {
-        if (typeof val === Number) {
-          console.info("数字");
-        }
+      baseInfo: null, // 案件信息
+      clientInfo: null, //客户信息
+      targetInfo: null, //目标信息
+      accounting: null, // 财务信息
+
+
+      activeNames: ["1"],
+      /* 消息提醒 */
+      dialogFormVisible: false,
+      formLabelWidth: "120px",
+      news: {
+        content: '',
+        date: ''
       }
     }
   },
-
   methods: {
-    show(index) {
-      // this.stage[index].isshow = true;
-    },
+    /* 获取案件流程数据 */
+    getPaticipants () {
+      _getpaticipants().then(res => {
+        console.info(res)
+        this.paticipants = res;
 
-    disshow(index) {
-      // this.stage[index].isshow = false;
-    },
+        /* 分别获取子表内容 */
+        this.discoverer = res.discoverer;
+        this.investigator = res.investigator;
+        this.reports = res.reports;
+        this.raider = res.raider;
+        this.litigator = res.litigator;
 
-    /* 获取流程信息判断完成情况 */
-    getpaticipants() {
-      _getpaticipants()
-        .then(res => {
-          /* 接洽阶段 */
-          if (res.discoverer[0].progress === "进行中") {
-            this.stage[0].isshow = true;
-          } else if (res.discoverer[0].progress === "已完成") {
-            this.stage[0].isshowg = true;
+        /* 判断其状态 */
+        this.stage.forEach(item => {
+          // this.$set(item, 'obj', res[item.id])
+          // console.info(item.obj[0].progress)
+          if (res[item.id][0].progress === "进行中") {
+            item.isshow = true;
+          } else if (res[item.id][0].progress === "已完成") {
+            item.isshowg = true;
           }
-
-          /* 调查 */
-          if (res.investigator[0].progress === "进行中") {
-            this.stage[1].isshow = true;
-          } else if (res.investigator[0].progress === "已完成") {
-            this.stage[1].isshowg = true;
-          }
-
-          /* 报告 */
-          if (res.reports[0].progress === "进行中") {
-            this.stage[2].isshow = true;
-          } else if (res.reports[0].progress === "已完成") {
-            this.stage[2].isshowg = true;
-          }
-
-          /* 法务 */
-          if (res.litigator[0].progress === "进行中") {
-            this.stage[3].isshow = true;
-          } else if (res.litigator[0].progress === "已完成") {
-            this.stage[3].isshowg = true;
-          }
-
-          /* 诉讼 */
-          if (res.raider[0].progress === "进行中") {
-            this.stage[4].isshow = true;
-          } else if (res.raider[0].progress === "已完成") {
-            this.stage[4].isshowg = true;
-          }
-          this.paticipants = res;
-          console.info(res);
-          this.discoverer = this.paticipants.discoverer[0]; //接洽
-          this.investigator = this.paticipants.investigator[0]; //调查
-          this.reports = this.paticipants.reports[0]; //报告
-          this.litigator = this.paticipants.litigator[0]; //法务
-          this.raider = this.paticipants.raider[0]; //诉讼
-          console.info("接洽");
-          console.info(this.discoverer);
-          this.discoverertab.forEach(item => {
-            item.content = this.discoverer[item.key];
-          });
-          console.info("调查");
-          console.info(this.investigator);
-          this.investigatortab.forEach(item => {
-            item.content = this.investigator[item.key];
-          });
-
-          console.info("报告");
-          console.info(this.reports);
-          this.reportstab.forEach(item => {
-            item.content = this.reports[item.key];
-          });
-
-          console.info("法务");
-          console.info(this.raider);
-          this.raidertab.forEach(item => {
-            item.content = this.raider[item.key];
-          });
-
-          console.info("诉讼");
-          console.info(this.litigator);
-          this.litigatortab.forEach(item => {
-            item.content = this.litigator[item.key];
-          });
-        })
-        .catch(err => {
-          console.info("错误");
         });
+      })
     },
-    /* 获取案子基本信息 */
-    getbaseInfo() {
+    getbaseInfo () {
       _getbaseInfo().then(res => {
-        this.baseInfo = res[0];
-
-        this.baseInfotab.forEach(item => {
-          item.content = this.baseInfo[item.key];
-        });
-
-        for (let index = 0; index < this.baseInfotab.length; index++) {
-          if (this.baseInfotab[index].key === "openDate") {
-            this.baseInfotab[index].content = timeFormat(
-              this.baseInfo.updateInfo[0].updateTime
-            );
-          }
-
-          if (this.baseInfotab[index].key === "closeDate") {
-            this.baseInfotab[index].content = timeFormat(
-              this.baseInfo.updateInfo[0].updateTime
-            );
-          }
-
-          if (this.baseInfotab[index].key === "updateInfo") {
-            this.baseInfotab[index].content = timeFormat(
-              this.baseInfo.updateInfo[0].updateTime
-            );
-          }
-        }
+        this.baseInfo = res;
       });
     },
-    /* 获取客户信息 */
-    getclientInfo() {
+    getclientInfo () {
       _getclientInfo().then(res => {
-        this.clientInfo = res[0];
-
-        this.clientInfotab.forEach(item => {
-          item.content = this.clientInfo[item.key];
-        });
+        this.clientInfo = res;
       });
     },
-    /* 获取目标信息 */
-    gettargetInfo() {
+    gettargetInfo () {
       _gettargetInfo().then(res => {
-        this.targetInfo = res[0];
-        this.targetInfotab.forEach(item => {
-          item.content = this.targetInfo[item.key];
-        });
+        this.targetInfo = res;
       });
     },
-
-    getaccounting() {
+    getaccounting () {
       _getaccounting().then(res => {
-        this.accounting = res[0];
-        this.accountingtab.forEach(item => {
-          item.content = this.accounting[item.key];
-        });
+        this.accounting = res;
       });
     },
 
-    toList() {
-      console.info(1);
-    },
+    /* 锚点跳转 */
+    returnTop: function (item) {
+      // this.data = this[item];
+      let tomao = "#" + item; // 锚点跳转
+      console.info(item + " " + tomao);
+      this.activename = "4";
+      /* $ref 当前文档流 */
 
-    /* 编辑按钮 */
-    bianji(obj) {
-      obj.forEach(item => {
-        item.inputVisible = true;
-      });
+      let t;
+      clearTimeout(t);
+      t = setTimeout(function () {
+        document.querySelector(tomao).scrollIntoView(true);
+      }, 100);
     },
-    /* 取消编辑 */
-    disbianji(obj) {
-      obj.forEach(item => {
-        item.inputVisible = false;
-      });
+    /* 编辑 */
+    edit () {
+
     },
-    /* 提交按钮 */
-    submit(obj, postobj) {
-      obj.forEach(item => {
-        item.inputVisible = false;
-      });
-      alert("提交成功");
+    /* 提交 */
+    submit () {
+
+    },
+    /* 新建 */
+    add () {
+
+    },
+    commitnews (item) {
+      alert("提交成功" + item)
+      this.dialogFormVisible = false
     }
   },
-  filters: {
-    manage: function(val) {
-      if (typeof val === Number) {
-        console.info("数字");
-      }
-    }
+  created () {
+    this.getPaticipants();
+    this.getbaseInfo()
+    this.getclientInfo()
+    this.gettargetInfo()
+    this.getaccounting()
   }
-};
+}
 </script>
 
 
 <style lang="less" scoped>
-.phui-main-header {
-  padding: 10px;
-  padding-left: 20px;
-  font-size: 16px;
-  font-weight: 700;
-  background: #ccc;
-}
-.phui-main-column {
-  overflow: hidden;
-  display: flex;
-  flex-wrap: wrap;
-  padding-bottom: 20px;
-}
-.phui-div-content {
-  display: flex;
-  align-items: center;
-  width: 50%;
-  & > div {
-    flex: 1;
-  }
-  .div-active {
-    background: #f2f9fc;
-    flex: 0.3;
-    padding: 10px;
-    // padding: 0 2px;
-    padding-left: 20px;
-  }
-}
-
 .detail-header {
   position: relative;
   .border-bottom {
@@ -1194,23 +993,16 @@ export default {
     position: absolute;
     top: 39px;
   }
-}
+  .detail-div {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    text-align: center;
+    & > li {
+      flex: 1;
+      z-index: 99;
+    }
 
-.detail-div {
-  display: flex;
-  justify-content: center;
-  list-style: none;
-  text-align: center;
-  & > li {
-    flex: 1;
-    z-index: 99;
-    div.colorred {
-      background: #9e1c1c !important;
-      z-index: 100;
-    }
-    div.colorgreen {
-      background: #1c9e2b;
-    }
     .detail-ul-content {
       margin-bottom: 10px;
       font-weight: 600;
@@ -1223,38 +1015,41 @@ export default {
       margin: 0 auto;
       background-color: #bcbcbc;
     }
-  }
-}
-.detail-btn-div {
-  display: flex;
-  justify-content: flex-end;
-  .detail-btn {
-    padding: 0 15px 15px 0;
-    color: #bfbfbf;
-    & > i {
-      margin-right: 2px;
+    div.colorred {
+      background: #9e1c1c !important;
+      z-index: 100;
+    }
+    div.colorgreen {
+      background: #1c9e2b;
     }
   }
 }
 
-.input-new-tag {
-  border: 1px solid transparent;
-  padding: 0 10px;
-  width: 95%;
-  font-size: 14px;
-  height: 35px;
-}
-
-.button-new-tag {
-  margin-left: 10px;
-}
-.isboder {
-  border: 1px solid rgb(64, 158, 255);
-}
-
-.tab-div-btn {
+.btn-border {
   display: flex;
-  justify-content: center;
-  margin: 20px 0px;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+.ntable {
+  width: 100%;
+  margin: 0 auto;
+  margin: 10px 0;
+  td {
+    padding: 12px 10px 12px 10px;
+    border: #e4eef6 1px solid;
+    word-break: break-all;
+    font-size: 14px;
+    line-height: 19px;
+    color: #222;
+  }
+  .tb {
+    background: #f2f9fc;
+  }
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
 }
 </style>

@@ -4,7 +4,9 @@
     <div class="collapse-btn" @click="collapseChage">
       <i class="el-icon-menu"></i>
     </div>
-    <router-link to="/"><div class="logo" >案件管理</div></router-link>
+    <router-link to="/">
+      <div class="logo">案件管理</div>
+    </router-link>
     <div class="header-left">
       <div class="header-user-con">
         <!-- 聊天室 -->
@@ -13,7 +15,7 @@
             <i class="el-icon-phone-outline
 "></i>
           </el-tooltip>
-        </div> -->
+        </div>-->
       </div>
     </div>
     <div class="header-right">
@@ -33,6 +35,12 @@
           </el-tooltip>
           <span class="btn-bell-badge" v-if="message"></span>
         </div>
+        <div class="btn-phone">
+          <el-tooltip effect="dark" :content="fullscreen?`聊天室`:`聊天室`" placement="bottom">
+            <i class="el-icon-phone-outline"></i>
+          </el-tooltip>
+        </div>
+
         <!-- 用户头像 -->
         <!-- 用户名下拉菜单 -->
         <el-dropdown
@@ -46,13 +54,10 @@
               <img src="static/img/img.jpg">
             </div>
             <!-- {{username}} -->
-            <i
-              class="el-icon-caret-bottom"
-              style="position: absolute;top: 15px;left: 70px;"
-            ></i>
+            <i class="el-icon-caret-bottom" style="position: absolute;top: 15px;left: 70px;"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <router-link to="/person" >
+            <router-link to="/person">
               <el-dropdown-item>个人信息</el-dropdown-item>
             </router-link>
             <router-link to="/tabs">
@@ -64,7 +69,6 @@
         <el-input placeholder="请输入内容" v-model="searchinput">
           <el-button icon="el-icon-search" slot="append" @click="tosearch()"></el-button>
         </el-input>
-
       </div>
     </div>
   </div>
@@ -72,36 +76,36 @@
 <script>
 import bus from "../common/bus";
 export default {
-  data() {
+  data () {
     return {
       collapse: false,
       fullscreen: false,
       name: "linxin",
       message: 2,
-      searchinput:''
+      searchinput: ''
     };
   },
   computed: {
-    username() {
+    username () {
       let username = JSON.parse(localStorage.getItem("ms_username")).username;
       return username ? username : this.name;
     }
   },
   methods: {
     // 用户名下拉菜单选择事件
-    handleCommand(command) {
+    handleCommand (command) {
       if (command == "loginout") {
         localStorage.removeItem("ms_username");
         this.$router.push("/login");
       }
     },
     // 侧边栏折叠
-    collapseChage() {
+    collapseChage () {
       this.collapse = !this.collapse;
       bus.$emit("collapse", this.collapse);
     },
     // 全屏事件
-    handleFullScreen() {
+    handleFullScreen () {
       let element = document.documentElement;
       if (this.fullscreen) {
         if (document.exitFullscreen) {
@@ -128,19 +132,19 @@ export default {
       this.fullscreen = !this.fullscreen;
     },
     // 跳转高级搜索
-    tosearch(){
-console.log(this.searchinput)
+    tosearch () {
+      console.log(this.searchinput)
 
       this.$router.push({
-        name:'powersearch',
+        name: 'powersearch',
         query: { input: this.searchinput }
       })
 
-      this.searchinput=''
+      this.searchinput = ''
     }
 
   },
-  mounted() {
+  mounted () {
     if (document.body.clientWidth < 1500) {
       this.collapseChage();
     }
@@ -187,6 +191,7 @@ console.log(this.searchinput)
   margin-right: 5px;
   font-size: 24px;
 }
+.btn-phone,
 .btn-bell,
 .btn-fullscreen {
   position: relative;

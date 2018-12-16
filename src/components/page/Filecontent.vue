@@ -10,7 +10,7 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <a href>
+              <a @click="toPath('fileredact')">
                 <el-dropdown-item>编辑文档</el-dropdown-item>
               </a>
               <a href>
@@ -34,6 +34,26 @@
     </div>
   </div>
 </template>
+
+
+<script>
+export default {
+  data () {
+    return {
+
+    }
+  },
+  methods: {
+    toPath (name, item) {
+      console.info();
+      this.$router.push({
+        name: name,
+        query: {}
+      });
+    }
+  }
+}
+</script>
 
 
 <style lang="less" scoped>

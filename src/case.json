@@ -1,30 +1,28 @@
 ﻿﻿{
-    "baseInfo": [
-        {
-            "id": "0cc175b9c0f1b6a831c399e269772661",
-            "priority": "高级",
-            "status": "接洽",
-            "type": "调查",
-            "caseNo": "JF00001",
-            "caseName": "***商标侵权案",
-            "currentParticipants": [
-                "张三",
-                "李四"
-            ],
-            "brands":["百度","小米","卡特"],
-            "reason": "商标侵权",
-            "openDate": 1519862400000,
-            "closeDate": 1520862400000,
-            "closeMode": "和解",
-            "updateInfo": [{
-                "updateTime": 1519862400000,
-                "updatePerson": "李四",
-                "item": "暂无",
-                "content": "暂无",
-                "version": -1
-            }]
-        }
-    ],
+    "baseInfo": [{
+        "id": "0cc175b9c0f1b6a831c399e269772661",
+        "priority": "高级",
+        "status": "接洽",
+        "type": "调查",
+        "caseNo": "JF00001",
+        "caseName": "***商标侵权案",
+        "currentParticipants": [
+            "张三",
+            "李四"
+        ],
+        "brands": ["百度", "小米", "卡特"],
+        "reason": "商标侵权",
+        "openDate": 1519862400000,
+        "closeDate": 1520862400000,
+        "closeMode": "和解",
+        "updateInfo": [{
+            "updateTime": 1519862400000,
+            "updatePerson": "李四",
+            "item": "暂无",
+            "content": "暂无",
+            "version": -1
+        }]
+    }],
     "clientInfo": [{
         "clientCaseNo": "HL000001",
         "brands": "CAT",
@@ -161,7 +159,7 @@
             "contacts": [
                 13522334455
             ],
-            "reports": {
+            "report": {
                 "submitDate": 1519862400000,
                 "reportType": "调查报告",
                 "reportContent": "此处省略1w字",

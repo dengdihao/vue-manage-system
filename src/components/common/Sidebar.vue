@@ -76,8 +76,8 @@ export default {
         },
         {
           icon: "el-icon-tickets",
-          index: "wangeditor",
-          title: "wangeditor"
+          index: "hchat",
+          title: "聊天室"
         },
         //wangeditor
         // {
@@ -145,9 +145,9 @@ export default {
           ]
         },
         {
-          icon:'el-icon-view',
-          index:'person',
-          title:'个人信息'
+          icon: 'el-icon-view',
+          index: 'person',
+          title: '个人信息'
         }
       ]
     };
