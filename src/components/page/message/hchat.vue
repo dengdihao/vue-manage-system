@@ -187,6 +187,8 @@ export default {
             font-size: 12px;
             background: rgb(245, 245, 250);
             line-height: 35px;
+            padding: 0 10px;
+            line-height: 1.5;
           }
         }
         .hchat-admin {
@@ -206,6 +208,8 @@ export default {
             font-size: 12px;
             background: rgb(245, 245, 250);
             line-height: 35px;
+            padding: 0px 10px;
+            line-height: 1.5;
           }
         }
       }

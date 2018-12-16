@@ -179,14 +179,14 @@
               :readonly="isread"
               :class="{showborder:true, border:!isread}"
             ></el-input>
-          </el-form-item>
+          </el-form-item>'
+          <div class="tab-div-btn">
+            <el-button @click="submit(baseInfo)">提交</el-button>
+            <el-button @click="disbianji()">取消</el-button>
+            <el-button>选择阶段</el-button>
+            <el-button @click="newupdate(baseInfo[0])">新建</el-button>
+          </div>
         </el-form>
-        <div class="tab-div-btn">
-          <el-button @click="submit(baseInfo)">提交</el-button>
-          <el-button @click="disbianji()">取消</el-button>
-          <el-button>选择阶段</el-button>
-          <el-button @click="newupdate(baseInfo[0])">新建</el-button>
-        </div>
       </el-tab-pane>
       <el-tab-pane label="客户信息">
         <div class="clearfix btn-border">
@@ -1749,7 +1749,7 @@ export default {
 
     /* 编辑 */
     bianji () {
-      this.isread = false;
+      this.isread = true;
     },
 
     /* 取消 */

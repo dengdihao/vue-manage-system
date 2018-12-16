@@ -37,6 +37,397 @@
           <el-button type="primary" @click="commitnews(news)">确 定</el-button>
         </div>
       </el-dialog>
+
+      <!-- 案件信息 -->
+      <el-tab-pane label="案件信息">
+        <form :model="baseInfo">
+          <div class="clearfix btn-border">
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="bianji()"
+            >编辑</el-button>
+
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="dia_base = true"
+            >新建</el-button>
+
+            <!-- 消息对话框 -->
+            <el-button
+              class="detail-btn"
+              @click="dialogFormVisible = true"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+            >新建消息</el-button>
+          </div>
+          <table class="ntable" v-for="(item,index) in baseInfo" :key="index">
+            <tr>
+              <td class="tb" width="20%">案件ID</td>
+              <td width="30%">{{baseInfo[0].id}}</td>
+              <td class="tb" width="20%">案件状态</td>
+              <td width="30%">{{baseInfo[0].status}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">优先级</td>
+              <td width="30%">{{baseInfo[0].priority}}</td>
+              <td class="tb" width="20%">案件类型</td>
+              <td width="30%">{{baseInfo[0].type}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">案件号</td>
+              <td width="30%">{{baseInfo[0].caseNo}}</td>
+              <td class="tb" width="20%">案件名称</td>
+              <td width="30%">{{baseInfo[0].caseName}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">当前参与人</td>
+              <td width="30%">{{baseInfo[0].currentParticipants}}</td>
+              <td class="tb" width="20%">案由</td>
+              <td width="30%">{{baseInfo[0].reason}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">立案日期</td>
+              <td width="30%">{{baseInfo[0].openDate}}</td>
+              <td class="tb" width="20%">结案方式</td>
+              <td width="30%">{{baseInfo[0].closeMode}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">结案日期</td>
+              <td width="30%">{{baseInfo[0].closeDate}}</td>
+              <td class="tb" width="20%">更新信息</td>
+              <td width="30%">
+                <el-popover trigger="click" width="400" placement="right">
+                  <table class="ntable">
+                    <tr>
+                      <td width="35%">更新时间</td>
+                      <td width="65%">{{baseInfo[0].updateInfo[0].updateTime}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">更新人</td>
+                      <td width="65%">{{baseInfo[0].updateInfo[0].updatePerson}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">更新项目</td>
+                      <td width="65%">{{baseInfo[0].updateInfo[0].item}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">更新内容</td>
+                      <td width="65%">{{baseInfo[0].updateInfo[0].content}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">版本</td>
+                      <td width="65%">{{baseInfo[0].updateInfo[0].version}}</td>
+                    </tr>
+                  </table>
+                  <el-button slot="reference">详情</el-button>
+                </el-popover>
+              </td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">备注</td>
+              <td width="30%">{{baseInfo[0].note}}</td>
+            </tr>
+          </table>
+        </form>
+      </el-tab-pane>
+
+      <!-- 案件信息 模态框 -->
+      <!-- 案件ID	id
+案件状态	status
+优先级	priority
+案件类型	type
+案件号	caseNo
+案件名称	caseName
+当前参与人	currentParticipants
+案由	reason
+立案日期	openDate
+结案方式	closeMode
+结案日期	closeDate
+更新信息	updateInfo
+	
+备注	note
+      -->
+      <el-dialog title="编辑案件信息" :visible.sync="dia_base">
+        <el-form :model="news" class="news">
+          <el-form-item label="案件ID" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="案件状态" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="优先级" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="案件类型" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="案件号" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="案件名称" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="当前参与人" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="案由" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="立案日期" :label-width="formLabelWidth">
+            <el-date-picker
+              v-model="news.date"
+              type="date"
+              placeholder="选择日期"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="timestamp"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="结案方式" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="结案日期" :label-width="formLabelWidth">
+            <el-date-picker
+              v-model="news.date"
+              type="date"
+              placeholder="选择日期"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="timestamp"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="更新信息" :label-width="formLabelWidth">
+            <el-input v-model="news.content" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="commitnews(news)">确 定</el-button>
+        </div>
+      </el-dialog>
+
+      <!-- 客户信息 -->
+      <el-tab-pane label="客户信息">
+        <form action :model="clientInfo" v-if="clientInfo">
+          <div class="clearfix btn-border">
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="bianji()"
+            >编辑</el-button>
+
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="add()"
+            >新建</el-button>
+
+            <!-- 消息对话框 -->
+            <el-button
+              class="detail-btn"
+              @click="dialogFormVisible = true"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+            >新建消息</el-button>
+          </div>
+          <table class="ntable">
+            <tr>
+              <td class="tb" width="20%">客户案件号</td>
+              <td width="30%">{{clientInfo[0].clientCaseNo}}</td>
+              <td class="tb" width="20%">客户品牌</td>
+              <td width="30%">{{clientInfo[0].brands}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">客户指示</td>
+              <td width="30%">{{clientInfo[0].instructions}}</td>
+              <td class="tb" width="20%">授权日期</td>
+              <td width="30%">{{clientInfo[0].authorizeDate}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">出具法律文书</td>
+              <td width="30%">
+                <el-popover trigger="click" width="400" placement="right">
+                  <table class="ntable">
+                    <tr>
+                      <td width="35%">文书名称</td>
+                      <td width="65%">{{clientInfo[0].documents[0].documentName}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">文书类型</td>
+                      <td width="65%">{{clientInfo[0].documents[0].documentType}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">出具时间</td>
+                      <td width="65%">{{clientInfo[0].documents[0].issueDate}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">扫描文件</td>
+                      <td width="65%">{{clientInfo[0].documents[0].documentPath}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">文书内容</td>
+                      <td width="65%">{{clientInfo[0].documents[0].content}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">收到时间</td>
+                      <td width="65%">{{clientInfo[0].documents[0].receiveDate}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">邮寄时间</td>
+                      <td width="65%">{{clientInfo[0].documents[0].sendDate}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">备注</td>
+                      <td width="65%">{{clientInfo[0].documents[0].note}}</td>
+                    </tr>
+                  </table>
+                  <el-button slot="reference">详情</el-button>
+                </el-popover>
+              </td>
+              <td class="tb" width="20%"></td>
+              <td width="30%"></td>
+            </tr>
+          </table>
+        </form>
+      </el-tab-pane>
+
+      <!-- 目标信息 -->
+      <el-tab-pane label="目标信息">
+        <form action :model="targetInfo" v-if="targetInfo">
+          <div class="clearfix btn-border">
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="bianji()"
+            >编辑</el-button>
+
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="add()"
+            >新建</el-button>
+
+            <!-- 消息对话框 -->
+            <el-button
+              class="detail-btn"
+              @click="dialogFormVisible = true"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+            >新建消息</el-button>
+          </div>
+          <table class="ntable">
+            <tr>
+              <td class="tb" width="20%">目标名称</td>
+              <td width="30%">{{targetInfo[0].targetName}}</td>
+              <td class="tb" width="20%">目标类型</td>
+              <td width="30%">{{targetInfo[0].targetType}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">工商注册号</td>
+              <td width="30%">{{targetInfo[0].regNo}}</td>
+              <td class="tb" width="20%">统一社会信用代码</td>
+              <td width="30%">{{targetInfo[0].creditNo}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">目标地址</td>
+              <td width="30%">{{targetInfo[0].targetAdd}}</td>
+              <td class="tb" width="20%">目标联系方式</td>
+              <td width="30%">
+                <el-popover trigger="click" width="400" placement="right">
+                  <table class="ntable">
+                    <tr>
+                      <td width="35%">目标网址</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].website}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">目标电话</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].phone}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">目标邮箱</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].email}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%" rowspan="3">社交号</td>
+                      <td>社交工具</td>
+                      <td>{{targetInfo[0].targetContacts[0].networks[0].networkName}}</td>
+                    </tr>
+                    <tr>
+                      <td>号码</td>
+                      <td>{{targetInfo[0].targetContacts[0].networks[0].networkNo}}</td>
+                    </tr>
+                    <tr>
+                      <td>备注</td>
+                      <td>{{targetInfo[0].targetContacts[0].networks[0].note}}</td>
+                    </tr>
+                    <tr>
+                      <td width="35%">备注</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].note}}</td>
+                    </tr>
+                  </table>
+                  <el-button slot="reference">详情</el-button>
+                </el-popover>
+              </td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">目标人员</td>
+              <td width="30%">{{targetInfo[0].targetPrincipal[0]}}</td>
+              <td class="tb" width="20%">关联公司</td>
+              <td width="30%">{{targetInfo[0].affiliateCompany[0]}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">目标产品信息</td>
+              <td width="30%">{{targetInfo[0].productInfo[0]}}</td>
+              <td class="tb" width="20%">备注</td>
+              <td width="30%">{{targetInfo[0].note}}</td>
+            </tr>
+          </table>
+        </form>
+      </el-tab-pane>
+
+      <!-- 财务信息 -->
+      <el-tab-pane label="财务信息">
+        <form :model="accounting" v-if="accounting">
+          <div class="clearfix btn-border">
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="bianji()"
+            >编辑</el-button>
+
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="add()"
+            >新建</el-button>
+
+            <!-- 消息对话框 -->
+            <el-button
+              class="detail-btn"
+              @click="dialogFormVisible = true"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+            >新建消息</el-button>
+          </div>
+          <table class="ntable">
+            <tr>
+              <td class="tb" width="20%">保证金</td>
+              <td width="30%">{{accounting[0].deposit}}</td>
+              <td class="tb" width="20%">预付款</td>
+              <td width="30%">{{accounting[0].advancePayment}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">退款</td>
+              <td width="30%">{{accounting[0].refund}}</td>
+              <td class="tb" width="20%">报销</td>
+              <td width="30%">{{accounting[0].repay}}</td>
+            </tr>
+            <tr>
+              <td class="tb" width="20%">发票</td>
+              <td width="30%">{{accounting[0].invoice}}</td>
+              <td class="tb" width="20%">备注</td>
+              <td width="30%">{{accounting[0].note}}</td>
+            </tr>
+          </table>
+        </form>
+      </el-tab-pane>
+
       <!-- 案件基本信息 -->
       <el-tab-pane label="案件流程">
         <el-collapse v-model="activeNames">
@@ -494,328 +885,6 @@
           </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
-
-      <!-- 案件信息 -->
-      <el-tab-pane label="案件信息">
-        <form :model="baseInfo" v-if="baseInfo">
-          <div class="clearfix btn-border">
-            <el-button
-              class="detail-btn"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="bianji()"
-            >编辑</el-button>
-
-            <el-button
-              class="detail-btn"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="add()"
-            >新建</el-button>
-
-            <!-- 消息对话框 -->
-            <el-button
-              class="detail-btn"
-              @click="dialogFormVisible = true"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-            >新建消息</el-button>
-          </div>
-          <table class="ntable">
-            <tr>
-              <td class="tb" width="20%">案件ID</td>
-              <td width="30%">{{baseInfo[0].id}}</td>
-              <td class="tb" width="20%">案件状态</td>
-              <td width="30%">{{baseInfo[0].status}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">优先级</td>
-              <td width="30%">{{baseInfo[0].priority}}</td>
-              <td class="tb" width="20%">案件类型</td>
-              <td width="30%">{{baseInfo[0].type}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">案件号</td>
-              <td width="30%">{{baseInfo[0].caseNo}}</td>
-              <td class="tb" width="20%">案件名称</td>
-              <td width="30%">{{baseInfo[0].caseName}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">当前参与人</td>
-              <td width="30%">{{baseInfo[0].currentParticipants}}</td>
-              <td class="tb" width="20%">案由</td>
-              <td width="30%">{{baseInfo[0].reason}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">立案日期</td>
-              <td width="30%">{{baseInfo[0].openDate}}</td>
-              <td class="tb" width="20%">结案方式</td>
-              <td width="30%">{{baseInfo[0].closeMode}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">结案日期</td>
-              <td width="30%">{{baseInfo[0].closeDate}}</td>
-              <td class="tb" width="20%">更新信息</td>
-              <td width="30%">
-                <el-popover trigger="click" width="400" placement="right">
-                  <table class="ntable">
-                    <tr>
-                      <td width="35%">更新时间</td>
-                      <td width="65%">{{baseInfo[0].updateInfo[0].updateTime}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">更新人</td>
-                      <td width="65%">{{baseInfo[0].updateInfo[0].updatePerson}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">更新项目</td>
-                      <td width="65%">{{baseInfo[0].updateInfo[0].item}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">更新内容</td>
-                      <td width="65%">{{baseInfo[0].updateInfo[0].content}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">版本</td>
-                      <td width="65%">{{baseInfo[0].updateInfo[0].version}}</td>
-                    </tr>
-                  </table>
-                  <el-button slot="reference">详情</el-button>
-                </el-popover>
-              </td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">备注</td>
-              <td width="30%">{{baseInfo[0].note}}</td>
-            </tr>
-          </table>
-        </form>
-      </el-tab-pane>
-
-      <!-- 客户信息 -->
-      <el-tab-pane label="客户信息">
-        <form action :model="clientInfo" v-if="clientInfo">
-          <div class="clearfix btn-border">
-            <el-button
-              class="detail-btn"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="bianji()"
-            >编辑</el-button>
-
-            <el-button
-              class="detail-btn"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="add()"
-            >新建</el-button>
-
-            <!-- 消息对话框 -->
-            <el-button
-              class="detail-btn"
-              @click="dialogFormVisible = true"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-            >新建消息</el-button>
-          </div>
-          <table class="ntable">
-            <tr>
-              <td class="tb" width="20%">客户案件号</td>
-              <td width="30%">{{clientInfo[0].clientCaseNo}}</td>
-              <td class="tb" width="20%">客户品牌</td>
-              <td width="30%">{{clientInfo[0].brands}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">客户指示</td>
-              <td width="30%">{{clientInfo[0].instructions}}</td>
-              <td class="tb" width="20%">授权日期</td>
-              <td width="30%">{{clientInfo[0].authorizeDate}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">出具法律文书</td>
-              <td width="30%">
-                <el-popover trigger="click" width="400" placement="right">
-                  <table class="ntable">
-                    <tr>
-                      <td width="35%">文书名称</td>
-                      <td width="65%">{{clientInfo[0].documents[0].documentName}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">文书类型</td>
-                      <td width="65%">{{clientInfo[0].documents[0].documentType}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">出具时间</td>
-                      <td width="65%">{{clientInfo[0].documents[0].issueDate}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">扫描文件</td>
-                      <td width="65%">{{clientInfo[0].documents[0].documentPath}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">文书内容</td>
-                      <td width="65%">{{clientInfo[0].documents[0].content}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">收到时间</td>
-                      <td width="65%">{{clientInfo[0].documents[0].receiveDate}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">邮寄时间</td>
-                      <td width="65%">{{clientInfo[0].documents[0].sendDate}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">备注</td>
-                      <td width="65%">{{clientInfo[0].documents[0].note}}</td>
-                    </tr>
-                  </table>
-                  <el-button slot="reference">详情</el-button>
-                </el-popover>
-              </td>
-              <td class="tb" width="20%"></td>
-              <td width="30%"></td>
-            </tr>
-          </table>
-        </form>
-      </el-tab-pane>
-
-      <el-tab-pane label="目标信息">
-        <form action :model="targetInfo" v-if="targetInfo">
-          <div class="clearfix btn-border">
-            <el-button
-              class="detail-btn"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="bianji()"
-            >编辑</el-button>
-
-            <el-button
-              class="detail-btn"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="add()"
-            >新建</el-button>
-
-            <!-- 消息对话框 -->
-            <el-button
-              class="detail-btn"
-              @click="dialogFormVisible = true"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-            >新建消息</el-button>
-          </div>
-          <table class="ntable">
-            <tr>
-              <td class="tb" width="20%">目标名称</td>
-              <td width="30%">{{targetInfo[0].targetName}}</td>
-              <td class="tb" width="20%">目标类型</td>
-              <td width="30%">{{targetInfo[0].targetType}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">工商注册号</td>
-              <td width="30%">{{targetInfo[0].regNo}}</td>
-              <td class="tb" width="20%">统一社会信用代码</td>
-              <td width="30%">{{targetInfo[0].creditNo}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">目标地址</td>
-              <td width="30%">{{targetInfo[0].targetAdd}}</td>
-              <td class="tb" width="20%">目标联系方式</td>
-              <!-- 目标网址	website		
-目标电话	phone		
-目标邮箱	email		
-社交号	networks	社交工具	networkName
-		号码	networkNo
-		备注	note
-备注	note		
-              -->
-              <td width="30%">
-                <el-popover trigger="click" width="400" placement="right">
-                  <table class="ntable">
-                    <tr>
-                      <td width="35%">目标网址</td>
-                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].website}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">目标电话</td>
-                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].phone}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">目标邮箱</td>
-                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].email}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%" rowspan="3">社交号</td>
-                      <td>社交工具</td>
-                      <td>{{targetInfo[0].targetContacts[0].networks[0].networkName}}</td>
-                    </tr>
-                    <tr>
-                      <td>号码</td>
-                      <td>{{targetInfo[0].targetContacts[0].networks[0].networkNo}}</td>
-                    </tr>
-                    <tr>
-                      <td>备注</td>
-                      <td>{{targetInfo[0].targetContacts[0].networks[0].note}}</td>
-                    </tr>
-                    <tr>
-                      <td width="35%">备注</td>
-                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].note}}</td>
-                    </tr>
-                  </table>
-                  <el-button slot="reference">详情</el-button>
-                </el-popover>
-              </td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">目标人员</td>
-              <td width="30%">{{targetInfo[0].targetPrincipal[0]}}</td>
-              <td class="tb" width="20%">关联公司</td>
-              <td width="30%">{{targetInfo[0].affiliateCompany[0]}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">目标产品信息</td>
-              <td width="30%">{{targetInfo[0].productInfo[0]}}</td>
-              <td class="tb" width="20%">备注</td>
-              <td width="30%">{{targetInfo[0].note}}</td>
-            </tr>
-          </table>
-        </form>
-      </el-tab-pane>
-      <el-tab-pane label="财务信息">
-        <form :model="accounting" v-if="accounting">
-          <div class="clearfix btn-border">
-            <el-button
-              class="detail-btn"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="bianji()"
-            >编辑</el-button>
-
-            <el-button
-              class="detail-btn"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-              @click="add()"
-            >新建</el-button>
-
-            <!-- 消息对话框 -->
-            <el-button
-              class="detail-btn"
-              @click="dialogFormVisible = true"
-              style="color:#409EFF;font-size:14px;cursor: pointer;"
-            >新建消息</el-button>
-          </div>
-          <table class="ntable">
-            <tr>
-              <td class="tb" width="20%">保证金</td>
-              <td width="30%">{{accounting[0].deposit}}</td>
-              <td class="tb" width="20%">预付款</td>
-              <td width="30%">{{accounting[0].advancePayment}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">退款</td>
-              <td width="30%">{{accounting[0].refund}}</td>
-              <td class="tb" width="20%">报销</td>
-              <td width="30%">{{accounting[0].repay}}</td>
-            </tr>
-            <tr>
-              <td class="tb" width="20%">发票</td>
-              <td width="30%">{{accounting[0].invoice}}</td>
-              <td class="tb" width="20%">备注</td>
-              <td width="30%">{{accounting[0].note}}</td>
-            </tr>
-          </table>
-        </form>
-      </el-tab-pane>
     </el-tabs>
   </el-card>
 </template>
@@ -883,7 +952,8 @@ export default {
       targetInfo: null, //目标信息
       accounting: null, // 财务信息
 
-
+      /* 案件信息 dia*/
+      dia_base: false,
       activeNames: ["1"],
       /* 消息提醒 */
       dialogFormVisible: false,
