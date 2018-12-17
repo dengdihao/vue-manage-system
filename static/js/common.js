@@ -3,7 +3,7 @@ function add0(m) {
     return m < 10 ? '0' + m : m
 }
 
-function timeFormat(timestamp) {
+function mytimeFormat(timestamp) {
     //timestamp是整数，否则要parseInt转换,不会出现少个0的情况
     var time = new Date(timestamp);
     var year = time.getFullYear();
@@ -15,7 +15,10 @@ function timeFormat(timestamp) {
     return year + '-' + add0(month) + '-' + add0(date) + ' ' + add0(hours) + ':' + add0(minutes) + ':' + add0(seconds);
 }
 
+function mytoString(params) {
+    return params.toString()
+}
 
 export{
-    timeFormat
+    mytimeFormat, mytoString
 }

@@ -72,29 +72,23 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      msgArr: [
-        "msgs", "nishigpu"
-
-      ],
-      msg: ''
-    }
+      msgArr: ["msgs", "nishigpu"],
+      msg: ""
+    };
   },
   methods: {
-    dealMsg () {
-      console.info(this.$refs.show)
-      this.msgArr.push(this.msg)
-      this.msg = ""
+    dealMsg() {
+      console.info(this.$refs.show);
+      this.msgArr.push(this.msg);
+      this.msg = "";
       this.$nextTick().then(() => {
         this.$refs.show.scrollTop = 100000;
-
-      })
-
-
+      });
     }
   }
-}
+};
 </script>
 
 
@@ -187,8 +181,8 @@ export default {
             font-size: 12px;
             background: rgb(245, 245, 250);
             line-height: 35px;
-            padding: 0 10px;
-            line-height: 1.5;
+            line-height: 1.2;
+            padding: 10px;
           }
         }
         .hchat-admin {
@@ -208,8 +202,8 @@ export default {
             font-size: 12px;
             background: rgb(245, 245, 250);
             line-height: 35px;
-            padding: 0px 10px;
-            line-height: 1.5;
+            line-height: 1.2;
+            padding: 10px;
           }
         }
       }

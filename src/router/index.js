@@ -50,6 +50,14 @@ export default new Router({
                     }
                 },
                 {
+                    path: '/editdetailpages',
+                    name: 'editdetailpages',
+                    component: resolve => require(['../components/page/editDetailpages.vue'], resolve),
+                    meta: {
+                        title: '编辑详情信息'
+                    }
+                },
+                {
                     path: '/powersearch',
                     name: 'powersearch',
                     component: resolve => require(['../components/page/Powersearch.vue'], resolve),
