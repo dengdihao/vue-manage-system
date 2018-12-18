@@ -366,85 +366,93 @@
                   <table class="ntable">
                     <tr>
                       <td width="35%">文书名称</td>
-                      <td width="65%">{{clientInfo[0].documents[0].documentName}}
+                      <td width="65%">
+                        {{clientInfo[0].documents[0].documentName}}
                         <el-input v-model="clientInfo[0].documents[0].documentName" v-if="isShow"></el-input>
-                <div v-else>{{clientInfo[0].documents[0].documentName}}</div>
+                        <div v-else>{{clientInfo[0].documents[0].documentName}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">文书类型</td>
-                      <td width="65%">{{clientInfo[0].documents[0].documentType}}
+                      <td width="65%">
+                        {{clientInfo[0].documents[0].documentType}}
                         <el-select
-                  v-model="clientInfo[0].documents[0].documentType"
-                  placeholder="请选择"
-                  v-if="isShow"
-                  style="width: 100%;"
-                >
-                  <el-option label="高级" value="高级"></el-option>
-                  <el-option label="普通" value="普通"></el-option>
-                  <el-option label="低级" value="低级"></el-option>
-                </el-select>
-                <div v-else>{{clientInfo[0].documents[0].documentType}}</div>
+                          v-model="clientInfo[0].documents[0].documentType"
+                          placeholder="请选择"
+                          v-if="isShow"
+                          style="width: 100%;"
+                        >
+                          <el-option label="高级" value="高级"></el-option>
+                          <el-option label="普通" value="普通"></el-option>
+                          <el-option label="低级" value="低级"></el-option>
+                        </el-select>
+                        <div v-else>{{clientInfo[0].documents[0].documentType}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">出具时间</td>
-                      <td width="65%">{{clientInfo[0].documents[0].issueDate}}
+                      <td width="65%">
+                        {{clientInfo[0].documents[0].issueDate}}
                         <el-date-picker
-                  v-model="clientInfo[0].documents[0].issueDate"
-                  type="date"
-                  placeholder="选择日期"
-                  v-if="isShow"
-                  style="width: 100%;"
-                ></el-date-picker>
-                <div v-else>{{clientInfo[0].documents[0].issueDate}}</div>
+                          v-model="clientInfo[0].documents[0].issueDate"
+                          type="date"
+                          placeholder="选择日期"
+                          v-if="isShow"
+                          style="width: 100%;"
+                        ></el-date-picker>
+                        <div v-else>{{clientInfo[0].documents[0].issueDate}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">扫描文件</td>
-                      <td width="65%">{{clientInfo[0].documents[0].documentPath}}
+                      <td width="65%">
+                        {{clientInfo[0].documents[0].documentPath}}
                         <el-input v-model="clientInfo[0].documents[0].documentPath" v-if="isShow"></el-input>
-                <div v-else>{{clientInfo[0].documents[0].documentPath}}</div>
+                        <div v-else>{{clientInfo[0].documents[0].documentPath}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">文书内容</td>
-                      <td width="65%">{{clientInfo[0].documents[0].content}}
+                      <td width="65%">
+                        {{clientInfo[0].documents[0].content}}
                         <el-input v-model="clientInfo[0].documents[0].content" v-if="isShow"></el-input>
-                <div v-else>{{clientInfo[0].documents[0].content}}</div>
+                        <div v-else>{{clientInfo[0].documents[0].content}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">收到时间</td>
-                      <td width="65%">{{clientInfo[0].documents[0].receiveDate}}
+                      <td width="65%">
+                        {{clientInfo[0].documents[0].receiveDate}}
                         <el-date-picker
-                  v-model="clientInfo[0].documents[0].receiveDate"
-                  type="date"
-                  placeholder="选择日期"
-                  v-if="isShow"
-                  style="width: 100%;"
-                ></el-date-picker>
-                <div v-else>{{clientInfo[0].documents[0].receiveDate}}</div>
+                          v-model="clientInfo[0].documents[0].receiveDate"
+                          type="date"
+                          placeholder="选择日期"
+                          v-if="isShow"
+                          style="width: 100%;"
+                        ></el-date-picker>
+                        <div v-else>{{clientInfo[0].documents[0].receiveDate}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">邮寄时间</td>
-                      <td width="65%">{{clientInfo[0].documents[0].sendDate}}
+                      <td width="65%">
+                        {{clientInfo[0].documents[0].sendDate}}
                         <el-date-picker
-                  v-model="clientInfo[0].documents[0].sendDate"
-                  type="date"
-                  placeholder="选择日期"
-                  v-if="isShow"
-                  style="width: 100%;"
-                ></el-date-picker>
-                <div v-else>{{clientInfo[0].documents[0].sendDate}}</div>
+                          v-model="clientInfo[0].documents[0].sendDate"
+                          type="date"
+                          placeholder="选择日期"
+                          v-if="isShow"
+                          style="width: 100%;"
+                        ></el-date-picker>
+                        <div v-else>{{clientInfo[0].documents[0].sendDate}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">备注</td>
-                      <td width="65%">{{clientInfo[0].documents[0].note}}
+                      <td width="65%">
+                        {{clientInfo[0].documents[0].note}}
                         <el-input v-model="clientInfo[0].documents[0].note" v-if="isShow"></el-input>
-                <div v-else>{{clientInfo[0].documents[0].note}}</div>
+                        <div v-else>{{clientInfo[0].documents[0].note}}</div>
                       </td>
                     </tr>
                   </table>
