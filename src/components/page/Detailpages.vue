@@ -54,7 +54,7 @@
               @click="dia_base = true"
             >新建</el-button>
 
-<el-button
+            <el-button
               class="detail-btn"
               @click="edit()"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
@@ -160,34 +160,77 @@
                 <div v-else>{{baseInfo[0].openDate}}</div>
               </td>
               <td class="tb" width="20%">结案方式</td>
-              <td width="30%">{{baseInfo[0].closeMode}}</td>
+              <td width="30%">
+                {{baseInfo[0].closeMode}}
+                <el-select
+                  v-model="baseInfo[0].priority"
+                  placeholder="请选择"
+                  v-if="isShow"
+                  style="width: 100%;"
+                >
+                  <el-option label="高级" value="高级"></el-option>
+                  <el-option label="普通" value="普通"></el-option>
+                  <el-option label="低级" value="低级"></el-option>
+                </el-select>
+                <div v-else>{{baseInfo[0].priority}}</div>
+              </td>
             </tr>
             <tr>
               <td class="tb" width="20%">结案日期</td>
-              <td width="30%">{{baseInfo[0].closeDate}}</td>
+              <td width="30%">
+                <el-date-picker
+                  v-model="baseInfo[0].closeDate"
+                  type="date"
+                  placeholder="选择日期"
+                  v-if="isShow"
+                  style="width: 100%;"
+                ></el-date-picker>
+                <div v-else>{{baseInfo[0].closeDate}}</div>
+              </td>
               <td class="tb" width="20%">更新信息</td>
               <td width="30%">
                 <el-popover trigger="click" width="400" placement="right">
                   <table class="ntable">
                     <tr>
                       <td width="35%">更新时间</td>
-                      <td width="65%">{{baseInfo[0].updateInfo[0].updateTime}}</td>
+                      <td width="65%">
+                        <el-date-picker
+                          v-model="baseInfo[0].updateInfo[0].updateTime"
+                          type="date"
+                          placeholder="选择日期"
+                          v-if="isShow"
+                          style="width: 100%;"
+                        ></el-date-picker>
+                        <div v-else>{{baseInfo[0].updateInfo[0].updateTime}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">更新人</td>
-                      <td width="65%">{{baseInfo[0].updateInfo[0].updatePerson}}</td>
+                      <td width="65%">
+                        <el-input v-model="baseInfo[0].updateInfo[0].updatePerson" v-if="isShow"></el-input>
+                        <div v-else>{{baseInfo[0].updateInfo[0].updatePerson}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">更新项目</td>
-                      <td width="65%">{{baseInfo[0].updateInfo[0].item}}</td>
+                      <td width="65%">
+                        <el-input v-model="baseInfo[0].updateInfo[0].item" v-if="isShow"></el-input>
+                        <div v-else>{{baseInfo[0].updateInfo[0].item}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">更新内容</td>
-                      <td width="65%">{{baseInfo[0].updateInfo[0].content}}</td>
+                      <td width="65%">
+                        <el-input v-model="baseInfo[0].updateInfo[0].content" v-if="isShow"></el-input>
+                        <div v-else>{{baseInfo[0].updateInfo[0].content}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">版本</td>
-                      <td width="65%">{{baseInfo[0].updateInfo[0].version}}</td>
+                      <td width="65%">
+                        <el-input v-model="baseInfo[0].updateInfo[0].version" v-if="isShow"></el-input>
+                        <div v-else>{{baseInfo[0].updateInfo[0].version}}</div>
+                      </td>
                     </tr>
                   </table>
                   <el-button slot="reference">详情</el-button>
@@ -196,28 +239,15 @@
             </tr>
             <tr>
               <td class="tb" width="20%">备注</td>
-              <td width="30%">{{baseInfo[0].note}}</td>
+              <td width="30%">
+                <el-input v-model="baseInfo[0].note" v-if="isShow"></el-input>
+                <div v-else>{{baseInfo[0].note}}</div>
+              </td>
             </tr>
           </table>
         </form>
       </el-tab-pane>
-
-      <!-- 案件信息 模态框 -->
-      <!-- 案件ID	id
-案件状态	status
-优先级	priority
-案件类型	type
-案件号	caseNo
-案件名称	caseName
-当前参与人	currentParticipants
-案由	reason
-立案日期	openDate
-结案方式	closeMode
-结案日期	closeDate
-更新信息	updateInfo
-	
-备注	note
-      -->
+      <!-- 模态框 -->
       <el-dialog title="编辑案件信息" :visible.sync="dia_base">
         <el-form :model="news" class="news">
           <el-form-item label="案件ID" :label-width="formLabelWidth">
@@ -301,15 +331,33 @@
           <table class="ntable">
             <tr>
               <td class="tb" width="20%">客户案件号</td>
-              <td width="30%">{{clientInfo[0].clientCaseNo}}</td>
+              <td width="30%">
+                <el-input v-model="clientInfo[0].clientCaseNo" v-if="isShow"></el-input>
+                <div v-else>{{clientInfo[0].clientCaseNo}}</div>
+              </td>
               <td class="tb" width="20%">客户品牌</td>
-              <td width="30%">{{clientInfo[0].brands}}</td>
+              <td width="30%">
+                <el-input v-model="clientInfo[0].brands" v-if="isShow"></el-input>
+                <div v-else>{{clientInfo[0].brands}}</div>
+              </td>
             </tr>
             <tr>
               <td class="tb" width="20%">客户指示</td>
-              <td width="30%">{{clientInfo[0].instructions}}</td>
+              <td width="30%">
+                <el-input v-model="clientInfo[0].instructions" v-if="isShow"></el-input>
+                <div v-else>{{clientInfo[0].instructions}}</div>
+              </td>
               <td class="tb" width="20%">授权日期</td>
-              <td width="30%">{{clientInfo[0].authorizeDate}}</td>
+              <td width="30%">
+                <el-date-picker
+                  v-model="clientInfo[0].authorizeDate"
+                  type="date"
+                  placeholder="选择日期"
+                  v-if="isShow"
+                  style="width: 100%;"
+                ></el-date-picker>
+                <div v-else>{{clientInfo[0].authorizeDate}}</div>
+              </td>
             </tr>
             <tr>
               <td class="tb" width="20%">出具法律文书</td>
@@ -318,35 +366,86 @@
                   <table class="ntable">
                     <tr>
                       <td width="35%">文书名称</td>
-                      <td width="65%">{{clientInfo[0].documents[0].documentName}}</td>
+                      <td width="65%">{{clientInfo[0].documents[0].documentName}}
+                        <el-input v-model="clientInfo[0].documents[0].documentName" v-if="isShow"></el-input>
+                <div v-else>{{clientInfo[0].documents[0].documentName}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">文书类型</td>
-                      <td width="65%">{{clientInfo[0].documents[0].documentType}}</td>
+                      <td width="65%">{{clientInfo[0].documents[0].documentType}}
+                        <el-select
+                  v-model="clientInfo[0].documents[0].documentType"
+                  placeholder="请选择"
+                  v-if="isShow"
+                  style="width: 100%;"
+                >
+                  <el-option label="高级" value="高级"></el-option>
+                  <el-option label="普通" value="普通"></el-option>
+                  <el-option label="低级" value="低级"></el-option>
+                </el-select>
+                <div v-else>{{clientInfo[0].documents[0].documentType}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">出具时间</td>
-                      <td width="65%">{{clientInfo[0].documents[0].issueDate}}</td>
+                      <td width="65%">{{clientInfo[0].documents[0].issueDate}}
+                        <el-date-picker
+                  v-model="clientInfo[0].documents[0].issueDate"
+                  type="date"
+                  placeholder="选择日期"
+                  v-if="isShow"
+                  style="width: 100%;"
+                ></el-date-picker>
+                <div v-else>{{clientInfo[0].documents[0].issueDate}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">扫描文件</td>
-                      <td width="65%">{{clientInfo[0].documents[0].documentPath}}</td>
+                      <td width="65%">{{clientInfo[0].documents[0].documentPath}}
+                        <el-input v-model="clientInfo[0].documents[0].documentPath" v-if="isShow"></el-input>
+                <div v-else>{{clientInfo[0].documents[0].documentPath}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">文书内容</td>
-                      <td width="65%">{{clientInfo[0].documents[0].content}}</td>
+                      <td width="65%">{{clientInfo[0].documents[0].content}}
+                        <el-input v-model="clientInfo[0].documents[0].content" v-if="isShow"></el-input>
+                <div v-else>{{clientInfo[0].documents[0].content}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">收到时间</td>
-                      <td width="65%">{{clientInfo[0].documents[0].receiveDate}}</td>
+                      <td width="65%">{{clientInfo[0].documents[0].receiveDate}}
+                        <el-date-picker
+                  v-model="clientInfo[0].documents[0].receiveDate"
+                  type="date"
+                  placeholder="选择日期"
+                  v-if="isShow"
+                  style="width: 100%;"
+                ></el-date-picker>
+                <div v-else>{{clientInfo[0].documents[0].receiveDate}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">邮寄时间</td>
-                      <td width="65%">{{clientInfo[0].documents[0].sendDate}}</td>
+                      <td width="65%">{{clientInfo[0].documents[0].sendDate}}
+                        <el-date-picker
+                  v-model="clientInfo[0].documents[0].sendDate"
+                  type="date"
+                  placeholder="选择日期"
+                  v-if="isShow"
+                  style="width: 100%;"
+                ></el-date-picker>
+                <div v-else>{{clientInfo[0].documents[0].sendDate}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">备注</td>
-                      <td width="65%">{{clientInfo[0].documents[0].note}}</td>
+                      <td width="65%">{{clientInfo[0].documents[0].note}}
+                        <el-input v-model="clientInfo[0].documents[0].note" v-if="isShow"></el-input>
+                <div v-else>{{clientInfo[0].documents[0].note}}</div>
+                      </td>
                     </tr>
                   </table>
                   <el-button slot="reference">详情</el-button>
@@ -368,7 +467,6 @@
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="bianji()"
             >编辑</el-button>
-
 
             <el-button
               class="detail-btn"
