@@ -75,6 +75,8 @@
 </template>
 <script>
 import bus from "../common/bus";
+import { _logout } from "../../services/service.js";
+import store from '../../store/store';
 export default {
   data () {
     return {
@@ -87,7 +89,9 @@ export default {
   },
   computed: {
     username () {
-      let username = JSON.parse(localStorage.getItem("ms_username")).username;
+      console.info(sessionStorage.getItem("ms_username"))
+      debugger
+      let username = JSON.parse(sessionStorage.getItem("ms_username")).username;
       return username ? username : this.name;
     }
   },
@@ -95,8 +99,20 @@ export default {
     // 用户名下拉菜单选择事件
     handleCommand (command) {
       if (command == "loginout") {
-        localStorage.removeItem("ms_username");
-        this.$router.push("/login");
+      // let objlogout=new Object()
+      // objlogout.Authorization=token
+      // console.info(objlogout)
+      console.info( store.state.token)
+      _logout().then(res=>{
+        console.info(1)
+      })
+      // console.info(window.handleCommand)
+      // let objlogout=new Object()
+      // console.info( JSON.stringify(sessionStorage.getItem["ms_username"]).token)
+      // objlogout.Authorization=sessionStorage.getItem("ms_username").token
+      // console.info(objlogout)
+        // sessionStorage.removeItem("ms_username");
+        // this.$router.push("/login");
       }
     },
     // 侧边栏折叠

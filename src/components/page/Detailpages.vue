@@ -168,9 +168,10 @@
                   v-if="isShow"
                   style="width: 100%;"
                 >
-                  <el-option label="高级" value="高级"></el-option>
-                  <el-option label="普通" value="普通"></el-option>
-                  <el-option label="低级" value="低级"></el-option>
+                  <el-option label="和解" value="和解"></el-option>
+                  <el-option label="中止" value="中止"></el-option>
+                  <el-option label="终止" value="终止"></el-option>
+                  <el-option label="其他" value="其他"></el-option>
                 </el-select>
                 <div v-else>{{baseInfo[0].priority}}</div>
               </td>
@@ -382,9 +383,12 @@
                           v-if="isShow"
                           style="width: 100%;"
                         >
-                          <el-option label="高级" value="高级"></el-option>
-                          <el-option label="普通" value="普通"></el-option>
-                          <el-option label="低级" value="低级"></el-option>
+                          <el-option label="鉴定书" value="鉴定书"></el-option>
+                          <el-option label="价格单" value="价格单"></el-option>
+                          <el-option label="授权书" value="授权书"></el-option>
+                          <el-option label="营业执照" value="营业执照"></el-option>
+                          <el-option label="商标注册证" value="商标注册证"></el-option>
+                          <el-option label="其他" value="其他"></el-option>
                         </el-select>
                         <div v-else>{{clientInfo[0].documents[0].documentType}}</div>
                       </td>
@@ -492,51 +496,87 @@
           <table class="ntable">
             <tr>
               <td class="tb" width="20%">目标名称</td>
-              <td width="30%">{{targetInfo[0].targetName}}</td>
+              <td width="30%">{{targetInfo[0].targetName}}
+                <el-input v-model="targetInfo[0].targetName" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetName}}</div>
+              </td>
               <td class="tb" width="20%">目标类型</td>
-              <td width="30%">{{targetInfo[0].targetType}}</td>
+              <td width="30%">{{targetInfo[0].targetType}}
+                <el-input v-model="targetInfo[0].targetType" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetType}}</div>
+              </td>
             </tr>
             <tr>
               <td class="tb" width="20%">工商注册号</td>
-              <td width="30%">{{targetInfo[0].regNo}}</td>
+              <td width="30%">{{targetInfo[0].regNo}}
+                <el-input v-model="targetInfo[0].regNo" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].regNo}}</div>
+              </td>
               <td class="tb" width="20%">统一社会信用代码</td>
-              <td width="30%">{{targetInfo[0].creditNo}}</td>
+              <td width="30%">{{targetInfo[0].creditNo}}
+                <el-input v-model="targetInfo[0].creditNo" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].creditNo}}</div>
+              </td>
             </tr>
             <tr>
               <td class="tb" width="20%">目标地址</td>
-              <td width="30%">{{targetInfo[0].targetAdd}}</td>
+              <td width="30%">{{targetInfo[0].targetAdd}}
+                <el-input v-model="targetInfo[0].targetAdd" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetAdd}}</div>
+              </td>
               <td class="tb" width="20%">目标联系方式</td>
               <td width="30%">
                 <el-popover trigger="click" width="400" placement="right">
                   <table class="ntable">
                     <tr>
                       <td width="35%">目标网址</td>
-                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].website}}</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].website}}
+                        <el-input v-model="targetInfo[0].targetContacts[0].website" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetContacts[0].website}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">目标电话</td>
-                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].phone}}</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].phone}}
+                        <el-input v-model="targetInfo[0].targetContacts[0].phone" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetContacts[0].phone}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">目标邮箱</td>
-                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].email}}</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].email}}
+                        <el-input v-model="targetInfo[0].targetContacts[0].email" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetContacts[0].email}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%" rowspan="3">社交号</td>
                       <td>社交工具</td>
-                      <td>{{targetInfo[0].targetContacts[0].networks[0].networkName}}</td>
+                      <td>{{targetInfo[0].targetContacts[0].networks[0].networkName}}
+                        <el-input v-model="targetInfo[0].targetContacts[0].networks[0].networkName" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetContacts[0].networks[0].networkName}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td>号码</td>
-                      <td>{{targetInfo[0].targetContacts[0].networks[0].networkNo}}</td>
+                      <td>{{targetInfo[0].targetContacts[0].networks[0].networkNo}}
+                        <el-input v-model="targetInfo[0].targetContacts[0].networks[0].networkNo" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetContacts[0].networks[0].networkNo}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td>备注</td>
-                      <td>{{targetInfo[0].targetContacts[0].networks[0].note}}</td>
+                      <td>{{targetInfo[0].targetContacts[0].networks[0].note}}
+                        <el-input v-model="targetInfo[0].targetContacts[0].networks[0].note" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetContacts[0].networks[0].note}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">备注</td>
-                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].note}}</td>
+                      <td width="65%" colspan="2">{{targetInfo[0].targetContacts[0].note}}
+                        <el-input v-model="targetInfo[0].targetContacts[0].note" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetContacts[0].note}}</div>
+                      </td>
                     </tr>
                   </table>
                   <el-button slot="reference">详情</el-button>
@@ -550,45 +590,75 @@
                   <table class="ntable">
                     <tr>
                       <td width="35%">姓名</td>
-                      <td width="65%" colspan="5">{{targetInfo[0].targetPrincipal[0].name}}</td>
+                      <td width="65%" colspan="5">{{targetInfo[0].targetPrincipal[0].name}}
+                        <el-input v-model="targetInfo[0].targetPrincipal[0].name" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetPrincipal[0].name}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">职位</td>
-                      <td width="65%" colspan="5">{{targetInfo[0].targetPrincipal[0].position}}</td>
+                      <td width="65%" colspan="5">{{targetInfo[0].targetPrincipal[0].position}}
+                        <el-input v-model="targetInfo[0].targetPrincipal[0].position" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetPrincipal[0].position}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">证件号码</td>
-                      <td width="65%" colspan="5">{{targetInfo[0].targetPrincipal[0].ID}}</td>
+                      <td width="65%" colspan="5">{{targetInfo[0].targetPrincipal[0].ID}}
+                        <el-input v-model="targetInfo[0].targetPrincipal[0].ID" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetPrincipal[0].ID}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%" rowspan="5">联系方式</td>
                       <td>目标电话</td>
-                      <td colspan="3">{{targetInfo[0].targetPrincipal[0].contacts[0].phone}}</td>
+                      <td colspan="3">{{targetInfo[0].targetPrincipal[0].contacts[0].phone}}
+                        <el-input v-model="targetInfo[0].targetPrincipal[0].contacts[0].phone" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetPrincipal[0].contacts[0].phone}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td>目标邮箱</td>
-                      <td colspan="3">{{targetInfo[0].targetPrincipal[0].contacts[0].email}}</td>
+                      <td colspan="3">{{targetInfo[0].targetPrincipal[0].contacts[0].email}}
+                        <el-input v-model="targetInfo[0].targetPrincipal[0].contacts[0].email" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetPrincipal[0].contacts[0].email}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td rowspan="3">社交号</td>
                       <td>社交工具</td>
-                      <td>{{targetInfo[0].targetPrincipal[0].contacts[0].networks[0].networkName}}</td>
+                      <td>{{targetInfo[0].targetPrincipal[0].contacts[0].networks[0].networkName}}
+                        <el-input v-model="targetInfo[0].targetPrincipal[0].contacts[0].networks[0].networkName" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetPrincipal[0].contacts[0].networks[0].networkName}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td>号码</td>
-                      <td>{{targetInfo[0].targetPrincipal[0].contacts[0].networks[0].networkNo}}</td>
+                      <td>{{targetInfo[0].targetPrincipal[0].contacts[0].networks[0].networkNo}}
+                        <el-input v-model="targetInfo[0].targetPrincipal[0].contacts[0].networks[0].networkNo" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetPrincipal[0].contacts[0].networks[0].networkNo}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td>备注</td>
-                      <td>{{targetInfo[0].targetPrincipal[0].contacts[0].networks[0].note}}</td>
+                      <td>{{targetInfo[0].targetPrincipal[0].contacts[0].networks[0].note}}
+                        <el-input v-model="targetInfo[0].targetPrincipal[0].contacts[0].networks[0].note" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetPrincipal[0].contacts[0].networks[0].note}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">是否为累犯</td>
-                      <td width="65%" colspan="4">{{targetInfo[0].targetContacts[0].isRecidivism}}</td>
+                      <td width="65%" colspan="4">{{targetInfo[0].targetContacts[0].isRecidivism}}
+                        <el-input v-model="targetInfo[0].targetContacts[0].isRecidivism" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetContacts[0].isRecidivism}}</div>
+                      </td>
                     </tr>
                     <tr>
                       <td width="35%">备注</td>
-                      <td width="65%" colspan="4">{{targetInfo[0].targetContacts[0].note}}</td>
+                      <td width="65%" colspan="4">{{targetInfo[0].targetContacts[0].note}}
+                        <el-input v-model="targetInfo[0].targetContacts[0].note" v-if="isShow"></el-input>
+                        <div v-else>{{targetInfo[0].targetContacts[0].note}}</div>
+                      </td>
                     </tr>
                   </table>
                   <el-button slot="reference">详情</el-button>

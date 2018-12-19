@@ -5,6 +5,16 @@ import {
 } from 'uri-js';
 
 Vue.use(Router);
+import store from "../store/store";
+
+
+
+// 页面刷新时，重新赋值token
+if (sessionStorage.getItem('token')) {
+    store.commit('set_token', sessionStorage.getItem('token'))
+}
+
+
 
 export default new Router({
     mode: 'history',
@@ -225,3 +235,10 @@ export default new Router({
         }
     ]
 })
+
+
+
+
+
+
+

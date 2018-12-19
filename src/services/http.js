@@ -2,16 +2,34 @@ import axios from 'axios'
 import * as qs from 'querystring';
 import Loading from '../components/loading/Loading'
 import config from './config'
+import router from '../router';
+import store from '../store/store'
 
+console.info(window.sessionStorage.getItem('token'))
 let instance = axios.create({
     baseURL: config.baseURL, // api的base_url
-    timeout: 15000 // 请求超时时间
+    timeout: 15000,// 请求超时时间
+    headers: {
+        'Authorization':store.state.token
+    },
+     headers: {
+         'X-Requested-With': 'XMLHttpRequest'
+     },
 });
+
+instance.defaults.headers.common['Authorization'] = store.state.token;
 
 /* 拦截请求 */
 instance.interceptors.request.use(
     request => {
+        
         Loading.open()
+        if (store.state.token) {
+            console.info(request.headers)
+            // request.setRequestHeader('Authorization',store.state.token)
+            request.headers['Authorization'] = store.state.token
+            
+        }
         return request;
     },
     error => {
@@ -22,11 +40,27 @@ instance.interceptors.request.use(
 /* 拦截响应 */
 instance.interceptors.response.use(
     response => {
+        console.info(response)
         Loading.close()
         return response.data
     },
+    
     error => {
         Loading.close()
+        if (error.response) {
+            switch (error.response.status) {
+
+                case 401:
+                    this.$store.commit('del_token');
+                    router.replace({
+                        path: '/login',
+                        query: {
+                            redirect: router.currentRoute.fullPath
+                        } //登录成功后跳入浏览的当前页面
+                    })
+                    debugger
+            }
+        }
         return Promise.reject(error)
     }
 );

@@ -63,3 +63,12 @@ export function _getaccounting(param) {
 export function _postaccounting(param) {
     return postJson('/accounting', param)
 }
+
+
+export function _loginpost(param) {
+    return postJson('/access/login',param)
+}
+
+export function _logout(param) {
+    return get('/access/logout', param)
+}
