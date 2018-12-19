@@ -104,7 +104,9 @@ export default {
       // console.info(objlogout)
       console.info( store.state.token)
       _logout().then(res=>{
-        console.info(1)
+        console.info(res)
+      }).catch(err=>{
+        console.info(err)
       })
       // console.info(window.handleCommand)
       // let objlogout=new Object()

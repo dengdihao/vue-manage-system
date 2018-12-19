@@ -9,15 +9,8 @@ console.info(window.sessionStorage.getItem('token'))
 let instance = axios.create({
     baseURL: config.baseURL, // api的base_url
     timeout: 15000,// 请求超时时间
-    headers: {
-        'Authorization':store.state.token
-    },
-     headers: {
-         'X-Requested-With': 'XMLHttpRequest'
-     },
 });
 
-instance.defaults.headers.common['Authorization'] = store.state.token;
 
 /* 拦截请求 */
 instance.interceptors.request.use(
@@ -28,7 +21,6 @@ instance.interceptors.request.use(
             console.info(request.headers)
             // request.setRequestHeader('Authorization',store.state.token)
             request.headers['Authorization'] = store.state.token
-            
         }
         return request;
     },
