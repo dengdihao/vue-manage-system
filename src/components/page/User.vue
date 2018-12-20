@@ -33,6 +33,7 @@
         </el-form-item>
         <el-form-item>
           <el-button>修改</el-button>
+
         </el-form-item>
       </el-form>
     </div>
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+import { _userinfo } from "../../services/service.js";
 export default {
   data() {
     return {
@@ -54,7 +56,8 @@ export default {
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
-    }
+    },
+    
   }
 };
 </script>

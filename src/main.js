@@ -21,9 +21,7 @@ Vue.use(ElementUI, { size: 'small' ,locale});
 Vue.prototype.$axios = axios;
 import store from './store/store'
 
-axios.defaults.headers['Authorization'] = store.state.token;
-axios.defaults.headers.common['Authorization'] = store.state.token;
-
+axios.defaults.headers['Authorization']=window.localStorage.getItem("token")
 // //使用钩子函数对路由进行权限跳转
 // router.beforeEach((to, from, next) => {
 //     const role = sessionStorage.getItem('ms_username');

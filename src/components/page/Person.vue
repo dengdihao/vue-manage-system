@@ -5,38 +5,41 @@
         <div class="user-title">我的账户</div>
         <div class="user-content">
           <p>基本信息</p>
-          <el-form label-width="100px">
+          <el-form label-width="100px" :model="form" ref="form">
             <el-form-item label="账号">
-              <el-input disabled></el-input>
+              <el-input disabled v-model="form.userName"></el-input>
             </el-form-item>
             <el-form-item label="头像">
-              <el-upload
-                action
-                list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove"
+              <div class="user-img">
+                <img :src="form.profilePhoto" alt width="148">
+              </div>
+
+              <input
+                class="file"
+                name="file"
+                type="file"
+                accept="image/png, image/gif, image/jpeg"
+                @change="changeImage($event)"
               >
-                <i class="el-icon-plus"></i>
-              </el-upload>
-              <el-dialog :visible.sync="dialogVisible">
-                <img width="100%" :src="dialogImageUrl" alt>
-              </el-dialog>
-              <el-button style="margin-top: 20px;">上传</el-button>
             </el-form-item>
             <el-form-item label="昵称">
-              <el-input></el-input>
+              <el-input v-model="form.nickname"></el-input>
             </el-form-item>
             <el-form-item label="密码">
-              <el-input></el-input>
+              <el-input v-model="form.password"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱">
+              <el-input v-model="form.email"></el-input>
             </el-form-item>
             <el-form-item label="账户类型">
-              <el-input disabled></el-input>
+              <el-input disabled v-model="form.role"></el-input>
               <!-- 主管 报告员 管理员 财务人员 财务主管 -->
             </el-form-item>
             <el-form-item>
-              <el-button>修改</el-button>
+              <el-button @click="upfile">修改</el-button>
             </el-form-item>
           </el-form>
+          <button @click="getuserinfo">查询</button>
         </div>
       </div>
     </el-card>
@@ -44,16 +47,25 @@
 </template>
 
 <script>
+import { _userinfo, _updateuser } from "../../services/service.js";
+import Axios from "axios";
 export default {
   data() {
     return {
-      personUl: [
-        { topath: "user", content: "个人简介", name: "user" },
-        { topath: "edituser", content: "编辑信息", name: "edituser" }
-      ],
+      form: {
+        userName: "", //账号
+        profilePhoto: require("../../assets/logo.png"), // 头像
+        nickname: "", // 昵称
+        password: "", // 密码
+        email: "", // 邮箱
+        role: "" // 身份权限
+      },
       dialogImageUrl: "",
-      dialogVisible: false
+      dialogVisible: true
     };
+  },
+  created() {
+    this.getuserinfo();
   },
   methods: {
     topath(name) {
@@ -67,12 +79,51 @@ export default {
         }
       });
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    getuserinfo() {
+      _userinfo()
+        .then(res => {
+          console.info(res);
+          this.form = res.data;
+          console.info(this.form);
+        })
+        .catch(err => {
+          console.info(err);
+        });
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+    changeImage(e) {
+      let file = e.target.files[0];
+      let reader = new FileReader();
+      let that = this;
+      reader.readAsDataURL(file);
+      // console.info(res)
+      reader.onload = function(e) {
+        that.form.profilePhoto = this.result;
+      };
+    },
+    upfile() {
+      console.info(11);
+      console.info(JSON.stringify(this.form));
+      _updateuser(this.form)
+        .then(res => {
+          console.info(res);
+          this.$router.push("/person");
+          this.$nextTick(() => {
+            
+            this.$message({
+            showClose: true,
+            message: "修改成功！！！",
+            type: "success"
+          });
+          });
+        })
+        .catch(err => {
+          this.$refs["form"].resetFields();
+          this.$message({
+            showClose: true,
+            message: "修改错误！！！",
+            type: "error"
+          });
+        });
     }
   }
 };
@@ -81,7 +132,6 @@ export default {
 <style lang="less" scoped>
 .person-left-sidebar {
   padding: 10px 0;
-  
 }
 .text {
   font-size: 14px;
@@ -94,55 +144,40 @@ export default {
   padding: 10px 0;
   background: #fff;
   font-size: 14px;
-      background: #fff;
-    font-size: 14px;
-    width: 800px;
-    margin: 0 auto;
+  background: #fff;
+  font-size: 14px;
+  width: 800px;
+  margin: 0 auto;
 }
-  .user-title {
-    margin-top: -10px;
-    margin-bottom: 30px;
-    color: #409eff;
-    font-size: 20px;
-    line-height: 25px;
-    border-left: 12px solid #409eff;
-    padding-left: 21px;
+.user-title {
+  margin-top: -10px;
+  margin-bottom: 30px;
+  color: #409eff;
+  font-size: 20px;
+  line-height: 25px;
+  border-left: 12px solid #409eff;
+  padding-left: 21px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+}
+.user-content {
+  p {
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
-    font-weight: bold;
+    font-size: 16px;
   }
-  .user-content {
-    p {
-      padding-bottom: 10px;
-      border-bottom: 1px solid #ddd;
-      font-size: 16px;
-    }
-    .el-form {
-      margin: 20px 0;
-      .avatar-uploader .el-upload {
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-      }
-      .avatar-uploader .el-upload:hover {
-        border-color: #409eff;
-      }
-      .avatar-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        width: 178px;
-        height: 178px;
-        line-height: 178px;
-        text-align: center;
-      }
-      .avatar {
-        width: 178px;
-        height: 178px;
-        display: block;
+  .el-form {
+    margin: 20px 0;
+    .user-img {
+      width: 150px;
+      height: 150px;
+      padding: 2px;
+      img {
+        width: 100%;
+        height: 100%;
       }
     }
   }
-
+}
 </style>

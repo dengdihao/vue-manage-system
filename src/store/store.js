@@ -9,13 +9,15 @@ export default new Vuex.Store({
         token: ''
     },
     mutations: {
+        
         set_token(state, token) {
+        debugger
             state.token = token
-            sessionStorage.token = token
+            localStorage.token = token
         },
         del_token(state) {
             state.token = ''
-            sessionStorage.removeItem('token')
+            localStorage.removeItem('token')
         }
     }
 })

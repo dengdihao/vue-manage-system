@@ -5,23 +5,24 @@ import config from './config'
 import router from '../router';
 import store from '../store/store'
 
-console.info(window.sessionStorage.getItem('token'))
+console.info(window.localStorage.getItem('token'))
 let instance = axios.create({
     baseURL: config.baseURL, // api的base_url
-    timeout: 15000,// 请求超时时间
+    timeout: 15000, // 请求超时时间
 });
 
 
 /* 拦截请求 */
+console.info(store)
 instance.interceptors.request.use(
     request => {
-        
+        // debugger
         Loading.open()
         if (store.state.token) {
-            console.info(request.headers)
             // request.setRequestHeader('Authorization',store.state.token)
             request.headers['Authorization'] = store.state.token
         }
+        console.info(request.data)
         return request;
     },
     error => {
@@ -36,7 +37,7 @@ instance.interceptors.response.use(
         Loading.close()
         return response.data
     },
-    
+
     error => {
         Loading.close()
         if (error.response) {
@@ -50,7 +51,7 @@ instance.interceptors.response.use(
                             redirect: router.currentRoute.fullPath
                         } //登录成功后跳入浏览的当前页面
                     })
-                    debugger
+                    // debugger
             }
         }
         return Promise.reject(error)

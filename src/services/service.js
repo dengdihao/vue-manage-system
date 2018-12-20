@@ -65,10 +65,28 @@ export function _postaccounting(param) {
 }
 
 
+
+/* 登陆 */
 export function _loginpost(param) {
     return postJson('/access/login',param)
 }
 
+/* 登出 */
 export function _logout(param) {
     return get('/access/logout', param)
+}
+
+/* 个人信息 */
+export function _userinfo(params) {
+    return get('/access/userInfo', params)
+}
+
+/* 注册用户 */
+export function _register(params) {
+    return postJson('/access/register', params)
+}
+
+/* 修改个人信息 */
+export function _updateuser(param){
+    return postJson('/access/updateUser', param)
 }

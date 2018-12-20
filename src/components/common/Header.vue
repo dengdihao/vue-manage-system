@@ -102,9 +102,10 @@ export default {
       // let objlogout=new Object()
       // objlogout.Authorization=token
       // console.info(objlogout)
-      console.info( store.state.token)
+      console.info( store)
       _logout().then(res=>{
-        console.info(res)
+        this.$store.commit('del_token',localStorage.getItem('token'))
+        this.$router.push('/login')
       }).catch(err=>{
         console.info(err)
       })
