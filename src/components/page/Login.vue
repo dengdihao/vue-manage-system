@@ -3,8 +3,8 @@
     <div class="ms-login">
       <div class="ms-title">后台管理系统</div>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
-        <el-form-item prop="username">
-          <el-input v-model="ruleForm.userName" placeholder="username">
+        <el-form-item prop="userName">
+          <el-input type="text" v-model="ruleForm.userName" placeholder="username">
             <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
           </el-input>
         </el-form-item>
@@ -42,48 +42,65 @@ export default {
       },
       rules: {
         userName: [
-          { required: true, message: "请输入用户名", trigger: "blur" }
+          {
+            type: "string",
+            required: true,
+            message: "请输入用户名",
+            trigger: "blur"
+          }
         ],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+        password: [
+          {
+            type: "string",
+            required: true,
+            message: "请输入密码",
+            trigger: "blur"
+          }
+        ]
       }
     };
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
-        console.info(valid);
         if (valid) {
-          _loginpost(this.ruleForm).then(res=>{
-          console.info(store.state.token)
-          console.info(res)
-          this.$store.commit('set_token',res.token)
-          if (store.state.token) {
-            this.$message.error('成功')
-            this.$router.push('/')
-          }else{
-              this.$router.replace('/login')
-          }
-          })
+          _loginpost(this.ruleForm)
+            .then(res => {
+              console.info(store.state.token);
+              console.info(res);
+              if (res.status === 401) {
+                this.$message.error("账号或密码错误");
+              }
+              this.$store.commit("set_token", res.token);
+              if (store.state.token) {
+                this.$message({
+                  message: "恭喜你，这是一条成功消息",
+                  type: "success"
+                });
+                this.$router.push("/");
+              } else {
+                this.$router.replace("/login");
+              }
+            })
+            .catch(err => {
+              console.info(err);
+              console.info(err);
+              this.$message.error("账号或密码错误");
+            });
         } else {
           console.log("error submit!!");
           return false;
         }
-      }).catch(err=>{
-              console.info(err)
-              this.$message.error('账号或密码错误')
-          });
+      });
     },
     register() {
       this.$router.push({
         name: "register"
       });
     }
-    
   },
-  
-mounted(){
-}
 
+  mounted() {}
 };
 </script>
 

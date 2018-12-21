@@ -11,7 +11,9 @@
             </el-form-item>
             <el-form-item label="头像">
               <div class="user-img">
-                <img :src="form.profilePhoto" alt width="148">
+                <!-- <img :src="form.profilePhoto===undefined && form.profilePhoto=== ''?require('../../assets/logo.png'):form.profilePhoto" alt width="148px" > -->
+                <img :src="form.profilePhoto" alt width="148px">
+                <!-- <p v-else>1111</p> -->
               </div>
 
               <input
@@ -25,7 +27,10 @@
             <el-form-item label="昵称">
               <el-input v-model="form.nickname"></el-input>
             </el-form-item>
-            <el-form-item label="密码">
+            <el-form-item label="原密码">
+              <el-input v-model="form.oldPassword"></el-input>
+            </el-form-item>
+            <el-form-item label="新密码">
               <el-input v-model="form.password"></el-input>
             </el-form-item>
             <el-form-item label="邮箱">
@@ -54,9 +59,10 @@ export default {
     return {
       form: {
         userName: "", //账号
-        profilePhoto: require("../../assets/logo.png"), // 头像
+        profilePhoto: '', // 头像
         nickname: "", // 昵称
-        password: "", // 密码
+        oldPassword:'', // 原密码
+        password: "", // 新密码
         email: "", // 邮箱
         role: "" // 身份权限
       },
@@ -84,6 +90,8 @@ export default {
         .then(res => {
           console.info(res);
           this.form = res.data;
+          console.info(this.form.profilePhoto)
+          
           console.info(this.form);
         })
         .catch(err => {
@@ -98,6 +106,7 @@ export default {
       // console.info(res)
       reader.onload = function(e) {
         that.form.profilePhoto = this.result;
+        console.info(this.result)
       };
     },
     upfile() {
@@ -106,7 +115,7 @@ export default {
       _updateuser(this.form)
         .then(res => {
           console.info(res);
-          this.$router.push("/person");
+          
           this.$nextTick(() => {
             
             this.$message({
@@ -114,6 +123,8 @@ export default {
             message: "修改成功！！！",
             type: "success"
           });
+          this.$router.push("/person");
+
           });
         })
         .catch(err => {
@@ -173,9 +184,10 @@ export default {
       width: 150px;
       height: 150px;
       padding: 2px;
+      // line-height: 1;
       img {
-        width: 100%;
-        height: 100%;
+        width: 148px;
+        height: 148px;
       }
     }
   }

@@ -13,14 +13,14 @@ let instance = axios.create({
 
 
 /* 拦截请求 */
-console.info(store)
+// console.info(store)
 instance.interceptors.request.use(
     request => {
-        // debugger
+        debugger
         Loading.open()
-        if (store.state.token) {
+        if (localStorage.getItem("token") && localStorage.getItem("token")!== undefined) {
             // request.setRequestHeader('Authorization',store.state.token)
-            request.headers['Authorization'] = store.state.token
+            request.headers['Authorization'] = localStorage.getItem("token")
         }
         console.info(request.data)
         return request;

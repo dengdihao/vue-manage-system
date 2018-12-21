@@ -11,7 +11,7 @@ export default new Vuex.Store({
     mutations: {
         
         set_token(state, token) {
-        debugger
+            debugger
             state.token = token
             localStorage.token = token
         },

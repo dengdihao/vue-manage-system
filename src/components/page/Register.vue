@@ -74,24 +74,39 @@
 import { _register } from "../../services/service.js";
 export default {
   data() {
+    /* 用户名 */
+    var userName = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("账号不为空"));
+      } else {
+        callback();
+      }
+    };
+    /* 验证手机号 */
     var checkphone = (rule, value, callback) => {
-      let regphone = /0?(13|14|15|17|18|19)[0-9]{9}/;
+      let regphone = /^1\d{10}$/;
       if (!regphone.test(value) === true) {
         callback(new Error("请输入正确的电话"));
       } else {
         callback();
       }
     };
+    /* 密码 */
     var validatePass = (rule, value, callback) => {
+      let regpassword=/^\S{6,15}$/; 
       if (value === "") {
         callback(new Error("请输入密码"));
-      } else {
+      } else if (!regpassword.test(value) === true) {
+        callback(new Error("密码必须由 6-16随意字符组成."));
+      }
+      else {
         if (this.ruleForm2.checkpassword !== "") {
           this.$refs.ruleForm2.validateField("checkpassword");
         }
         callback();
       }
     };
+    /* 确认密码 */
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
@@ -101,24 +116,35 @@ export default {
         callback();
       }
     };
-    var checkEmail = (rule, value, callback) => {
-      let regemail = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
-      if (!regemail.test(value) === true) {
-        callback(new Error("请输入正确的邮箱"));
+    /* 角色权限 */
+    var role = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请选择角色！！！"));
       } else {
         callback();
       }
     };
+
+    var email =(rul,value,callback)=>{
+      let regemail=/^\w+@\w+(\.[a-zA-Z]{2,3}){1,2}$/
+      if (value === "") {
+        callback(new Error("请输入邮箱！！！"));
+      } else if (!regemail.test(value) === true) {
+        callback(new Error("输入正确的邮箱格式！！！"))
+      }
+      else {
+        callback();
+      }
+    }
     return {
       ruleForm2: {
-        userName: "11122", //用户名
-        password: "111111", //密码
-        userPhone: "13488888888", //电话
-        email: "xujakai11@163.com", //邮箱
-        role: "Financial", //角色权限
+        userName: "", //用户名 必填
+        password: "", //密码 必填
+        userPhone: "", //电话 必填
+        role: "", //角色权限 必填
+        email: "", //邮箱 
         userAddress: "", // 地址
         realName: "", //真实姓名
-        checkPass: "", // 部门
         unit: "", //部门
         position: "", // 职位
         checkpassword: "" //确认密码
@@ -128,20 +154,22 @@ export default {
           label: '管理员',
           disabled:true
       },{
-value: 'Financial',
-          label: '财务',
-      },{
 value: 'FinancialController',
           label: '财务主管',
+          disabled:true
       },{
 value: 'Supervisor',
           label: '主管',
+          disabled:true
+      },{
+value: 'Financial',
+          label: '财务',
       },{
 value: 'ReportingStaff',
           label: '报告员',
       }],
       rules2: {
-        userName:[{required:true,trigger: "blur" }],
+        userName:[{required:true,validator:userName, trigger: "blur" }],
         password: [
           { required: true, validator: validatePass, trigger: "blur" }
         ],
@@ -149,8 +177,8 @@ value: 'ReportingStaff',
           { required: true, validator: validatePass2, trigger: "blur" }
         ],
         userPhone: [{ required: true, validator: checkphone, trigger: "blur" }],
-        email: [{ required: true, validator: checkEmail, trigger: "blur" }],
-        role:[{required: true,trigger: "blur"}]
+        role:[{required: true,validator: role,trigger: "blur"}],
+        email:[{required: true,validator: email,trigger: "blur"}]
       },
       required: true
     };
