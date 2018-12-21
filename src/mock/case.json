@@ -1,0 +1,101 @@
+{
+    "baseInfo": {
+        "id": "0cc175b9c0f1b6a831c399e269772661",
+        "priority": "高级",
+        "status": "进行中",
+        "type": "调查",
+        "caseNo": "JF00001",
+        "caseName": "***商标侵权案",
+        "currentParticipants": ["张三", "李四"],
+        "reason": "商标侵权",
+        "openDate": 1519862400000,
+        "closeDate": 1520862400000,
+        "closeMode": "和解",
+        "updateInfo": [{
+            "updateTime": 1519862400000,
+            "updatePerson": "李四",
+            "item": "暂无",
+            "content": "暂无",
+            "version": -1
+        }]
+    },
+    "clientInfo": {
+        "clientCaseNo": "HL000001",
+        "brands": "CAT",
+        "instructions": "调查****，获得侵权产品信息",
+        "authorizeDate": 1519862400000,
+        "note": "暂无",
+        "documents": [{
+            "documentName": "鉴定书",
+            "documentType": "鉴定书",
+            "issueDate": 1519862400000,
+            "documentPath": "C:/鉴定书.pdf",
+            "content": "暂无",
+            "receiveDate": 1519862400000,
+            "sendDate": 1519862400000,
+            "note": "暂无"
+        }]
+    },
+    "targetInfo": [{
+        "targetName": "***销售有限公司",
+        "targetType": "有限公司",
+        "regNo": 110000450277805,
+        "creditNo": "91110000322283429E",
+        "targetAdd": "北京市海淀区西北旺东路10号院西区4号楼6层606室",
+        "targetContacts": [{
+            "website": "www.baidu.com",
+            "phone": 13641269217,
+            "email": "13641269217@163.com",
+            "note": "暂无",
+            "networks": [{
+                "networkName": "QQ",
+                "networkNo": 1234567,
+                "note": "暂无"
+            }]
+        }],
+        "targetPrincipal": [{
+            "name": "张三",
+            "position": "法人",
+            "ID": "320300*****1206",
+            "contacts": [{
+                "phone": "021-13140400",
+                "email": "1234567@qq.com",
+                "networks": [{
+                    "networkName": "百科",
+                    "networkNo": 1234567,
+                    "note": "暂无"
+                }],
+                "note": "暂无"
+            }],
+            "isRecidivism": true,
+            "note": "暂无"
+        }],
+        "affiliateCompany": [{
+            "companyName": "ABC网路科技有限公司",
+            "principal": [{
+                "name": "张三",
+                "position": "法人",
+                "ID": "320300*****1206",
+                "contacts": [{
+                    "phone": ["021-54631200"],
+                    "email": ["123@123.com"],
+                    "networks": [{
+                        "networkName": "QQ",
+                        "networkNo": 1234567,
+                        "note": "暂无"
+                    }],
+                    "note": "暂无"
+                }],
+                "note": "暂无"
+            }],
+            "note": "暂无"
+        }],
+        "productInfo": [{
+            "productName": "发动机",
+            "productNo": "E321456",
+            "productQty": 100,
+            "note": "暂无"
+        }],
+        "note": "暂无"
+    }]
+}

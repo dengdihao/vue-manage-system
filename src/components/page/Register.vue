@@ -11,8 +11,7 @@
         class="demo-ruleForm ms-content"
       >
         <!-- :model="formLabelAlign" -->
-        <el-form-item label="用户名：" autocomplete="off"
-            hide-required-asterisk="true" prop="userName">
+        <el-form-item label="用户名：" autocomplete="off" hide-required-asterisk="true" prop="userName">
           <el-input v-model="ruleForm2.userName"></el-input>
           <!-- v-model="formLabelAlign.name" -->
         </el-form-item>
@@ -35,18 +34,25 @@
         <el-form-item label="电话：" prop="userPhone">
           <el-input v-model.number="ruleForm2.userPhone"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱：" prop="email">
-          <el-input v-model.number="ruleForm2.email"></el-input>
+        <el-form-item
+          prop="email"
+          label="邮箱："
+          :rules="[
+      { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+    ]"
+        >
+          <el-input v-model="ruleForm2.email"></el-input>
         </el-form-item>
-        <el-form-item label="角色：" autocomplete="off"
-            hide-required-asterisk="true" prop="role">
-          <el-select v-model="ruleForm2.role" placeholder="请选择角色" >
-            <el-option v-for="(item,index) in seselects"
-      :key="index"
-      :label="item.label"
-      :value="item.value"
-      :disabled="item.disabled"></el-option>
-            
+        <el-form-item label="角色：" autocomplete="off" hide-required-asterisk="true" prop="role">
+          <el-select v-model="ruleForm2.role" placeholder="请选择角色">
+            <el-option
+              v-for="(item,index) in seselects"
+              :key="index"
+              :label="item.label"
+              :value="item.value"
+              :disabled="item.disabled"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="地址：">
@@ -84,7 +90,7 @@ export default {
     };
     /* 验证手机号 */
     var checkphone = (rule, value, callback) => {
-      let regphone = /^1\d{10}$/;
+      let regphone = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
       if (!regphone.test(value) === true) {
         callback(new Error("请输入正确的电话"));
       } else {
@@ -93,13 +99,12 @@ export default {
     };
     /* 密码 */
     var validatePass = (rule, value, callback) => {
-      let regpassword=/^\S{6,15}$/; 
+      let regpassword = /^\S{6,15}$/;
       if (value === "") {
         callback(new Error("请输入密码"));
       } else if (!regpassword.test(value) === true) {
         callback(new Error("密码必须由 6-16随意字符组成."));
-      }
-      else {
+      } else {
         if (this.ruleForm2.checkpassword !== "") {
           this.$refs.ruleForm2.validateField("checkpassword");
         }
@@ -125,51 +130,60 @@ export default {
       }
     };
 
-    var email =(rul,value,callback)=>{
-      let regemail=/^\w+@\w+(\.[a-zA-Z]{2,3}){1,2}$/
-      if (value === "") {
-        callback(new Error("请输入邮箱！！！"));
-      } else if (!regemail.test(value) === true) {
-        callback(new Error("输入正确的邮箱格式！！！"))
-      }
-      else {
-        callback();
-      }
-    }
+    // var email = (rule, value, callback) => {
+    //   let regemail = /^\w+@\w+(\.[a-zA-Z]{2,3}){1,2}$/;
+    //   debugger;
+    //   if (value) {
+    //     callback(new Error("请输入正确的电话"));
+    //   }
+    //   setTimeout(() => {
+    //     if (!regemail.test(value)) {
+    //       callback(new Error("请输入正确的邮箱格式"));
+    //     } else {
+    //       callback;
+    //     }
+    //   }, 100);
+    // };
     return {
       ruleForm2: {
         userName: "", //用户名 必填
         password: "", //密码 必填
         userPhone: "", //电话 必填
         role: "", //角色权限 必填
-        email: "", //邮箱 
+        email: "", //邮箱
         userAddress: "", // 地址
         realName: "", //真实姓名
         unit: "", //部门
         position: "", // 职位
         checkpassword: "" //确认密码
       },
-      seselects:[{
-        value: 'Admin',
-          label: '管理员',
-          disabled:true
-      },{
-value: 'FinancialController',
-          label: '财务主管',
-          disabled:true
-      },{
-value: 'Supervisor',
-          label: '主管',
-          disabled:true
-      },{
-value: 'Financial',
-          label: '财务',
-      },{
-value: 'ReportingStaff',
-          label: '报告员',
-      }],
+      seselects: [
+        {
+          value: "Admin",
+          label: "管理员",
+          disabled: true
+        },
+        {
+          value: "FinancialController",
+          label: "财务主管",
+          disabled: true
+        },
+        {
+          value: "Supervisor",
+          label: "主管",
+          disabled: true
+        },
+        {
+          value: "Financial",
+          label: "财务"
+        },
+        {
+          value: "ReportingStaff",
+          label: "报告员"
+        }
+      ],
       rules2: {
-        userName:[{required:true,validator:userName, trigger: "blur" }],
+        userName: [{ required: true, validator: userName, trigger: "blur" }],
         password: [
           { required: true, validator: validatePass, trigger: "blur" }
         ],
@@ -177,8 +191,10 @@ value: 'ReportingStaff',
           { required: true, validator: validatePass2, trigger: "blur" }
         ],
         userPhone: [{ required: true, validator: checkphone, trigger: "blur" }],
-        role:[{required: true,validator: role,trigger: "blur"}],
-        email:[{required: true,validator: email,trigger: "blur"}]
+        role: [{ required: true, validator: role, trigger: "blur" }]
+        // email: [
+        //   { required: true, type: "email", validator: email, trigger: "blur" }
+        // ]
       },
       required: true
     };
