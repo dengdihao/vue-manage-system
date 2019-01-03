@@ -53,22 +53,22 @@ export default {
           icon: "el-icon-lx-home",
           index: "dashboard",
           title: "系统首页"
-        },
+        },  
         {
           icon: "el-icon-lx-home",
-          index: "vue",
-          title: "vue"
+          index: "createcase",
+          title: "新建案件"
         },
         {
           icon: "el-icon-question",
           index: "powersearch",
           title: "高级搜索"
         },
-        {
-          icon: "el-icon-document",
-          index: "detailpages",
-          title: "详情信息"
-        },
+        // {
+        //   icon: "el-icon-document",
+        //   index: "detailpages",
+        //   title: "详情信息"
+        // },
         {
           icon: "el-icon-tickets",
           index: "fileskeeping",
@@ -90,60 +90,60 @@ export default {
           index: "tabs",
           title: "消息通知"
         },
-        {
-          icon: "el-icon-lx-calendar",
-          index: "3",
-          title: "表单相关",
-          subs: [
-            {
-              index: "form",
-              title: "基本表单"
-            },
-            {
-              index: "3-2",
-              title: "三级菜单",
-              subs: [
-                {
-                  index: "editor",
-                  title: "富文本编辑器"
-                },
-                {
-                  index: "markdown",
-                  title: "markdown编辑器"
-                }
-              ]
-            },
-            {
-              index: "upload",
-              title: "文件上传"
-            }
-          ]
-        },
-        {
-          icon: "el-icon-rank",
-          index: "drag",
-          title: "拖拽列表"
-        },
+        // {
+        //   icon: "el-icon-lx-calendar",
+        //   index: "3",
+        //   title: "表单相关",
+        //   subs: [
+        //     {
+        //       index: "form",
+        //       title: "基本表单"
+        //     },
+        //     {
+        //       index: "3-2",
+        //       title: "三级菜单",
+        //       subs: [
+        //         {
+        //           index: "editor",
+        //           title: "富文本编辑器"
+        //         },
+        //         {
+        //           index: "markdown",
+        //           title: "markdown编辑器"
+        //         }
+        //       ]
+        //     },
+        //     {
+        //       index: "upload",
+        //       title: "文件上传"
+        //     }
+        //   ]
+        // },
+        // {
+        //   icon: "el-icon-rank",
+        //   index: "drag",
+        //   title: "拖拽列表"
+        // },
         {
           icon: "el-icon-rank",
           index: "yuread",
           title: "文件预览"
         },
-        {
-          icon: "el-icon-lx-warn",
-          index: "6",
-          title: "错误处理",
-          subs: [
-            {
-              index: "permission",
-              title: "权限测试"
-            },
-            {
-              index: "404",
-              title: "404页面"
-            }
-          ]
-        },
+        // {
+        //   icon: "el-icon-lx-warn",
+        //   index: "6",
+        //   title: "错误处理",
+        //   subs: [
+        //     {
+        //       index: "permission",
+        //       title: "权限测试"
+        //     },
+        //     {
+        //       index: "404",
+        //       title: "404页面"
+        //     }
+        //   ]
+        // },
         {
           icon: 'el-icon-view',
           index: 'person',

@@ -14,75 +14,18 @@
       </div>
     </el-dialog>
     <el-button @click="complete()">预览</el-button>
-    <!-- http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf -->
-    <!-- http://www.junctionip.com/Report1.pdf -->
-    <!-- http://www.junctionip.com/Report2.pdf -->
-    <!-- https://docs.google.com/gview?url=http://ieee802.org/secmail/docIZSEwEqHFr.doc -->
-    <!-- http://view.officeapps.live.com/op/view.aspx?src=http://video.ch9.ms/build/2011/slides/TOOL-532T_Sutter.pptx -->
-    <div class="tab-div">
-      <div>
-        <el-table
-          ref="multipleTable"
-          :data="data1"
-          style="width:240px;border: 1px solid #ebeef5;"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column label="基本信息" width="119px" prop="name" align="center"></el-table-column>
-          <el-table-column type="selection" width="119px" align="center"></el-table-column>
-        </el-table>
-      </div>
-      <div>
-        <el-table
-          ref="multipleTable"
-          :data="data1"
-          style="width:240px;border: 1px solid #ebeef5;"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column label="基本信息" width="119px" prop="name" align="center"></el-table-column>
-          <el-table-column type="selection" width="119px" align="center"></el-table-column>
-        </el-table>
-      </div>
-      <div>
-        <el-table
-          ref="multipleTable"
-          :data="data1"
-          style="width:240px;border: 1px solid #ebeef5;"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column label="基本信息" width="119px" prop="name" align="center"></el-table-column>
-          <el-table-column type="selection" width="119px" align="center"></el-table-column>
-        </el-table>
-      </div>
-      <div>
-        <el-table
-          ref="multipleTable"
-          :data="data1"
-          style="width:240px;border: 1px solid #ebeef5;"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column label="基本信息" width="119px" prop="name" align="center"></el-table-column>
-          <el-table-column type="selection" width="119px" align="center"></el-table-column>
-        </el-table>
-      </div>
-      <div>
-        <el-table
-          ref="multipleTable"
-          :data="data1"
-          style="width:240px;border: 1px solid #ebeef5;"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column label="基本信息" width="119px" prop="name" align="center"></el-table-column>
-          <el-table-column type="selection" width="119px" align="center"></el-table-column>
-        </el-table>
-      </div>
-    </div>
+    <img :src="completeTask" alt="" width="500" height="500">
   </div>
 </template>
 
 <script>
+import Axios from 'axios';
+import { _getFile } from '../../services/service';
+
 export default {
   data() {
     return {
+
       data1: [
         {
           date: "2016-05-03",
@@ -120,24 +63,40 @@ export default {
           address: "currentParticipants"
         }
       ],
-      dialogComplete: false,
+      dialogComplete: true,
       completeTask:
-        "http://view.officeapps.live.com/op/view.aspx?src=http://video.ch9.ms/build/2011/slides/TOOL-532T_Sutter.pptx&embedded=true"
-    };
+        ""
+   ,img:''
+   };
   },
   methods: {
     open() {
       this.completeTask =
-        "http://view.officeapps.live.com/op/view.aspx?src=http://video.ch9.ms/build/2011/slides/TOOL-532T_Sutter.pptx";
+        "http://view.officeapps.live.com/op/view.aspx?src="+res;
     },
     complete(index, row) {
       console.info(11);
-      this.completeTask =
-        "http://view.officeapps.live.com/op/view.aspx?src=http://video.ch9.ms/build/2011/slides/TOOL-532T_Sutter.pptx&embedded=true";
+      // this.completeTask =
+      //   "http://view.officeapps.live.com/op/view.aspx?src=http://172.16.6.228:7104/case/file/group1/M00/00/07/rBAFmlwnKZuAQvX9AAK6bBrVowo493.jpg";
 
-      console.info(this.$refs.completeDiv);
+      // console.info(this.$refs.completeDiv);
 
-      this.dialogComplete = true;
+      
+      var obj={file:"group1/M00/00/07/rBAFmlwnKZuAQvX9AAK6bBrVowo493.jpg"}
+      _getFile(obj).then(res=>{
+        console.info(res)
+
+        this.completeTask=res; ;
+        this.dialogComplete = true;
+      })
+      // Axios({
+      //   url:"http://172.16.6.228:7104/case/file/group1/M00/00/07/rBAFmlwnKZuAQvX9AAK6bBrVowo493.jpg",
+      //   headers:{
+      //     "Authorization":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBzaHVqdWxpbmcuY29tIiwicm9sZSI6IkFkbWluIiwiaXNzIjoic2h1anVsaW5nLmNvbSIsImlkIjoiZDA3ZGM1ODRhNmJmNDVkNjkyNDc2N2YzZmRkODA5MjUiLCJpYXQiOjE1NDY1MDI5NTV9.4APYYXSvrnf3lgFGERRxvGSi3EqKR8NDXgI0UBG_zyw"
+
+      //   },
+
+      // })
     },
     /* val tab 里面的每一个对象 */
     handleSelectionChange(val) {

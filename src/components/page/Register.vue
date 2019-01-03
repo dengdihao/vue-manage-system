@@ -129,21 +129,6 @@ export default {
         callback();
       }
     };
-
-    // var email = (rule, value, callback) => {
-    //   let regemail = /^\w+@\w+(\.[a-zA-Z]{2,3}){1,2}$/;
-    //   debugger;
-    //   if (value) {
-    //     callback(new Error("请输入正确的电话"));
-    //   }
-    //   setTimeout(() => {
-    //     if (!regemail.test(value)) {
-    //       callback(new Error("请输入正确的邮箱格式"));
-    //     } else {
-    //       callback;
-    //     }
-    //   }, 100);
-    // };
     return {
       ruleForm2: {
         userName: "", //用户名 必填
@@ -161,7 +146,7 @@ export default {
         {
           value: "Admin",
           label: "管理员",
-          disabled: true
+          // disabled: true
         },
         {
           value: "FinancialController",
@@ -202,13 +187,6 @@ export default {
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
-        // if (valid) {
-        //   alert(this.ruleForm2);
-        //   console.info(this.ruleForm2)
-        // } else {
-        //   console.log("error submit!!");
-        //   return false;
-        // }
         if (valid) {
           delete this.ruleForm2.checkpassword;
           _register(this.ruleForm2)

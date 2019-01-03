@@ -9,18 +9,20 @@
               style="float: right; padding: 3px 0;font-size: 20px;"
               type="text"
               class="el-icon-search"
+              @click="toSerch()"
             ></el-button>
           </div>
           <div class="dash-content">
             <p>Needs Triage (2)</p>
             <ul>
               <li v-for="(item,index) in baseInfoList" :key="index">
+                {{item.caseName}}
                 <div class="phui-oi-frame">
                   <div class="phui-oi-div1">
-                    <span class="el-icon-more"></span>
+                    <span class="el-icon-more">{{item.caseName}}</span>
                   </div>
                   <div class="phui-oi-div2">
-                    <span class="el-icon-warning" style="color: purple;"></span>
+                    <span class="el-icon-warning" style="color: purple;">{{item.caseName}}</span>
                   </div>
                   <div class="phui-oi-div3">
                     <div class="phui-oi-div3-title">
@@ -51,19 +53,22 @@
               style="float: right; padding: 3px 0;font-size: 20px;"
               type="text"
               class="el-icon-search"
+              @click="toSerch()"
             ></el-button>
           </div>
           <div class="dash-content">
             <p>时间</p>
             <ul>
-              <li>
+              <li v-for="(item,index) in phui" :key="index">
                 <div class="phui-box">
                   <div class="phui-header">
                     <router-link to>
-                      <img>
+                      <img>头像
                     </router-link>
+                    <span>{{item.clientName}}</span>
+                    <span>{{item.type}}</span>
                     <router-link to>
-                      <b></b>
+                      <b>{{item.caseName}}</b>
                     </router-link>
                     <span class="phui-item"></span>
                     <router-link to>
@@ -73,10 +78,11 @@
                   <div class="phui-content"></div>
                   <div class="phui-footer">
                     <i class="el-icon-time"></i>
-                    <span></span>
+                    <span>{{item.updateTime}}</span>
                   </div>
                 </div>
               </li>
+              <button @click="obj.pageIndex ++">下一页</button>
             </ul>
           </div>
         </el-card>
@@ -88,70 +94,53 @@
 <script>
 import bus from "../common/bus";
 
-// import api from "../../services/api.js";
-import { _postUser,_getbaseInfo } from '../../services/service.js'
-
+import { _postoperation } from "../../services/service.js";
 
 export default {
   name: "dashboard",
-  data () {
+  data() {
     return {
-      name: JSON.parse(localStorage.getItem("ms_username")).username,
-      level: JSON.parse(localStorage.getItem("ms_username")).level,
-      baseInfoList: ''
+      baseInfoList: "",
+      obj: {
+        pageIndex: 1,
+        pageSize: 10
+      },
+      phui:[]
     };
   },
   components: {},
   computed: {
-    role () {
-      // return this.name===JSON.parse( this.name).username
-      // return this.name === "admin" ? "超级管理员" : "普通用户";
-      return this.level === "admin" ? "超级管理员" : "普通用户";
-    }
   },
-  created () {
+  created() {
     this.handleListener();
     this.changeDate();
-    // this.postcaseList();
-    this.getbaseInfo();
+    this.postoperation();
   },
-  activated () {
+  activated() {
     this.handleListener();
   },
-  deactivated () { },
+  deactivated() {},
   methods: {
-    changeDate () { },
-    handleListener () { },
+    changeDate() {},
+    handleListener() {},
 
-    // postcaseList () {
-    //   api._postList("/dashboard")
-    //     .then(res => {
-    //       console.info(res);
-    //       this.baseInfoList = res.baseInfoList;
-    //     })
-    //     .catch(err => {
-    //       console.log(1);
-    //     });
-    // },
-
-    getbaseInfo(){
-      _getbaseInfo().then(res=>{
-        console.info(res)
-        // console.info(JSON.stringify(res))
-        this.baseInfoList=res
-      })
-      .catch(err=>{
-        console.info(1)
-      })
+    postoperation() {
+      _postoperation(this.obj).then(res => {
+        console.info(res);
+        this.phui=res.data.data.concat()
+      });
     },
-    tocasedetail (id) {
-      console.info(id)
+    tocasedetail(id) {
+      console.info(id);
       this.$router.push({
-        name: 'casedetail',
+        name: "casedetail",
         query: {
           id: id
         }
-      })
+      });
+    },
+    toSerch(){
+      this.$router.push({ path:'powersearch'})
     }
   }
 };

@@ -44,7 +44,6 @@
               <el-button @click="upfile">修改</el-button>
             </el-form-item>
           </el-form>
-          <button @click="getuserinfo">查询</button>
         </div>
       </div>
     </el-card>
@@ -74,25 +73,12 @@ export default {
     this.getuserinfo();
   },
   methods: {
-    topath(name) {
-      console.info(1);
-      console.info(this.personUl);
-      console.info(name);
-      this.$router.push({
-        name: name,
-        qurey: {
-          id: "123456"
-        }
-      });
-    },
     getuserinfo() {
       _userinfo()
         .then(res => {
           console.info(res);
           this.form = res.data;
-          console.info(this.form.profilePhoto)
           
-          console.info(this.form);
         })
         .catch(err => {
           console.info(err);
@@ -116,6 +102,13 @@ export default {
         .then(res => {
           console.info(res);
           
+          if (res.status===205) {
+            this.$message({
+            showClose: true,
+            message: "修改错误！！！",
+            type: "err"
+          });
+          }
           this.$nextTick(() => {
             
             this.$message({

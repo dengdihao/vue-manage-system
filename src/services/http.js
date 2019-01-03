@@ -16,9 +16,8 @@ let instance = axios.create({
 // console.info(store)
 instance.interceptors.request.use(
     request => {
-        debugger
         Loading.open()
-        if (localStorage.getItem("token") && localStorage.getItem("token")!== undefined) {
+        if (localStorage.getItem("token")) {
             // request.setRequestHeader('Authorization',store.state.token)
             request.headers['Authorization'] = localStorage.getItem("token")
         }
@@ -33,7 +32,7 @@ instance.interceptors.request.use(
 /* 拦截响应 */
 instance.interceptors.response.use(
     response => {
-        console.info(response)
+        // console.info(response)
         Loading.close()
         return response.data
     },
@@ -44,14 +43,13 @@ instance.interceptors.response.use(
             switch (error.response.status) {
 
                 case 401:
-                    this.$store.commit('del_token');
+                    this.$store.commit('del_token', localStorage.getItem('token'));
                     router.replace({
                         path: '/login',
                         query: {
                             redirect: router.currentRoute.fullPath
                         } //登录成功后跳入浏览的当前页面
                     })
-                    // debugger
             }
         }
         return Promise.reject(error)
@@ -85,4 +83,28 @@ export function getUrl(url, body = {}) {
         return config.baseURL + url + '?' + search;
     }
     return config.baseURL + url;
+}
+
+
+export function jointUrl(url, urls, body = {}, config = {}) {
+    debugger
+    url=restful(url,urls)
+    config.params = body;
+    return instance.get(url, config)
+}
+
+export function jointUrlPost(url,urls, body={},config={}) {
+    url=restful(url,urls)
+    return instance.post(url,body,config)
+}
+
+
+function restful(url, body = {}) {
+    let urls = url.split(/\//)
+    return urls.reduce((a, b) => {
+        if (b.indexOf(':') === 0) {
+            return a + `/${body[b.substr(1)]}`
+        }
+        return a + '/' + b;
+    })
 }

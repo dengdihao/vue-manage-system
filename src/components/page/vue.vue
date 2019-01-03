@@ -44,10 +44,12 @@
       </div>
     </div>
     <el-button >按钮</el-button>
+    <button @click="get">aaaa</button>
   </div>
 </template>
 <script>
 import { _loginpost } from '../../services/service';
+import Axios from 'axios';
 
 export default {
 
@@ -138,7 +140,23 @@ export default {
       }
       return list;
     },
-    
+    get(){
+      var url='http://172.16.8.21:7104/case/admin/case/detail'/* 6f57c09a-7263-4bcd-b7fa-5cab456ef136/client */
+      Axios.defaults.headers['Authorization'] = localStorage.getItem("token")
+      // Axios.get(url).then(res=>{
+      //   console.info(res)
+      // })
+      Axios({
+        method:'get',
+        url:url,
+        data:{
+          case_id:'6f57c09a-7263-4bcd-b7fa-5cab456ef136',
+          case_name:'client'
+        }
+      }).then(res=>{
+        console.info(res)
+      })
+    }
   }
 };
 </script>

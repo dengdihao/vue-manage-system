@@ -10,9 +10,9 @@ import store from "../store/store";
 
 
 // 页面刷新时，重新赋值token
-if (sessionStorage.getItem('token')) {
-    store.commit('set_token', sessionStorage.getItem('token'))
-}
+// if (localStorage.getItem('token')) {
+//     store.commit('set_token', localStorage.getItem('token'))
+// }
 
 
 
@@ -36,11 +36,11 @@ export default new Router({
                     }
                 },
                 {
-                    path: '/vue',
-                    name: 'vue',
-                    component: resolve => require(['../components/page/vue.vue'], resolve),
+                    path: '/createcase',
+                    name: 'createcase',
+                    component: resolve => require(['../components/page/createcase.vue'], resolve),
                     meta: {
-                        title: 'vue'
+                        title: '新建案件'
                     }
                 },
                 {

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { _loginpost } from "../../services/service.js";
+import { _loginpost, _userinfo } from "../../services/service.js";
 import store from "./../../store/store.js";
 
 export default {
@@ -64,9 +64,10 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          console.info(this.ruleForm)
           _loginpost(this.ruleForm)
             .then(res => {
-              console.info(store.state.token);
+              debugger
               console.info(res);
               if (res.status === 401) {
                 this.$message.error("账号或密码错误");
@@ -77,8 +78,14 @@ export default {
                   message: "恭喜你，这是一条成功消息",
                   type: "success"
                 });
-                this.$router.push("/");
-              } else {
+                this.$router.push("/dashboard");
+                _userinfo().then(res=>{
+                  console.info(res)
+                  this.$store.commit('set_userRole',res.data.role)
+                  // sessionStorage.setItem("user_role")
+                  sessionStorage.setItem("user_role",res.data.role)
+                })
+              } else {  
                 this.$router.replace("/login");
               }
             })
@@ -94,9 +101,8 @@ export default {
       });
     },
     register() {
-      this.$router.push({
-        name: "register"
-      });
+      // console.info(11)
+      this.$router.push("/register");
     }
   },
 

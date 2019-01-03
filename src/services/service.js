@@ -3,7 +3,10 @@ import {
     postForm,
     postJson,
     postFormData,
-    getUrl
+    getUrl,
+    restful,
+    jointUrl,
+    jointUrlPost
 } from './http'
 import config from './config'
 
@@ -22,11 +25,6 @@ export function _getbaseInfo(param) {
 /* 修改案件基本信息 */
 export function _postbaseInfo(param) {
     return postJson('/baseInfo', param)
-}
-
-/* 获取客户信息 */
-export function _getclientInfo(param) {
-    return get('/clientInfo', param)
 }
 
 /* 修改客户信息 */
@@ -77,16 +75,67 @@ export function _logout(param) {
 }
 
 /* 个人信息 */
-export function _userinfo(params) {
-    return get('/access/userInfo', params)
+export function _userinfo(param) {
+    return get('/access/userInfo', param)
 }
 
 /* 注册用户 */
-export function _register(params) {
-    return postJson('/access/register', params)
+export function _register(param) {
+    return postJson('/access/register', param)
 }
 
 /* 修改个人信息 */
 export function _updateuser(param){
     return postJson('/access/updateUser', param)
+}
+
+/* 创建案件信息 */
+export function _createcaseAdmin(param) {
+    return postJson('/case/admin/createCase',param)
+}
+
+export function _createcaseSupervisor(param) {
+    return postJson('/case/supervisor/createCase', param)
+}
+
+export function _createcaseReportingStaff(param) {
+    return postJson('/case/reportingStaff/createCase', param)
+}
+
+/* 获取操作记录 */
+export function _postoperation(param) {
+    return postJson('/case/admin/operation/log',param)
+}
+
+/* 上传文件 */
+export function _postUpload(param) {
+    return postFormData('/case/file/upload',param)
+}
+
+/* 下载文件 */
+export function _getFile(urls,param) {
+    return jointUrl('/case/file/:file', urls,param)
+}
+
+
+/* 搜索案件 */
+export function _postsearchAdmin(param){
+    return postJson('/case/admin/case/search',param)
+}
+export function _postsearchSupervisor(param) {
+    return postJson('/case/supervisor/case/search', param)
+}
+export function _postsearchReportingStaff(param) {
+    return postJson('/case/reportingStaff/case/search', param)
+}
+
+
+/* 详情页面 */
+export function _detailCase(urls,param) {
+    return jointUrl('/case/admin/case/detail/:case_id/:case_type', urls, param)
+}
+
+/* 修改案件信息 */
+export function _updateCase(urls,param) {
+     return jointUrlPost('/case/admin/caseUpdate/:case_id/:case_type', urls, param)
 }
