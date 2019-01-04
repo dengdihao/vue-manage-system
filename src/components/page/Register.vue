@@ -55,11 +55,11 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="真实姓名：" prop="realName">
+          <el-input v-model.number="ruleForm2.realName"></el-input>
+        </el-form-item>
         <el-form-item label="地址：">
           <el-input v-model.number="ruleForm2.userAddress"></el-input>
-        </el-form-item>
-        <el-form-item label="真实姓名：">
-          <el-input v-model.number="ruleForm2.realName"></el-input>
         </el-form-item>
         <el-form-item label="部门：">
           <el-input v-model.number="ruleForm2.unit"></el-input>
@@ -90,7 +90,7 @@ export default {
     };
     /* 验证手机号 */
     var checkphone = (rule, value, callback) => {
-      let regphone = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+      let regphone = /^(1[0-9])\d{9}$/;
       if (!regphone.test(value) === true) {
         callback(new Error("请输入正确的电话"));
       } else {
@@ -129,6 +129,15 @@ export default {
         callback();
       }
     };
+
+    var realName=(rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入真实名字"));
+      } else {
+        callback();
+      }
+    }
+
     return {
       ruleForm2: {
         userName: "", //用户名 必填
@@ -151,12 +160,12 @@ export default {
         {
           value: "FinancialController",
           label: "财务主管",
-          disabled: true
+          // disabled: true
         },
         {
           value: "Supervisor",
           label: "主管",
-          disabled: true
+          // disabled: true
         },
         {
           value: "Financial",
@@ -176,7 +185,8 @@ export default {
           { required: true, validator: validatePass2, trigger: "blur" }
         ],
         userPhone: [{ required: true, validator: checkphone, trigger: "blur" }],
-        role: [{ required: true, validator: role, trigger: "blur" }]
+        role: [{ required: true, validator: role, trigger: "blur" }],
+        realName:[{ required: true, validator: realName, trigger: "blur" }]
         // email: [
         //   { required: true, type: "email", validator: email, trigger: "blur" }
         // ]

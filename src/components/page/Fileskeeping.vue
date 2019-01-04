@@ -10,13 +10,13 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <a @click="toPach('fileredact')">
+              <a @click="toPath('fileredact')">
                 <el-dropdown-item>编辑文档</el-dropdown-item>
               </a>
               <a href>
                 <el-dropdown-item>删除文档</el-dropdown-item>
               </a>
-              <a href>
+              <a @click="toPath('fileUpdate')">
                 <el-dropdown-item>新建文档</el-dropdown-item>
               </a>
             </el-dropdown-menu>
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     
-    toPath(name,item){
+    toPath (name, item) {
       console.info();
       this.$router.push({
         name: name,

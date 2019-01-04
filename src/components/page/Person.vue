@@ -29,9 +29,11 @@
             </el-form-item>
             <el-form-item label="原密码">
               <el-input v-model="form.oldPassword"></el-input>
+              <i class="red"><i>* </i> 修改请输入原密码</i>
             </el-form-item>
             <el-form-item label="新密码">
               <el-input v-model="form.password"></el-input>
+              <i class="red"><i>* </i> 修改密码，请输入新密码</i>
             </el-form-item>
             <el-form-item label="邮箱">
               <el-input v-model="form.email"></el-input>
@@ -184,5 +186,10 @@ export default {
       }
     }
   }
+}
+.red{
+  color: red;
+  font-size: 12px;
+  font-style: inherit;
 }
 </style>

@@ -474,11 +474,8 @@
                           <td>社交号</td>
                           <td>
                             <div>
-                              <table
-                                v-for="(items,index) in contactsForm.networks"
-                                :key="index"
-                                v-if="contactsForm.networks"
-                              >
+                              <table v-for="(items,index) in contactsForm.networks" :key="index">
+                                <!-- v-if="contactsForm.networks" -->
                                 <tr>
                                   <td>社交工具</td>
                                   <td>{{items.networkName}}</td>
@@ -654,11 +651,8 @@
                                 <tr>
                                   <td>社交号</td>
                                   <td>
-                                    <table
-                                      v-for="(itemss,index) in items.networks"
-                                      :key="index"
-                                      v-if="items.networks"
-                                    >
+                                    <table v-for="(itemss,index) in items.networks" :key="index">
+                                      <!-- v-if="items.networks" -->
                                       <tr>
                                         <td>社交工具</td>
                                         <td>{{itemss.networkName}}</td>
@@ -715,8 +709,8 @@
                                   <table
                                     v-for="(items,index) in PrincipalContacts.networks"
                                     :key="index"
-                                    v-if="PrincipalContacts.networks"
                                   >
+                                    <!-- v-if="PrincipalContacts.networks" -->
                                     <tr>
                                       <td>社交工具</td>
                                       <td>{{items.networkName}}</td>
@@ -1012,8 +1006,8 @@
                                                 <table
                                                   v-for="(itemss,index) in items.networks"
                                                   :key="index"
-                                                  v-if="items.networks"
                                                 >
+                                                  <!-- v-if="items.networks" -->
                                                   <tr>
                                                     <td>社交工具</td>
                                                     <td>{{itemss.networkName}}</td>
@@ -1070,8 +1064,8 @@
                                               <table
                                                 v-for="(items,index) in affContacts.networks"
                                                 :key="index"
-                                                v-if="affContacts.networks"
                                               >
+                                                <!-- v-if="affContacts.networks" -->
                                                 <tr>
                                                   <td>社交工具</td>
                                                   <td>{{items.networkName}}</td>
@@ -1252,7 +1246,12 @@
 </template>
 
 <script>
-import { _createcaseAdmin, _postUpload } from "../../services/service";
+import {
+  _createcaseA,
+  _postUpload,
+  _createcaseS,
+  _createcaseR
+} from "../../services/service";
 
 export default {
   data() {
@@ -1392,7 +1391,9 @@ export default {
       dialogaffContacts: false,
       dialogaffNetwork: false,
 
-      dialogProductInfo: false
+      dialogProductInfo: false,
+
+      user_role: null //角色信息
     };
   },
   methods: {
@@ -1494,6 +1495,9 @@ export default {
       this.$refs[item].validate(valid => {
         if (valid) {
           if (
+            this.ruleForm.baseInfo.priority === null && 
+            this.ruleForm.baseInfo.openDate === null && 
+            this.ruleForm.baseInfo.status === null &&
             this.ruleForm.caseInfo.caseNo === null &&
             this.ruleForm.caseInfo.caseName === null &&
             this.ruleForm.caseInfo.type === null &&
@@ -1543,22 +1547,52 @@ export default {
                 }
               }
             }
-            if (this.ruleForm.targetInfo[0].productInfo.length===0) {
-              this.ruleForm.targetInfo[0].productInfo.push(this.productInfoForm)
+            if (this.ruleForm.targetInfo[0].productInfo.length === 0) {
+              this.ruleForm.targetInfo[0].productInfo.push(
+                this.productInfoForm
+              );
             }
             console.info(this.ruleForm);
-            _createcaseAdmin(this.ruleForm)
-            .then(res => {
-              console.info(res);
-              this.$message({
-                message: "恭喜你，这是一条成功消息",
-                type: "success"
-              });
-              this.$router.push({ path:'/dashboard'})
-            })
-            .catch(err => {
-              this.$message.error("创建有误，请核对信息");
-            });
+            if (this.user_role === "Admin") {
+              _createcaseA(this.ruleForm)
+                .then(res => {
+                  console.info(res);
+                  this.$message({
+                    message: "恭喜你，这是一条成功消息",
+                    type: "success"
+                  });
+                  this.$router.push('/');
+                })
+                .catch(err => {
+                  this.$message.error("创建有误，请核对信息");
+                });
+            } else if (this.user_role === "Supervisor") {
+              _createcaseS(this.ruleForm)
+                .then(res => {
+                  console.info(res);
+                  this.$message({
+                    message: "恭喜你，这是一条成功消息",
+                    type: "success"
+                  });
+                  this.$router.push('/');
+                })
+                .catch(err => {
+                  this.$message.error("创建有误，请核对信息");
+                });
+            } else if (this.user_role === "ReportingStaff") {
+              _createcaseR(this.ruleForm)
+                .then(res => {
+                  console.info(res);
+                  this.$message({
+                    message: "恭喜你，这是一条成功消息",
+                    type: "success"
+                  });
+                  this.$router.push('/');
+                })
+                .catch(err => {
+                  this.$message.error("创建有误，请核对信息");
+                });
+            }
           }
         } else {
           console.log("error submit!!");
@@ -1617,10 +1651,31 @@ export default {
             message: "取消上传"
           });
         });
-    }
+    },
+    /* 获取用户权限 */
+    getUserRole() {
+      const user_role = sessionStorage.getItem("user_role");
+      if (!user_role) {
+        this.$message({
+          showClose: true,
+          message: "你没有权限，请重新登陆",
+          type: "error"
+        });
+        this.$router.push("/login");
+      }
+      if (user_role === "FinancialController" || user_role === "Financial") {
+        this.$message({
+          showClose: true,
+          message: "你权限不够",
+          type: "error"
+        });
+        this.$router.push("/");
+      }
+    },
   },
   created() {
-    console.info(this.$store.state.userRole);
+    this.user_role = sessionStorage.getItem("user_role");
+    this.getUserRole()
   }
 };
 </script>

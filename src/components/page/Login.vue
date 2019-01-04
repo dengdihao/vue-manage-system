@@ -73,18 +73,18 @@ export default {
                 this.$message.error("账号或密码错误");
               }
               this.$store.commit("set_token", res.token);
+              sessionStorage.setItem("user_role",res.data.role)
               if (store.state.token) {
                 this.$message({
                   message: "恭喜你，这是一条成功消息",
                   type: "success"
                 });
-                this.$router.push("/dashboard");
                 _userinfo().then(res=>{
                   console.info(res)
-                  this.$store.commit('set_userRole',res.data.role)
-                  // sessionStorage.setItem("user_role")
-                  sessionStorage.setItem("user_role",res.data.role)
+                  
                 })
+                this.$router.push("/dashboard");
+                
               } else {  
                 this.$router.replace("/login");
               }

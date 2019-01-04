@@ -85,9 +85,7 @@ export function getUrl(url, body = {}) {
     return config.baseURL + url;
 }
 
-
 export function jointUrl(url, urls, body = {}, config = {}) {
-    debugger
     url=restful(url,urls)
     config.params = body;
     return instance.get(url, config)

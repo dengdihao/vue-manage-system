@@ -52,7 +52,7 @@ export default {
         {
           icon: "el-icon-lx-home",
           index: "dashboard",
-          title: "系统首页"
+          title: "所有案件"
         },  
         {
           icon: "el-icon-lx-home",
@@ -64,32 +64,32 @@ export default {
           index: "powersearch",
           title: "高级搜索"
         },
-        // {
-        //   icon: "el-icon-document",
-        //   index: "detailpages",
-        //   title: "详情信息"
-        // },
         {
           icon: "el-icon-tickets",
           index: "fileskeeping",
           title: "文档管理"
         },
-        {
-          icon: "el-icon-tickets",
-          index: "hchat",
-          title: "聊天室"
-        },
+        // {
+        //   icon: "el-icon-document",
+        //   index: "detailpages",
+        //   title: "详情信息"
+        // },
+        // {
+        //   icon: "el-icon-tickets",
+        //   index: "hchat",
+        //   title: "聊天室"
+        // },
         //wangeditor
         // {
         //   icon: "el-icon-lx-cascades",
         //   index: "table",
         //   title: "基础表格"
         // },
-        {
-          icon: "el-icon-lx-copy",
-          index: "tabs",
-          title: "消息通知"
-        },
+        // {
+        //   icon: "el-icon-lx-copy",
+        //   index: "tabs",
+        //   title: "消息通知"
+        // },
         // {
         //   icon: "el-icon-lx-calendar",
         //   index: "3",
@@ -124,11 +124,11 @@ export default {
         //   index: "drag",
         //   title: "拖拽列表"
         // },
-        {
-          icon: "el-icon-rank",
-          index: "yuread",
-          title: "文件预览"
-        },
+        // {
+        //   icon: "el-icon-rank",
+        //   index: "yuread",
+        //   title: "文件预览"
+        // },
         // {
         //   icon: "el-icon-lx-warn",
         //   index: "6",

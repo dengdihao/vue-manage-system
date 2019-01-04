@@ -1,27 +1,10 @@
 <template>
   <div>
-    <el-card class="box-card-header">
+    <!-- <el-card class="box-card-header">
       <div class="file-card-header">
         <span>xxxx标题</span>
-        <!-- <el-dropdown trigger="click" style="float: right;">
-          <el-button type="primary">
-            更多菜单
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <a @click="toPath('fileredact')">
-              <el-dropdown-item>编辑文档</el-dropdown-item>
-            </a>
-            <a href>
-              <el-dropdown-item>删除文档</el-dropdown-item>
-            </a>
-            <a href>
-              <el-dropdown-item>新建文档</el-dropdown-item>
-            </a>
-          </el-dropdown-menu>
-        </el-dropdown> -->
       </div>
-    </el-card>
+    </el-card> -->
     <el-card class="box-card-content">
       <div class="file-content">
         <el-form label-width="100px" v-model="fileForm">
@@ -51,9 +34,8 @@
           </el-form-item>
         </el-form>
       </div>
+    <el-button class="editor-btn right" type="primary" @click="submit">提交</el-button>
     </el-card>
-    <el-button class="editor-btn" type="primary" @click="submit">提交</el-button>
-
     <div class="file-yuran">
       <h1>文件预览</h1>
       <div ref="yuran" v-html="fileForm.html"></div>

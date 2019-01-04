@@ -16,7 +16,7 @@
               <a href>
                 <el-dropdown-item>删除文档</el-dropdown-item>
               </a>
-              <a href>
+              <a @click="toPath('fileUpdate')">
                 <el-dropdown-item>新建文档</el-dropdown-item>
               </a>
             </el-dropdown-menu>

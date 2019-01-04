@@ -17,53 +17,6 @@ import config from './config'
  * @param {} param
  */
 
-/* 获取案件基本信息 */
-export function _getbaseInfo(param) {
-    return get('/baseInfo', param)
-}
-
-/* 修改案件基本信息 */
-export function _postbaseInfo(param) {
-    return postJson('/baseInfo', param)
-}
-
-/* 修改客户信息 */
-export function _postclientInfo(param) {
-    return postJson('/clientInfo', param)
-}
-
-/* 获取目标信息 */
-export function _gettargetInfo(param) {
-    return get('/targetInfo', param)
-}
-
-/* 修改目标信息 */
-export function _posttargetInfo(param) {
-    return postJson('/clientInfo', param)
-}
-
-/* 获取案件参与人 */
-export function _getpaticipants(param) {
-    return get('/participants', param)
-}
-
-/* 修改案件参与人 */
-export function _postpaticipants(param) {
-    return postJson('/participants', param)
-}
-
-/* 获取财务信息 */
-export function _getaccounting(param) {
-    return get('/accounting', param)
-}
-
-/* 获取财务信息 */
-export function _postaccounting(param) {
-    return postJson('/accounting', param)
-}
-
-
-
 /* 登陆 */
 export function _loginpost(param) {
     return postJson('/access/login',param)
@@ -90,21 +43,37 @@ export function _updateuser(param){
 }
 
 /* 创建案件信息 */
-export function _createcaseAdmin(param) {
+export function _createcaseA(param) { //管理员
     return postJson('/case/admin/createCase',param)
 }
 
-export function _createcaseSupervisor(param) {
+export function _createcaseS(param) { //主管
     return postJson('/case/supervisor/createCase', param)
 }
 
-export function _createcaseReportingStaff(param) {
+export function _createcaseR(param) { //报告员
     return postJson('/case/reportingStaff/createCase', param)
 }
 
 /* 获取操作记录 */
-export function _postoperation(param) {
+export function _postoperationA(param) { //管理员
     return postJson('/case/admin/operation/log',param)
+}
+
+export function _postoperationFc(param) { //财务主管
+    return postJson('/case/financialController/operation/log', param)
+}
+
+export function _postoperationS(param) { //主管
+    return postJson('/case/supervisor/operation/log', param)
+}
+
+export function _postoperationF(param) { //财务
+    return postJson('/case/financial/operation/log', param)
+}
+
+export function _postoperationR(param) { //报告员
+    return postJson('/case/reportingStaff/operation/log', param)
 }
 
 /* 上传文件 */
@@ -117,25 +86,49 @@ export function _getFile(urls,param) {
     return jointUrl('/case/file/:file', urls,param)
 }
 
-
 /* 搜索案件 */
-export function _postsearchAdmin(param){
+export function _postsearchA(param){
     return postJson('/case/admin/case/search',param)
 }
-export function _postsearchSupervisor(param) {
+export function _postsearchS(param) {
     return postJson('/case/supervisor/case/search', param)
 }
-export function _postsearchReportingStaff(param) {
+export function _postsearchR(param) {
     return postJson('/case/reportingStaff/case/search', param)
 }
 
-
 /* 详情页面 */
-export function _detailCase(urls,param) {
+export function _detailCaseA(urls,param) {
     return jointUrl('/case/admin/case/detail/:case_id/:case_type', urls, param)
 }
 
+export function _detailCaseFc(urls, param) {
+    return jointUrl('/case/financialController/case/detail/:case_id/:case_type', urls, param)
+}
+
+export function _detailCaseS(urls, param) {
+    return jointUrl('/case/supervisor/case/detail/:case_id/:case_type', urls, param)
+}
+
+export function _detailCaseF(urls, param) {
+    return jointUrl('/case/financial/case/detail/:case_id/:case_type', urls, param)
+}
+
+export function _detailCaseR(urls, param) {
+    return jointUrl('/case/reportingStaff/case/detail/:case_id/:case_type', urls, param)
+}
+
+
+
 /* 修改案件信息 */
-export function _updateCase(urls,param) {
+export function _updateCaseA(urls,param) {
      return jointUrlPost('/case/admin/caseUpdate/:case_id/:case_type', urls, param)
+}
+
+export function _updateCaseS(urls, param) {
+    return jointUrlPost('/case/supervisor/caseUpdate/:case_id/:case_type', urls, param)
+}
+
+export function _updateCaseR(urls, param) {
+    return jointUrlPost('/case/reportingStaff/caseUpdate/:case_id/:case_type', urls, param)
 }

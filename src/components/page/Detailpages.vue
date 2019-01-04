@@ -1,6 +1,6 @@
-
 <template>
   <el-card>
+    {{takeObj}}
     <div class="detail-header clearfix" slot="header">
       <div class="border-bottom"></div>
       <ul class="detail-div">
@@ -27,7 +27,6 @@
               v-model="news.date"
               type="date"
               placeholder="选择日期"
-              format="yyyy 年 MM 月 dd 日"
               value-format="timestamp"
             ></el-date-picker>
           </el-form-item>
@@ -102,6 +101,7 @@
                   placeholder="选择日期"
                   v-if="bisShow"
                   style="width: 100%;"
+                  format="yyyy 年 MM 月 dd 日"
                 ></el-date-picker>
                 <div v-else>{{baseInfo.openDate}}</div>
               </td>
@@ -121,6 +121,7 @@
                   placeholder="选择日期"
                   v-if="bisShow"
                   style="width: 100%;"
+                  format="yyyy 年 MM 月 dd 日"
                 ></el-date-picker>
                 <div v-else>{{baseInfo.closeDate}}</div>
               </td>
@@ -257,6 +258,7 @@
                           placeholder="选择日期"
                           v-if="cisShow"
                           style="width: 100%;"
+                          value-format="timestamp"
                         ></el-date-picker>
                         <div v-else>{{item.issueDate}}</div>
                       </td>
@@ -265,7 +267,7 @@
                       <td width="35%">扫描文件</td>
                       <td width="65%">
                         <el-input v-model="item.documentPath" v-if="cisShow"></el-input>
-                        <div v-else>{{item.documentPath}}</div>
+                        <div v-else @click="readPath(item.documentPath)">{{item.documentPath}}</div>
                       </td>
                     </tr>
                     <tr>
@@ -284,6 +286,7 @@
                           placeholder="选择日期"
                           v-if="cisShow"
                           style="width: 100%;"
+                          value-format="timestamp"
                         ></el-date-picker>
                         <div v-else>{{item.receiveDate}}</div>
                       </td>
@@ -297,6 +300,7 @@
                           placeholder="选择日期"
                           v-if="cisShow"
                           style="width: 100%;"
+                          value-format="timestamp"
                         ></el-date-picker>
                         <div v-else>{{item.sendDate}}</div>
                       </td>
@@ -322,7 +326,10 @@
                             <td>附件路径</td>
                             <td>
                               <el-input v-model="items.attachmentPath" v-if="cisShow"></el-input>
-                              <div v-else>{{items.attachmentPath}}</div>
+                              <div
+                                v-else
+                                @click="readPath(items.attachmentPath)"
+                              >{{items.attachmentPath}}</div>
                             </td>
                           </tr>
                           <tr>
@@ -441,6 +448,7 @@
               </td>
               <td class="tb" width="20%">目标类型</td>
               <td width="30%">
+                {{titem.targetType}}
                 <el-input v-model="titem.targetType" v-if="tisShow"></el-input>
                 <div v-else>{{titem.targetType}}</div>
               </td>
@@ -792,13 +800,13 @@
                 <div v-else>{{titem.note}}</div>
               </td>
             </tr>
-            <el-button @click="delTar(index)">删除</el-button>
+            <!-- <el-button @click="delTar(index)">删除</el-button> -->
           </table>
         </form>
       </el-tab-pane>
 
       <!-- 财务信息 -->
-      <el-tab-pane label="财务信息">
+      <el-tab-pane label="财务信息" :disabled="roleShow">
         <form :model="accounting" v-if="accounting">
           <div class="clearfix btn-border">
             <el-button
@@ -865,6 +873,7 @@
                           placeholder="选择日期"
                           v-if="aisShow"
                           style="width: 100%;"
+                          value-format="timestamp"
                         ></el-date-picker>
                         <div v-else>{{ditem.paidDate}}</div>
                       </td>
@@ -921,6 +930,7 @@
                           placeholder="选择日期"
                           v-if="aisShow"
                           style="width: 100%;"
+                          value-format="timestamp"
                         ></el-date-picker>
                         <div v-else>{{aitem.paidDate}}</div>
                       </td>
@@ -1102,31 +1112,31 @@
       <el-tab-pane label="案件流程">
         <el-collapse v-model="activeNames">
           <div class="clearfix btn-border">
-              <el-button
-                class="detail-btn"
-                style="color:#409EFF;font-size:14px;cursor: pointer;"
-                @click="editP()"
-              >编辑</el-button>
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="editP()"
+            >编辑</el-button>
 
-              <el-button
-                class="detail-btn"
-                style="color:#409EFF;font-size:14px;cursor: pointer;"
-                @click="editPno()"
-              >取消编辑</el-button>
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="editPno()"
+            >取消编辑</el-button>
 
-              <el-button
-                class="detail-btn"
-                style="color:#409EFF;font-size:14px;cursor: pointer;"
-                @click="updateP()"
-              >更新信息</el-button>
+            <el-button
+              class="detail-btn"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+              @click="updateP()"
+            >更新信息</el-button>
 
-              <!-- 消息对话框 -->
-              <el-button
-                class="detail-btn"
-                @click="dialogFormVisible = true"
-                style="color:#409EFF;font-size:14px;cursor: pointer;"
-              >新建消息</el-button>
-            </div>
+            <!-- 消息对话框 -->
+            <el-button
+              class="detail-btn"
+              @click="dialogFormVisible = true"
+              style="color:#409EFF;font-size:14px;cursor: pointer;"
+            >新建消息</el-button>
+          </div>
           <el-collapse-item
             title="接洽阶段"
             name="0"
@@ -1160,6 +1170,7 @@
                     placeholder="选择日期"
                     v-if="pisShow"
                     style="width: 100%;"
+                    value-format="timestamp"
                   ></el-date-picker>
                   <div v-else>{{disc.appointDate}}</div>
                 </td>
@@ -1239,6 +1250,7 @@
                             placeholder="选择日期"
                             v-if="pisShow"
                             style="width: 100%;"
+                            value-format="timestamp"
                           ></el-date-picker>
                           <div v-else>{{disRep.submitDate}}</div>
                         </td>
@@ -1380,6 +1392,7 @@
                     placeholder="选择日期"
                     v-if="pisShow"
                     style="width: 100%;"
+                    value-format="timestamp"
                   ></el-date-picker>
                   <div v-else>{{inve.appointDate}}</div>
                 </td>
@@ -1459,6 +1472,7 @@
                             placeholder="选择日期"
                             v-if="pisShow"
                             style="width: 100%;"
+                            value-format="timestamp"
                           ></el-date-picker>
                           <div v-else>{{inveRep.submitDate}}</div>
                         </td>
@@ -1594,6 +1608,7 @@
                     placeholder="选择日期"
                     v-if="pisShow"
                     style="width: 100%;"
+                    value-format="timestamp"
                   ></el-date-picker>
                   <div v-else>{{rep.appointDate}}</div>
                 </td>
@@ -1673,6 +1688,7 @@
                             placeholder="选择日期"
                             v-if="pisShow"
                             style="width: 100%;"
+                            value-format="timestamp"
                           ></el-date-picker>
                           <div v-else>{{repRep.submitDate}}</div>
                         </td>
@@ -1808,6 +1824,7 @@
                     placeholder="选择日期"
                     v-if="pisShow"
                     style="width: 100%;"
+                    value-format="timestamp"
                   ></el-date-picker>
                   <div v-else>{{rai.appointDate}}</div>
                 </td>
@@ -1887,6 +1904,7 @@
                             placeholder="选择日期"
                             v-if="pisShow"
                             style="width: 100%;"
+                            value-format="timestamp"
                           ></el-date-picker>
                           <div v-else>{{raiRep.submitDate}}</div>
                         </td>
@@ -2028,6 +2046,7 @@
                     placeholder="选择日期"
                     v-if="pisShow"
                     style="width: 100%;"
+                    value-format="timestamp"
                   ></el-date-picker>
                   <div v-else>{{lit.appointDate}}</div>
                 </td>
@@ -2106,6 +2125,7 @@
                             v-model="litRep.submitDate"
                             style="width: 100%;"
                             v-if="pisShow"
+                            value-format="timestamp"
                           >
                             <el-option label="请输入" value></el-option>
                             <el-option label="音频" value="音频"></el-option>
@@ -2160,6 +2180,20 @@
         </el-collapse>
       </el-tab-pane>
     </el-tabs>
+    <!-- 预览文件 -->
+    <el-dialog
+      id="completeDialog"
+      title="预览文件"
+      :visible.sync="dialogComplete"
+      width="95%"
+      height="100%"
+      top="5px"
+      fullscreen
+    >
+      <div id="completeDiv" ref="completeDiv" class="completeDiv">
+        <iframe :src="completeTask" class="iframe" height="100%"></iframe>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -2167,13 +2201,14 @@
 
 <script>
 import {
-  _getpaticipants,
-  _getbaseInfo,
-  _getclientInfo,
-  _gettargetInfo,
-  _getaccounting,
-  _detailCase,
-  _updateCase
+  _detailCaseA,
+  _detailCaseFc,
+  _detailCaseS,
+  _detailCaseF,
+  _detailCaseR,
+  _updateCaseA,
+  _updateCaseS,
+  _updateCaseR
 } from "../../services/service";
 
 import { mytoString, mytimeFormat } from "../../../static/js/common.js";
@@ -2331,14 +2366,16 @@ export default {
               ]
             }
           ],
-          report: [{
-            id: null,
-            submitDate: null,
-            reportType: null,
-            reportContent: null,
-            reportPath: null,
-            note: null
-          }],
+          report: [
+            {
+              id: null,
+              submitDate: null,
+              reportType: null,
+              reportContent: null,
+              reportPath: null,
+              note: null
+            }
+          ],
           attachments: [
             {
               id: null,
@@ -2627,7 +2664,10 @@ export default {
       pdisShow: false,
       /* dia */
       diaClient: false,
-
+      dialogComplete: false,
+      completeTask: "",
+      user_role: "",
+      roleShow: true,
       /* dia Content */
       clientAttCon: {
         attachmentPath: null,
@@ -2661,111 +2701,306 @@ export default {
 
     /* 获取案件流程数据 flowPath */
     getPaticipants() {
+      debugger
+      if (this.user_role === "Admin") {
       this.takeObj.case_type = "flowPath";
-      _detailCase(this.takeObj).then(res => {
-        console.info(res.data);
-        this.paticipants.id = res.data.id;
-        if (res.data.discoverer.length === 0) {
-          res.data.discoverer = null;
-          this.discoverer = Object.assign(this.discoverer, res.data.discoverer);
-        } else {
-          this.discoverer = res.data.discoverer.concat();
-        }
-
-        if (res.data.investigator.length === 0) {
-          res.data.investigator = null;
-          this.investigator = Object.assign(
-            this.investigator,
-            res.data.investigator
-          );
-        } else {
-          this.investigator = res.data.investigator.concat();
-        }
-
-        if (res.data.reports.length === 0) {
-          res.data.reports = null;
-          this.reports = Object.assign(this.reports, res.data.reports);
-        } else {
-          this.reports = res.data.reports.concat();
-        }
-
-        if (res.data.raider.length === 0) {
-          res.data.raider = null;
-          this.raider = Object.assign(this.raider, res.data.raider);
-        } else {
-          this.raider = res.data.raider.concat();
-        }
-
-        if (res.data.litigator.length === 0) {
-          res.data.litigator = null;
-          this.litigator = Object.assign(this.litigator, res.data.litigator);
-        } else {
-          this.litigator = res.data.litigator.concat();
-        }
-        if (res.data.organ.length === 0) {
-          res.data.organ = null;
-        }
-        // this.investigator = Object.assign(
-        //   this.investigator,
-        //   res.data.investigator
-        // );
-
-        this.stage.forEach(item => {
-          if (res.data[item.id] !== null) {
-            if (res.data[item.id][0].progress === "进行中") {
-              item.isshow = true;
-            } else if (res.data[item.id][0].progress === "已完成") {
-              item.isshowg = true;
-            }
+        _detailCaseA(this.takeObj).then(res => {
+          this.paticipants.id = res.data.id;
+          if (res.data.discoverer.length === 0) {
+            res.data.discoverer = null;
+            this.discoverer = Object.assign(
+              this.discoverer,
+              res.data.discoverer
+            );
+          } else {
+            this.discoverer = res.data.discoverer.concat();
           }
+
+          if (res.data.investigator.length === 0) {
+            res.data.investigator = null;
+            this.investigator = Object.assign(
+              this.investigator,
+              res.data.investigator
+            );
+          } else {
+            this.investigator = res.data.investigator.concat();
+          }
+
+          if (res.data.reports.length === 0) {
+            res.data.reports = null;
+            this.reports = Object.assign(this.reports, res.data.reports);
+          } else {
+            this.reports = res.data.reports.concat();
+          }
+
+          if (res.data.raider.length === 0) {
+            res.data.raider = null;
+            this.raider = Object.assign(this.raider, res.data.raider);
+          } else {
+            this.raider = res.data.raider.concat();
+          }
+
+          if (res.data.litigator.length === 0) {
+            res.data.litigator = null;
+            this.litigator = Object.assign(this.litigator, res.data.litigator);
+          } else {
+            this.litigator = res.data.litigator.concat();
+          }
+          if (res.data.organ.length === 0) {
+            res.data.organ = null;
+          }
+
+          this.stage.forEach(item => {
+            if (res.data[item.id] !== null) {
+              if (res.data[item.id][0].progress === "进行中") {
+                item.isshow = true;
+              } else if (res.data[item.id][0].progress === "已完成") {
+                item.isshowg = true;
+              }
+            }
+          });
         });
-      });
+      } else if (this.user_role === "Supervisor") {
+      this.takeObj.case_type = "flowPath";
+        _detailCaseS(this.takeObj).then(res => {
+          this.paticipants.id = res.data.id;
+          if (res.data.discoverer.length === 0) {
+            res.data.discoverer = null;
+            this.discoverer = Object.assign(
+              this.discoverer,
+              res.data.discoverer
+            );
+          } else {
+            this.discoverer = res.data.discoverer.concat();
+          }
+
+          if (res.data.investigator.length === 0) {
+            res.data.investigator = null;
+            this.investigator = Object.assign(
+              this.investigator,
+              res.data.investigator
+            );
+          } else {
+            this.investigator = res.data.investigator.concat();
+          }
+
+          if (res.data.reports.length === 0) {
+            res.data.reports = null;
+            this.reports = Object.assign(this.reports, res.data.reports);
+          } else {
+            this.reports = res.data.reports.concat();
+          }
+
+          if (res.data.raider.length === 0) {
+            res.data.raider = null;
+            this.raider = Object.assign(this.raider, res.data.raider);
+          } else {
+            this.raider = res.data.raider.concat();
+          }
+
+          if (res.data.litigator.length === 0) {
+            res.data.litigator = null;
+            this.litigator = Object.assign(this.litigator, res.data.litigator);
+          } else {
+            this.litigator = res.data.litigator.concat();
+          }
+          if (res.data.organ.length === 0) {
+            res.data.organ = null;
+          }
+
+          this.stage.forEach(item => {
+            if (res.data[item.id] !== null) {
+              if (res.data[item.id][0].progress === "进行中") {
+                item.isshow = true;
+              } else if (res.data[item.id][0].progress === "已完成") {
+                item.isshowg = true;
+              }
+            }
+          });
+        });
+      } else if (this.user_role === "ReportingStaff") {
+      this.takeObj.case_type = "flowPath";
+        _detailCaseR(this.takeObj).then(res => {
+          
+          if (res.data.id) {
+            this.paticipants.id = res.data.id;
+          }
+          if (res.data.discoverer.length === 0) {
+            // res.data.discoverer = null;
+            // this.discoverer = Object.assign(
+            //   this.discoverer,
+            //   res.data.discoverer
+            // );
+            mergeJSON(this.discoverer,res.data.discoverer)
+          } else {
+            this.discoverer = res.data.discoverer.concat();
+          }
+
+          if (res.data.investigator.length === 0) {
+            res.data.investigator = null;
+            this.investigator = Object.assign(
+              this.investigator,
+              res.data.investigator
+            );
+          } else {
+            this.investigator = res.data.investigator.concat();
+          }
+
+          if (res.data.reports.length === 0) {
+            res.data.reports = null;
+            this.reports = Object.assign(this.reports, res.data.reports);
+          } else {
+            this.reports = res.data.reports.concat();
+          }
+
+          if (res.data.raider.length === 0) {
+            res.data.raider = null;
+            this.raider = Object.assign(this.raider, res.data.raider);
+          } else {
+            this.raider = res.data.raider.concat();
+          }
+
+          if (res.data.litigator.length === 0) {
+            res.data.litigator = null;
+            this.litigator = Object.assign(this.litigator, res.data.litigator);
+          } else {
+            this.litigator = res.data.litigator.concat();
+          }
+          if (res.data.organ.length === 0) {
+            res.data.organ = null;
+          }
+
+          this.stage.forEach(item => {
+            if (res.data[item.id] !== null) {
+              if (res.data[item.id][0].progress === "进行中") {
+                item.isshow = true;
+              } else if (res.data[item.id][0].progress === "已完成") {
+                item.isshowg = true;
+              }
+            }
+          });
+        });
+      }
     },
     /* caseBase */
     getbaseInfo() {
       this.takeObj.case_type = "caseBase";
-      _detailCase(this.takeObj).then(res => {
-        this.baseInfo = Object.assign(this.baseInfo, res.data);
-      });
+
+      if (this.user_role === "Admin") {
+        _detailCaseA(this.takeObj).then(res => {
+          this.baseInfo = Object.assign(this.baseInfo, res.data);
+        });
+      } else if (this.user_role === "Supervisor") {
+        _detailCaseS(this.takeObj).then(res => {
+          this.baseInfo = Object.assign(this.baseInfo, res.data);
+        });
+      } else if (this.user_role === "ReportingStaff") {
+        _detailCaseR(this.takeObj).then(res => {
+          this.baseInfo = Object.assign(this.baseInfo, res.data);
+        });
+      }
     },
     /* client */
     getclientInfo() {
       this.takeObj.case_type = "client";
-      _detailCase(this.takeObj).then(res => {
-        this.clientInfo = Object.assign(this.clientInfo, res.data);
-      });
+
+      if (this.user_role === "Admin") {
+        _detailCaseA(this.takeObj).then(res => {
+          this.clientInfo = Object.assign(this.clientInfo, res.data);
+        });
+      } else if (this.user_role === "Supervisor") {
+        _detailCaseS(this.takeObj).then(res => {
+          this.clientInfo = Object.assign(this.clientInfo, res.data);
+        });
+      } else if (this.user_role === "ReportingStaff") {
+        _detailCaseR(this.takeObj).then(res => {
+          this.clientInfo = Object.assign(this.clientInfo, res.data);
+        });
+      }
     },
     /* target */
     gettargetInfo() {
       this.takeObj.case_type = "target";
-      _detailCase(this.takeObj).then(res => {
-        this.targetInfo = Object.assign(this.targetInfo, res.data);
-      });
+      debugger
+      if (this.user_role === "Admin") {
+        _detailCaseA(this.takeObj).then(res => {
+          // this.targetInfo = Object.assign(this.targetInfo, res.data);
+          this.targetInfo =res.data.concat()
+        });
+      } else if (this.user_role === "Supervisor") {
+        _detailCaseS(this.takeObj).then(res => {
+          // this.targetInfo = Object.assign(this.targetInfo, res.data);
+          this.targetInfo =res.data.concat()
+        });
+      } else if (this.user_role === "ReportingStaff") {
+        _detailCaseR(this.takeObj).then(res => {
+          // this.targetInfo = Object.assign(this.targetInfo, res.data);
+          this.targetInfo =res.data.concat()
+        });
+      }
     },
     /* finance 财务*/
     getaccounting() {
       this.takeObj.case_type = "finance";
-      _detailCase(this.takeObj).then(res => {
-        console.info(res);
-        debugger
-        // this.accounting = res.data;
-        if (res.data.advancePayment.length==0) {
-          res.data.advancePayment=this.accounting.advancePayment
-        }
-        if (res.data.deposit.length==0) {
-         res.data.deposit= this.accounting.deposit
-        }
-        if (res.data.invoice.length==0) {
-         res.data.invoice= this.accounting.invoice
-        }
-        if (res.data.refund.length==0) {
-         res.data.refund= this.accounting.refund
-        }
-        if (res.data.repay.length==0) {
-         res.data.repay= this.accounting.repay
-        }
-        this.accounting = Object.assign(this.accounting, res.data);
-      });
+      if (this.user_role === "Admin") {
+        _detailCaseA(this.takeObj).then(res => {
+          if (res.data.advancePayment.length == 0) {
+            res.data.advancePayment = this.accounting.advancePayment;
+          }
+          if (res.data.deposit.length == 0) {
+            res.data.deposit = this.accounting.deposit;
+          }
+          if (res.data.invoice.length == 0) {
+            res.data.invoice = this.accounting.invoice;
+          }
+          if (res.data.refund.length == 0) {
+            res.data.refund = this.accounting.refund;
+          }
+          if (res.data.repay.length == 0) {
+            res.data.repay = this.accounting.repay;
+          }
+          this.accounting = Object.assign(this.accounting, res.data);
+        });
+      } else if (this.user_role === "Supervisor") {
+        _detailCaseS(this.takeObj).then(res => {
+          if (res.msg == "没有权限访问！") {
+            this.$message({
+              showClose: true,
+              message: "没有访问权限",
+              type: "error"
+            });
+          }
+        });
+      } else if (this.user_role === "ReportingStaff") {
+        _detailCaseR(this.takeObj).then(res => {
+          if (res.msg == "没有权限访问！") {
+            this.$message({
+              showClose: true,
+              message: "没有访问权限",
+              type: "error"
+            });
+          }
+        });
+      }
+
+      // _detailCase(this.takeObj).then(res => {
+      //   if (res.data.advancePayment.length==0) {
+      //     res.data.advancePayment=this.accounting.advancePayment
+      //   }
+      //   if (res.data.deposit.length==0) {
+      //    res.data.deposit= this.accounting.deposit
+      //   }
+      //   if (res.data.invoice.length==0) {
+      //    res.data.invoice= this.accounting.invoice
+      //   }
+      //   if (res.data.refund.length==0) {
+      //    res.data.refund= this.accounting.refund
+      //   }
+      //   if (res.data.repay.length==0) {
+      //    res.data.repay= this.accounting.repay
+      //   }
+      //   this.accounting = Object.assign(this.accounting, res.data);
+      // });
     },
 
     /* 锚点跳转 */
@@ -2809,108 +3044,316 @@ export default {
     },
     /* 更新信息 */
     updateB(item) {
+      debugger
       console.info(item);
-      _updateCase(this.takeObj, item)
-        .then(res => {
-          console.info(res);
-          this.$message({
-            showClose: true,
-            message: "恭喜你，更新成功！！",
-            type: "success"
-          });
-          this.bisShow = false;
-          this.getbaseInfo();
-        })
-        .catch(err => {
-          this.$message({
-            showClose: true,
-            message: "更新有误，回到首页",
-            type: "error"
-          });
-        });
-    },
-    updateC(item) {
-      console.info(item);
-      console.info(this.takeObj);
-      _updateCase(this.takeObj, item)
-        .then(res => {
-          console.info(res);
-          this.$message({
-            showClose: true,
-            message: "恭喜你，更新成功！！",
-            type: "success"
-          });
-          this.cisShow = false;
-          this.getclientInfo();
-        })
-        .catch(err => {
-          this.$message({
-            showClose: true,
-            message: "更新有误，回到首页",
-            type: "error"
-          });
-        });
-    },
-    updateT(item) {
-      _updateCase(this.takeObj, item)
-        .then(res => {
-          this.$message({
-            showClose: true,
-            message: "恭喜你，更新成功！！",
-            type: "success"
-          });
-          this.tisShow = false;
-          this.gettargetInfo();
-        })
-        .catch(err => {
-          this.$message({
-            showClose: true,
-            message: "更新有误，回到首页",
-            type: "error"
-          });
-        });
-    },
-    updateA(item) {
-      _updateCase(this.takeObj, item)
-        .then(res => {
-          if (res.status === 200) {
+
+      if (this.user_role === "Admin") {
+        _updateCaseA(this.takeObj, item)
+          .then(res => {
+            console.info(res);
             this.$message({
               showClose: true,
               message: "恭喜你，更新成功！！",
               type: "success"
             });
-            this.aisShow = false;
-            this.getaccounting();
-            console.info(this.accounting);
-          }
-        })
-        .catch(err => {
-          this.$message({
-            showClose: true,
-            message: "更新有误，回到首页",
-            type: "error"
+            this.bisShow = false;
+            this.getbaseInfo();
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
           });
-        });
+      } else if (this.user_role === "Supervisor") {
+        _updateCaseS(this.takeObj, item)
+          .then(res => {
+            console.info(res);
+            this.$message({
+              showClose: true,
+              message: "恭喜你，更新成功！！",
+              type: "success"
+            });
+            this.bisShow = false;
+            this.getbaseInfo();
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      } else if (this.user_role === "ReportingStaff") {
+        _updateCaseR(this.takeObj, item)
+          .then(res => {
+            console.info(res);
+            this.$message({
+              showClose: true,
+              message: "恭喜你，更新成功！！",
+              type: "success"
+            });
+            this.bisShow = false;
+            this.getbaseInfo();
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      }
+    },
+    updateC(item) {
+      debugger
+      if (this.user_role === "Admin") {
+        _updateCaseA(this.takeObj, item)
+          .then(res => {
+            console.info(res);
+            this.$message({
+              showClose: true,
+              message: "恭喜你，更新成功！！",
+              type: "success"
+            });
+            this.cisShow = false;
+            this.getclientInfo();
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      } else if (this.user_role === "Supervisor") {
+        _updateCaseS(this.takeObj, item)
+          .then(res => {
+            console.info(res);
+            this.$message({
+              showClose: true,
+              message: "恭喜你，更新成功！！",
+              type: "success"
+            });
+            this.cisShow = false;
+            this.getclientInfo();
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      } else if (this.user_role === "ReportingStaff") {
+        _updateCaseR(this.takeObj, item)
+          .then(res => {
+            console.info(res);
+            this.$message({
+              showClose: true,
+              message: "恭喜你，更新成功！！",
+              type: "success"
+            });
+            this.cisShow = false;
+            this.getclientInfo();
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      }
+    },
+    updateT(item) {
+      debugger
+      if (this.user_role === "Admin") {
+        _updateCaseA(this.takeObj, item)
+          .then(res => {
+            this.$message({
+              showClose: true,
+              message: "恭喜你，更新成功！！",
+              type: "success"
+            });
+            this.tisShow = false;
+            this.gettargetInfo();
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      } else if (this.user_role === "Supervisor") {
+        _updateCaseS(this.takeObj, item)
+          .then(res => {
+            this.$message({
+              showClose: true,
+              message: "恭喜你，更新成功！！",
+              type: "success"
+            });
+            this.tisShow = false;
+            this.gettargetInfo();
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      } else if (this.user_role === "ReportingStaff") {
+        _updateCaseR(this.takeObj, item)
+          .then(res => {
+            this.$message({
+              showClose: true,
+              message: "恭喜你，更新成功！！",
+              type: "success"
+            });
+            this.tisShow = false;
+            this.gettargetInfo();
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      }
+    },
+    updateA(item) {
+      if (this.user_role === "Admin") {
+        _updateCaseA(this.takeObj, item)
+          .then(res => {
+            if (res.status === 200) {
+              this.$message({
+                showClose: true,
+                message: "恭喜你，更新成功！！",
+                type: "success"
+              });
+              this.aisShow = false;
+              this.getaccounting();
+              console.info(this.accounting);
+            }
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      } else if (this.user_role === "Supervisor") {
+        _updateCaseS(this.takeObj, item)
+          .then(res => {
+            if (res.status === 200) {
+              this.$message({
+                showClose: true,
+                message: "恭喜你，更新成功！！",
+                type: "success"
+              });
+              this.aisShow = false;
+              this.getaccounting();
+              console.info(this.accounting);
+            }
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      } else if (this.user_role === "ReportingStaff") {
+        _updateCaseR(this.takeObj, item)
+          .then(res => {
+            if (res.status === 200) {
+              this.$message({
+                showClose: true,
+                message: "恭喜你，更新成功！！",
+                type: "success"
+              });
+              this.aisShow = false;
+              this.getaccounting();
+              console.info(this.accounting);
+            }
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      }
     },
     updateP() {
-      console.info(this.discoverer)
-      console.info(this.paticipants);
-      // this.setNullToEmpty(this.paticipants)
-      // console.info(this.paticipants)
-
-      debugger;
-      _updateCase(this.takeObj, this.paticipants).then(res => {
-        if (res.status === 200) {
-          this.$message({
-            showClose: true,
-            message: "恭喜你，更新成功！！",
-            type: "success"
+      if (this.user_role === "Admin") {
+        _updateCaseA(this.takeObj, this.paticipants)
+          .then(res => {
+            if (res.status === 200) {
+              this.$message({
+                showClose: true,
+                message: "恭喜你，更新成功！！",
+                type: "success"
+              });
+              this.pisShow = false;
+              this.getPaticipants();
+            }
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
           });
-          this.pisShow = false;
-          this.getPaticipants();
-          console.info(this.paticipants);
-        }
-      });
+      } else if (this.user_role === "Supervisor") {
+        _updateCaseS(this.takeObj, this.paticipants)
+          .then(res => {
+            if (res.status === 200) {
+              this.$message({
+                showClose: true,
+                message: "恭喜你，更新成功！！",
+                type: "success"
+              });
+              this.pisShow = false;
+              this.getPaticipants();
+            }
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      } else if (this.user_role === "ReportingStaff") {
+        _updateCaseR(this.takeObj, this.paticipants)
+          .then(res => {
+            if (res.status === 200) {
+              this.$message({
+                showClose: true,
+                message: "恭喜你，更新成功！！",
+                type: "success"
+              });
+              this.pisShow = false;
+              this.getPaticipants();
+              console.info(this.paticipants);
+            }
+          })
+          .catch(err => {
+            this.$message({
+              showClose: true,
+              message: "更新有误，回到首页",
+              type: "error"
+            });
+          });
+      }
     },
     handleClick(tab, event) {
       var case_typeId = event.target.getAttribute("id");
@@ -2935,6 +3378,43 @@ export default {
       this.dialogFormVisible = false;
     },
 
+    // 遇到相同元素级属性，以（minor）为准 // 不返还新Object，而是main改变
+             mergeJSON(minor, main) {
+                for(var key in minor) {
+                    if(main[key] === undefined) { // 不冲突的，直接赋值 
+                        main[key] = minor[key];
+                        continue;
+                    }
+                    // 冲突了，如果是Object，看看有么有不冲突的属性
+                    // 不是Object 则以（minor）为准为主，
+                    console.log(key)
+                    if(isJSON(minor[key])||isArray(minor[key])) { // arguments.callee 递归调用，并且与函数名解耦 
+                        console.log("is json")
+                        //arguments.callee(minor[key], main[key]);
+                        mergeJSON(minor[key], main[key]);
+                    }else{
+                        main[key] = minor[key];
+                    }
+                }
+            },
+
+
+             isJSON(target) {
+                
+                return typeof target == "object" && target.constructor == Object;
+            },
+
+
+             isArray(o) {
+                return Object.prototype.toString.call(o) == '[object Array]';
+            },
+    readPath(src) {
+      console.info(src);
+      this.completeTask =
+        "http://172.16.5.240:8083/fileConventer?filePath=http://172.16.6.228:7104/case/file/" +
+        src;
+      this.dialogComplete = true;
+    },
     /* 插入 */
     clientAttConadd(item) {
       console.info(item);
@@ -2947,11 +3427,17 @@ export default {
     }
   },
   created() {
+    console.info(this.$route.params.id);
+    this.user_role = sessionStorage.getItem("user_role");
+    if (this.user_role === "Admin") {
+      this.roleShow = false;
+    }
     this.takeObj.case_id = this.$route.params.id;
+    this.getPaticipants();
     this.getUserRole();
     this.getbaseInfo();
-    this.getPaticipants();
   },
+
   mounted() {
     if (this.$route.query.id != null) {
       let index = this.$route.query.id;
@@ -3040,7 +3526,7 @@ export default {
 .btn-border {
   display: flex;
   justify-content: flex-end;
-  margin: 15px  0px;
+  margin: 15px 0px;
 }
 
 .ntable {
@@ -3063,5 +3549,23 @@ export default {
 table {
   border-spacing: 0;
   border-collapse: collapse;
+}
+.iframe {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+.completeDiv {
+  position: absolute;
+  top: 54px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  height: 90%;
+  padding: 5px;
 }
 </style>

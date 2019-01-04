@@ -27,7 +27,7 @@
                   <div class="phui-oi-div3">
                     <div class="phui-oi-div3-title">
                       <b>{{item.caseNo}}</b>
-                      <a @click="tocasedetail(item.id)">
+                      <a @click="tocasedetail(item.caseId)">
                         <span>{{item.caseName}}</span>
                       </a>
                     </div>
@@ -62,14 +62,13 @@
               <li v-for="(item,index) in phui" :key="index">
                 <div class="phui-box">
                   <div class="phui-header">
-                    <router-link to>
+                    <!-- <router-link to>
                       <img>头像
-                    </router-link>
-                    <span>{{item.clientName}}</span>
+                    </router-link> -->
+                    <span>{{item.updateUserName}}</span>
                     <span>{{item.type}}</span>
-                    <router-link to>
-                      <b>{{item.caseName}}</b>
-                    </router-link>
+                    
+                      <a ><b @click="toDeta(item.caseId)">{{item.caseName}}</b></a>
                     <span class="phui-item"></span>
                     <router-link to>
                       <span class="phui-cassname"></span>
@@ -82,7 +81,8 @@
                   </div>
                 </div>
               </li>
-              <button @click="obj.pageIndex ++">下一页</button>
+              <el-button @click="prevPage">上一页</el-button>
+              <el-button @click="nextPage">下一页</el-button>
             </ul>
           </div>
         </el-card>
@@ -94,7 +94,7 @@
 <script>
 import bus from "../common/bus";
 
-import { _postoperation } from "../../services/service.js";
+import { _postoperationA, _postoperationFc, _postoperationR, _postoperationF, _postoperationS } from "../../services/service.js";
 
 export default {
   name: "dashboard",
@@ -105,17 +105,23 @@ export default {
         pageIndex: 1,
         pageSize: 10
       },
-      phui:[]
+      phui:[],
+      user_role:''
     };
   },
   components: {},
   computed: {
   },
+  mounted(){
+    this.postoperation(this.obj)
+  },
   created() {
     this.handleListener();
     this.changeDate();
-    this.postoperation();
-  },
+    
+    this.user_role=sessionStorage.getItem("user_role")
+    this.postoperation(this.obj)
+      },
   activated() {
     this.handleListener();
   },
@@ -123,12 +129,29 @@ export default {
   methods: {
     changeDate() {},
     handleListener() {},
-
-    postoperation() {
-      _postoperation(this.obj).then(res => {
-        console.info(res);
-        this.phui=res.data.data.concat()
-      });
+    postoperation(obj) {
+      debugger
+      if (this.user_role==="Admin") { //管理员
+        _postoperationA(obj).then(res=>{
+          this.phui=res.data.data.concat()
+        })
+      }else if (this.user_role==="FinancialController") { //财务主管
+        _postoperationFc(obj).then(res=>{
+          this.phui=res.data.data.concat()          
+        })
+      }else if (this.user_role==="Supervisor") { // 主管
+        _postoperationS(obj).then(res=>{
+          this.phui=res.data.data.concat()          
+        })
+      }else if (this.user_role==="Financial") { // 财务
+        _postoperationF(obj).then(res=>{
+          this.phui=res.data.data.concat()          
+        })
+      }else if (this.user_role==="ReportingStaff") { // 报告员
+        _postoperationR(obj).then(res=>{
+          this.phui=res.data.data.concat()          
+        })
+      }
     },
     tocasedetail(id) {
       console.info(id);
@@ -141,6 +164,26 @@ export default {
     },
     toSerch(){
       this.$router.push({ path:'powersearch'})
+    },
+    prevPage(){
+      this.obj.pageIndex--
+      if (this.obj.pageIndex<1) {
+        this.obj.pageIndex=1
+      }
+      this.postoperation(this.obj)
+    },
+    nextPage(){
+      this.obj.pageIndex++
+            this.postoperation(this.obj)
+    },
+    toDeta(id){
+      console.info(id)
+      this.$router.push({
+          name: 'detailpages',
+          params: {
+            id: id
+          }
+        })
     }
   }
 };

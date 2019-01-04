@@ -78,7 +78,7 @@ export default new Router({
                 {
                     path: '/fileskeeping',
                     name: 'fileskeeping',
-                    component: resolve => require(['../components/page/Fileskeeping.vue'], resolve),
+                    component: resolve => require(['../components/page/fileskeeping.vue'], resolve),
                     meta: {
                         title: '文档管理'
                     }
@@ -96,7 +96,15 @@ export default new Router({
                     name: 'fileredact',
                     component: resolve => require(['../components/page/Fileredact.vue'], resolve),
                     meta: {
-                        title: '文档内容'
+                        title: '编辑文档'
+                    }
+                },
+                {
+                    path: '/fileUpdate',
+                    name: 'fileUpdate',
+                    component: resolve => require(['../components/page/fileUpdate.vue'], resolve),
+                    meta: {
+                        title: '新建文档'
                     }
                 },
                 {

@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       id="completeDialog"
-      title="办理任务"
+      title="预览文件"
       :visible.sync="dialogComplete"
       width="95%"
       height="100%"
@@ -14,7 +14,6 @@
       </div>
     </el-dialog>
     <el-button @click="complete()">预览</el-button>
-    <img :src="completeTask" alt="" width="500" height="500">
   </div>
 </template>
 
@@ -63,7 +62,7 @@ export default {
           address: "currentParticipants"
         }
       ],
-      dialogComplete: true,
+      dialogComplete: false,
       completeTask:
         ""
    ,img:''
@@ -80,23 +79,15 @@ export default {
       //   "http://view.officeapps.live.com/op/view.aspx?src=http://172.16.6.228:7104/case/file/group1/M00/00/07/rBAFmlwnKZuAQvX9AAK6bBrVowo493.jpg";
 
       // console.info(this.$refs.completeDiv);
-
-      
-      var obj={file:"group1/M00/00/07/rBAFmlwnKZuAQvX9AAK6bBrVowo493.jpg"}
-      _getFile(obj).then(res=>{
-        console.info(res)
-
-        this.completeTask=res; ;
+      /* group1/M00/00/07/rBAFmlwt8WaAMGMdAAl6sGucaHQ846.pdf
+      group1/M00/00/07/rBAFmlwt8VqAGFASAABnOi7HiRQ76.xlsx 
+      group1/M00/00/08/rBAFmlwt9JuAaFnLAAAxvU39Vqo62.docx*/
+      this.completeTask="http://172.16.5.240:8083/fileConventer?filePath=http://172.16.6.228:7104/case/file/group1/M00/00/07/rBAFmlwt8WaAMGMdAAl6sGucaHQ846.pdf"; 
         this.dialogComplete = true;
-      })
-      // Axios({
-      //   url:"http://172.16.6.228:7104/case/file/group1/M00/00/07/rBAFmlwnKZuAQvX9AAK6bBrVowo493.jpg",
-      //   headers:{
-      //     "Authorization":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBzaHVqdWxpbmcuY29tIiwicm9sZSI6IkFkbWluIiwiaXNzIjoic2h1anVsaW5nLmNvbSIsImlkIjoiZDA3ZGM1ODRhNmJmNDVkNjkyNDc2N2YzZmRkODA5MjUiLCJpYXQiOjE1NDY1MDI5NTV9.4APYYXSvrnf3lgFGERRxvGSi3EqKR8NDXgI0UBG_zyw"
-
-      //   },
-
-      // })
+      
+      // var obj={file:"group1/M00/00/07/rBAFmlwnKZuAQvX9AAK6bBrVowo493.jpg"}
+      // _getFile(obj).then(res=>{
+      //   console.info(res)
     },
     /* val tab 里面的每一个对象 */
     handleSelectionChange(val) {

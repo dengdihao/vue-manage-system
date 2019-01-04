@@ -43,7 +43,8 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               value-format="timestamp"
-            ></el-date-picker>{{form.open}}
+            ></el-date-picker>
+            {{form.open}}
           </el-form-item>
           <el-form-item label="关闭时间范围：">
             <el-date-picker
@@ -53,7 +54,8 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               value-format="timestamp"
-            ></el-date-picker>{{form.close}}
+            ></el-date-picker>
+            {{form.close}}
           </el-form-item>
           <el-form-item label="打开时间点：">
             <el-date-picker
@@ -106,10 +108,10 @@
               <el-table-column type="selection" width="55" align="center"></el-table-column>
               <el-table-column prop="caseNo" label="案件号" sortable width="150"></el-table-column>
               <el-table-column prop="caseName" label="案件名称" width="120"></el-table-column>
-              <el-table-column prop="openDate" label="立案时间" width="200" ></el-table-column>
-              <el-table-column prop="brands" label="客户品牌" ></el-table-column>
+              <el-table-column prop="openDate" label="立案时间" width="200"></el-table-column>
+              <el-table-column prop="brands" label="客户品牌"></el-table-column>
               <el-table-column prop="clientCaseNo" label="客户案件号" width="120"></el-table-column>
-              <el-table-column label="操作" width="180" align="center">
+              <!-- <el-table-column label="操作" width="180" align="center">
                 <template slot-scope="scope">
                   <el-button type="text" icon="el-icon-edit" @click="toPathid()">查看</el-button>
                   <el-button
@@ -124,31 +126,21 @@
                     @click="handleDelete(scope.$index, scope.row)"
                   >删除</el-button>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
             <div class="pagination">
-              <el-button @click="prevPage()">
-                上一页
-            </el-button>
-            <span>第 {{currentPage}} 页/共 {{totalPages}} 页</span>
-            <el-button @click="nextPage()">
-                下一页
-            </el-button>
+              <el-button @click="prevPage()">上一页</el-button>
+              <span>第 {{currentPage}} 页/共 {{totalPages}} 页</span>
+              <el-button @click="nextPage()">下一页</el-button>
             </div>
           </div>
-
-          <!-- 编辑弹出框 -->
-          
-
-          <!-- 删除提示框 -->
-          
         </div>
       </el-card>
     </div>
   </div>
 </template>
 <script>
-import { _postsearchAdmin } from "../../services/service.js";
+import { _postsearchA,_postsearchS,_postsearchR } from "../../services/service.js";
 export default {
   data() {
     return {
@@ -166,104 +158,182 @@ export default {
         openDate: null,
         closeDate: null
       },
+      user_role:'',//角色信息
       /* 表单 */
       tableData: [],
       totalPage: null, // 统共页数，默认为1
       currentPage: 1, //当前页数 ，默认为1
       pageSize: 10, // 每页显示数量
       currentPageData: [], //当前页显示内容
-      cur_page: 1,
+      cur_page: 1
     };
   },
   created() {
-    this.getUserRole()
+    this.getUserRole();
+    this.user_role=sessionStorage.getItem("user_role")
   },
   computed: {
-    
-    totalPages(){
+    totalPages() {
       // 计算一共有几页
-       this.totalPage = Math.ceil(this.tableData.length / this.pageSize),
-       // 计算得0时设置为1
-      this.totalPage = this.totalPage == 0 ? 1 : this.totalPage,
-      
-      this.getCurrentPageData()
-      return this.totalPage
+      (this.totalPage = Math.ceil(this.tableData.length / this.pageSize)),
+        // 计算得0时设置为1
+        (this.totalPage = this.totalPage == 0 ? 1 : this.totalPage),
+        this.getCurrentPageData();
+      return this.totalPage;
     }
   },
   methods: {
     /* 获取用户权限 */
-    getUserRole(){
-      const user_role= sessionStorage.getItem("user_role")
+    getUserRole() {
+      const user_role = sessionStorage.getItem("user_role");
       if (!user_role) {
         this.$message({
           showClose: true,
-          message: '你没有权限，请重新登陆',
-          type: 'error'
+          message: "你没有权限，请重新登陆",
+          type: "error"
         });
-        this.$router.push('/login')
+        this.$router.push("/login");
       }
       if (user_role === "FinancialController" || user_role === "Financial") {
         this.$message({
           showClose: true,
-          message: '你权限不够',
-          type: 'error'
+          message: "你权限不够",
+          type: "error"
         });
-        this.$router.push('/')
+        this.$router.push("/");
       }
     },
     onSubmit() {
-      var obj=new Object()
-      obj=this.form
+      var obj = new Object();
+      obj = this.form;
       if (!obj.open) {
-        obj.startOpen=null;
-        obj.endOpen=null
-        delete obj.open
-      }else if (obj.open) {
-        obj.startOpen=obj.open[0]
-        obj.endOpen=obj.open[1]
-        delete obj.open
+        obj.startOpen = null;
+        obj.endOpen = null;
+        delete obj.open;
+      } else if (obj.open) {
+        obj.startOpen = obj.open[0];
+        obj.endOpen = obj.open[1];
+        delete obj.open;
       }
       if (!obj.close) {
-        obj.startClose=null;
-        obj.endClose=null
-        delete obj.open
+        obj.startClose = null;
+        obj.endClose = null;
+        delete obj.open;
       } else {
-        obj.startClose=obj.close[0]
-        obj.endClose=obj.close[1]
-        delete obj.close
+        obj.startClose = obj.close[0];
+        obj.endClose = obj.close[1];
+        delete obj.close;
       }
-      _postsearchAdmin(obj).then(res=>{
-        this.tableData=res.data
-        console.info(res)
-        if (res.msg==='查询成功') {
+      if (this.user_role === "Admin") {
+        _postsearchA(obj)
+        .then(res => {
+          this.tableData = res.data;
+          console.info(res);
+          if (res.msg === "查询成功") {
+            if (res.data.length === 0) {
+              this.$message({
+                showClose: true,
+                message: "查询null",
+                type: "err"
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: "恭喜你，查询成功",
+                type: "success"
+              });
+            }
+          } else {
+            this.$message({
+              showClose: true,
+              message: "查询失败",
+              type: "err"
+            });
+          }
+        })
+        .catch(err => {
           this.$message({
-          showClose: true,
-          message: '恭喜你，查询成功',
-          type: 'success'
+            showClose: true,
+            message: err,
+            type: "error"
+          });
         });
-        }else{
-           this.$message({
-          showClose: true,
-          message: '查询失败',
-          type: 'err'
+      }else if (this.user_role === "Supervisor") {
+        _postsearchS(obj)
+        .then(res => {
+          this.tableData = res.data;
+          console.info(res);
+          if (res.msg === "查询成功") {
+            if (res.data.length === 0) {
+              this.$message({
+                showClose: true,
+                message: "查询null",
+                type: "err"
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: "恭喜你，查询成功",
+                type: "success"
+              });
+            }
+          } else {
+            this.$message({
+              showClose: true,
+              message: "查询失败",
+              type: "err"
+            });
+          }
+        })
+        .catch(err => {
+          this.$message({
+            showClose: true,
+            message: err,
+            type: "error"
+          });
         });
-        }
-         
-      }).catch(err=>{
-        this.$message({
-          showClose: true,
-          message: err,
-          type: 'error'
+      }else if (this.user_role === "ReportingStaff") {
+        _postsearchR(obj)
+        .then(res => {
+          this.tableData = res.data;
+          console.info(res);
+          if (res.msg === "查询成功") {
+            if (res.data.length === 0) {
+              this.$message({
+                showClose: true,
+                message: "查询null",
+                type: "err"
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: "恭喜你，查询成功",
+                type: "success"
+              });
+            }
+          } else {
+            this.$message({
+              showClose: true,
+              message: "查询失败",
+              type: "err"
+            });
+          }
+        })
+        .catch(err => {
+          this.$message({
+            showClose: true,
+            message: err,
+            type: "error"
+          });
         });
-      })
+      }
+      
     },
-     getCurrentPageData() {
-       
+    getCurrentPageData() {
       this.currentPageData = this.tableData.slice(
         (this.currentPage - 1) * this.pageSize,
         this.currentPage * this.pageSize
       );
-
     },
     //上一页
     prevPage() {
@@ -312,7 +382,7 @@ export default {
     filterTag(value, row) {
       return row.tag === value;
     },
-    
+
     delAll() {
       const length = this.multipleSelection.length;
       let str = "";
@@ -340,14 +410,14 @@ export default {
     },
 
     /* 点击跳转 */
-    openDetails(row){
-      console.info(row.id)
+    openDetails(row) {
+      console.info(row.id);
       this.$router.push({
-          name: 'detailpages',
-          params: {
-            id: row.id
-          }
-        })
+        name: "detailpages",
+        params: {
+          id: row.id
+        }
+      });
     }
   }
 };
