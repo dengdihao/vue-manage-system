@@ -116,6 +116,7 @@ export default {
     this.postoperation(this.obj)
   },
   created() {
+    debugger
     this.handleListener();
     this.changeDate();
     

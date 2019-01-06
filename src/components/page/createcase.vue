@@ -1561,7 +1561,7 @@ export default {
                     message: "恭喜你，这是一条成功消息",
                     type: "success"
                   });
-                  this.$router.push('/');
+                  this.$router.push({ path:'/'});
                 })
                 .catch(err => {
                   this.$message.error("创建有误，请核对信息");
@@ -1574,7 +1574,7 @@ export default {
                     message: "恭喜你，这是一条成功消息",
                     type: "success"
                   });
-                  this.$router.push('/');
+                  this.$router.push({ path:'/'});
                 })
                 .catch(err => {
                   this.$message.error("创建有误，请核对信息");
@@ -1587,7 +1587,7 @@ export default {
                     message: "恭喜你，这是一条成功消息",
                     type: "success"
                   });
-                  this.$router.push('/');
+                  this.$router.push({ path:'/'});
                 })
                 .catch(err => {
                   this.$message.error("创建有误，请核对信息");

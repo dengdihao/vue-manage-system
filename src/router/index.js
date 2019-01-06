@@ -28,7 +28,8 @@ export default new Router({
             meta: {
                 title: '自述文件'
             },
-            children: [{
+            children: [
+                {
                     path: 'dashboard',
                     component: resolve => require(['../components/page/Dashboard.vue'], resolve),
                     meta: {
