@@ -1,12 +1,10 @@
 <template>
   <el-card>
-    {{takeObj}}
     <div class="detail-header clearfix" slot="header">
       <div class="border-bottom"></div>
       <ul class="detail-div">
         <li v-for="(item,index) in stage" :key="index">
           <div class="detail-ul-content">{{item.stagename}}</div>
-          <!-- div 锚点跳转 -->
           <div
             class="detail-ul-icon"
             :class="{colorred:item.isshow,colorgreen:item.isshowg}"
@@ -32,8 +30,8 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="commitnews(news)">确 定</el-button>
+          <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
+          <el-button size="mini" type="primary" @click="commitnews(news)">确 定</el-button>
         </div>
       </el-dialog>
 
@@ -41,26 +39,26 @@
       <el-tab-pane label="案件信息" id="caseBase">
         <form :model="baseInfo" v-if="baseInfo">
           <div class="clearfix btn-border">
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="editB()"
             >编辑</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="editBno()"
             >取消编辑</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="updateB(baseInfo)"
             >更新信息</el-button>
 
             <!-- 消息对话框 -->
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               @click="dialogFormVisible = true"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
@@ -72,7 +70,6 @@
               <td class="tb" width="20%">案件号</td>
               <td width="30%">
                 <el-input v-model="baseInfo.caseNo" v-if="bisShow"></el-input>
-                <!--  -->
                 <div v-else>{{baseInfo.caseNo}}</div>
               </td>
               <td class="tb" width="20%">案件类型</td>
@@ -86,7 +83,6 @@
                   <el-option label="行政" value="行政"></el-option>
                   <el-option label="调查" value="调查"></el-option>
                   <el-option label="诉讼" value="诉讼"></el-option>
-
                   <el-option label="其他" value="其他"></el-option>
                 </el-select>
                 <div v-else>{{baseInfo.type}}</div>
@@ -160,25 +156,25 @@
       <el-tab-pane label="客户信息">
         <form action :model="clientInfo" v-if="clientInfo">
           <div class="clearfix btn-border">
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="editC()"
             >编辑</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="editCno()"
             >取消编辑</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="updateC(clientInfo)"
             >更新信息</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               @click="dialogFormVisible = true"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
@@ -212,7 +208,6 @@
                   placeholder="选择日期"
                   v-if="cisShow"
                   style="width: 100%;"
-                  value-format="timestamp"
                 ></el-date-picker>
                 <div v-else>{{clientInfo.authorizeDate}}</div>
               </td>
@@ -220,33 +215,14 @@
             <tr>
               <td class="tb" width="20%">出具法律文书</td>
               <td width="30%">
+                <span>名称:{{clientInfo.documents[0].documentName}} <el-button size="mini" @click="readPath(clientInfo.documents[0].documentPath)">预览文件</el-button></span>
                 <el-popover trigger="click" width="800" placement="right">
                   <table class="ntable" v-for="(item,index) in clientInfo.documents" :key="index">
-                    <p v-show="false" v-if="item.id"></p>
                     <tr>
                       <td width="35%">文书名称</td>
                       <td width="65%">
                         <el-input v-model="item.documentName" v-if="cisShow"></el-input>
                         <div v-else>{{item.documentName}}</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="35%">文书类型</td>
-                      <td width="65%">
-                        <el-select
-                          v-model="item.documentType"
-                          placeholder="请选择"
-                          v-if="cisShow"
-                          style="width: 100%;"
-                        >
-                          <el-option label="鉴定书" value="鉴定书"></el-option>
-                          <el-option label="价格单" value="价格单"></el-option>
-                          <el-option label="授权书" value="授权书"></el-option>
-                          <el-option label="营业执照" value="营业执照"></el-option>
-                          <el-option label="商标注册证" value="商标注册证"></el-option>
-                          <el-option label="其他" value="其他"></el-option>
-                        </el-select>
-                        <div v-else>{{item.documentType}}</div>
                       </td>
                     </tr>
                     <tr>
@@ -264,10 +240,12 @@
                       </td>
                     </tr>
                     <tr>
+                      
                       <td width="35%">扫描文件</td>
                       <td width="65%">
-                        <el-input v-model="item.documentPath" v-if="cisShow"></el-input>
-                        <div v-else @click="readPath(item.documentPath)">{{item.documentPath}}</div>
+                        <el-button size="mini" @click="readPath(item.documentPath)">预览</el-button>
+                        <!-- <el-input v-model="item.documentPath" v-if="cisShow"></el-input>
+                        <div v-else @click="readPath(item.documentPath)">{{item.documentPath}}</div> -->
                       </td>
                     </tr>
                     <tr>
@@ -309,49 +287,25 @@
                     <tr>
                       <td width="35%">附件</td>
                       <td width="65%">
-                        <table
+                        <div
                           class="ntable"
                           v-for="(items,index) in item.attachments"
                           :key="index"
                         >
-                          <p v-if="items.id" v-show="false">{{items.id}}</p>
-                          <tr>
-                            <td>附件类型</td>
-                            <td>
-                              <el-input v-model="items.attachmentType" v-if="cisShow"></el-input>
-                              <div v-else>{{items.attachmentType}}</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>附件路径</td>
-                            <td>
-                              <el-input v-model="items.attachmentPath" v-if="cisShow"></el-input>
-                              <div
-                                v-else
-                                @click="readPath(items.attachmentPath)"
-                              >{{items.attachmentPath}}</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>备注</td>
-                            <td>
-                              <el-input v-model="items.note" v-if="cisShow"></el-input>
-                              <div v-else>{{items.note}}</div>
-                            </td>
-                          </tr>
-                        </table>
+                        <div>{{index+1}} {{items.attachmentName}} <el-button size="mini" @click="readPath(items.attachmentPath)" >预览</el-button></div>
+                        </div>
 
-                        <el-button @click="diaClient=true" v-if="cisShow">添加</el-button>
+                        <el-button size="mini" @click="diaClient=true" v-if="cisShow" >添加</el-button>
                         <el-dialog title="添加附件" :visible.sync="diaClient" append-to-body>
                           <div>
                             <el-form :model="clientAttCon">
                               <table class="ntable">
-                                <!-- <tr>
-                                      <td width="35%">附件名称</td>
-                                      <td width="65%">
-                                        <el-input v-model="clientAttCon.attachmentName"></el-input>
-                                      </td>
-                                </tr>-->
+                                <tr>
+                                  <td width="35%">附件名称</td>
+                                  <td width="65%">
+                                    <el-input v-model="clientAttCon.attachmentName"></el-input>
+                                  </td>
+                                </tr>
                                 <tr>
                                   <td width="35%">附件类型</td>
                                   <td width="65%">
@@ -386,8 +340,8 @@
                             </el-form>
                           </div>
                           <div slot="footer" class="dialog-footer">
-                            <el-button @click="diaClient = false">取 消</el-button>
-                            <el-button type="primary" @click="clientAttConadd(clientAttCon)">添 加</el-button>
+                            <el-button size="mini" @click="diaClient = false">取 消</el-button>
+                            <el-button size="mini" type="primary" @click="addCliAtt(clientAttCon)">添 加</el-button>
                           </div>
                         </el-dialog>
                       </td>
@@ -400,7 +354,7 @@
                       </td>
                     </tr>
                   </table>
-                  <el-button slot="reference">详情</el-button>
+                  <el-button size="mini" slot="reference">详情</el-button>
                 </el-popover>
               </td>
               <td class="tb" width="20%"></td>
@@ -414,87 +368,81 @@
       <el-tab-pane label="目标信息">
         <form action :model="targetInfo" v-if="targetInfo">
           <div class="clearfix btn-border">
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="editT()"
             >编辑</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="editTno()"
             >取消编辑</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="updateT(targetInfo)"
             >更新信息</el-button>
             <!-- 消息对话框 -->
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               @click="dialogFormVisible = true"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
             >新建消息</el-button>
           </div>
-          <table class="ntable" v-for="(titem,index) in targetInfo" :key="index">
-            <p v-show="false" v-if="titem.id">{{titem.id}}</p>
+          <div class="dtable" v-for="(item,index) in targetInfo" :key="index">
+            <p>{{index+1}}</p>
+            <p>{{item.targetName}}</p>
+            <table class="ntable" v-for="(titem,index) in targetInfo" :key="index">
             <tr>
               <td class="tb" width="20%">目标名称</td>
               <td width="30%">
-                <el-input v-model="titem.targetName" v-if="tisShow"></el-input>
-                <div v-else>{{titem.targetName}}</div>
+                <div>{{titem.targetName}}</div>
               </td>
               <td class="tb" width="20%">目标类型</td>
               <td width="30%">
-                {{titem.targetType}}
-                <el-input v-model="titem.targetType" v-if="tisShow"></el-input>
-                <div v-else>{{titem.targetType}}</div>
+                <div>{{titem.targetType}}</div>
               </td>
             </tr>
             <tr>
               <td class="tb" width="20%">工商注册号</td>
               <td width="30%">
-                <el-input v-model="titem.regNo" v-if="tisShow"></el-input>
-                <div v-else>{{titem.regNo}}</div>
+                <div >{{titem.regNo}}</div>
               </td>
               <td class="tb" width="20%">统一社会信用代码</td>
               <td width="30%">
-                <el-input v-model="titem.creditNo" v-if="tisShow"></el-input>
-                <div v-else>{{titem.creditNo}}</div>
+                <div>{{titem.creditNo}}</div>
               </td>
             </tr>
             <tr>
               <td class="tb" width="20%">目标地址</td>
               <td width="30%">
-                <el-input v-model="titem.targetAdd" v-if="tisShow"></el-input>
-                <div v-else>{{titem.targetAdd}}</div>
+                <div>{{titem.targetAdd}}</div>
               </td>
               <td class="tb" width="20%">目标联系方式</td>
               <td width="30%">
+                <span v-if="titem.contacts">电话:{{titem.contacts[0].phone}}</span>                
                 <el-popover trigger="click" width="800" placement="right">
                   <table class="ntable" v-for="(item,index) in titem.contacts" :key="index">
                     <p v-show="false" v-if="item.id">{{item.id}}</p>
                     <tr>
                       <td width="35%">目标网址</td>
                       <td width="65%">
-                        <el-input v-model="item.website" v-if="tisShow"></el-input>
-                        <div v-else>{{item.website}}</div>
+                        <div>{{item.website}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">目标电话</td>
                       <td width="65%">
-                        <el-input v-model="item.phone" v-if="tisShow"></el-input>
-                        <div v-else>{{item.phone}}</div>
+                        <div >{{item.phone}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">目标邮箱</td>
                       <td width="65%">
-                        <el-input v-model="item.email" v-if="tisShow"></el-input>
-                        <div v-else>{{item.email}}</div>
+                        <div>{{item.email}}</div>
                       </td>
                     </tr>
                     <tr>
@@ -504,22 +452,19 @@
                           <tr>
                             <td>社交工具</td>
                             <td>
-                              <el-input v-model="nitem.networkName" v-if="tisShow"></el-input>
-                              <div v-else>{{nitem.networkName}}</div>
+                              <div>{{nitem.networkName}}</div>
                             </td>
                           </tr>
                           <tr>
                             <td>号码</td>
                             <td>
-                              <el-input v-model="nitem.networkNo" v-if="tisShow"></el-input>
-                              <div v-else>{{nitem.networkNo}}</div>
+                              <div>{{nitem.networkNo}}</div>
                             </td>
                           </tr>
                           <tr>
                             <td>备注</td>
                             <td>
-                              <el-input v-model="nitem.note" v-if="tisShow"></el-input>
-                              <div v-else>{{nitem.note}}</div>
+                              <div>{{nitem.note}}</div>
                             </td>
                           </tr>
                         </table>
@@ -528,41 +473,37 @@
                     <tr>
                       <td width="35%">备注</td>
                       <td width="65%">
-                        <el-input v-model="item.note" v-if="tisShow"></el-input>
-                        <div v-else>{{item.note}}</div>
+                        <div>{{item.note}}</div>
                       </td>
                     </tr>
                     <p v-show="false" v-if="item.id">{{item.id}}</p>
                   </table>
-                  <el-button slot="reference">详情</el-button>
+                  <el-button size="mini" slot="reference">详情</el-button>
                 </el-popover>
               </td>
             </tr>
             <tr>
               <td class="tb" width="20%">目标人员</td>
               <td width="30%">
+                <span v-if="titem.principal">{{titem.principal[0].name}} {{titem.principal[0].position}}</span>
                 <el-popover trigger="click" width="800" placement="right">
                   <table class="ntable" v-for="(item,index) in titem.principal" :key="index">
-                    <p v-show="false" v-if="item.id">{{item.id}}</p>
                     <tr>
                       <td width="35%">姓名</td>
                       <td width="65%">
-                        <el-input v-model="item.name" v-if="tisShow"></el-input>
-                        <div v-else>{{item.name}}</div>
+                        <div>{{item.name}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">职位</td>
                       <td width="65%">
-                        <el-input v-model="item.position" v-if="tisShow"></el-input>
-                        <div v-else>{{item.position}}</div>
+                        <div>{{item.position}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">证件号码</td>
                       <td width="65%">
-                        <el-input v-model="item.iDCard" v-if="tisShow"></el-input>
-                        <div v-else>{{item.iDCard}}</div>
+                        <div>{{item.iDCard}}</div>
                       </td>
                     </tr>
                     <tr>
@@ -573,15 +514,13 @@
                           <tr>
                             <td>目标电话</td>
                             <td>
-                              <el-input v-model="citem.phone" v-if="tisShow"></el-input>
-                              <div v-else>{{citem.phone}}</div>
+                              <div >{{citem.phone}}</div>
                             </td>
                           </tr>
                           <tr>
                             <td>目标邮箱</td>
                             <td>
-                              <el-input v-model="citem.email" v-if="tisShow"></el-input>
-                              <div v-else>{{citem.email}}</div>
+                              <div >{{citem.email}}</div>
                             </td>
                           </tr>
                           <tr>
@@ -595,22 +534,19 @@
                                 <tr>
                                   <td>社交工具</td>
                                   <td>
-                                    <el-input v-model="item.networkName" v-if="tisShow"></el-input>
-                                    <div v-else>{{item.networkName}}</div>
+                                    <div>{{item.networkName}}</div>
                                   </td>
                                 </tr>
                                 <tr>
                                   <td>号码</td>
                                   <td>
-                                    <el-input v-model="item.networkNo" v-if="tisShow"></el-input>
-                                    <div v-else>{{item.networkNo}}</div>
+                                    <div>{{item.networkNo}}</div>
                                   </td>
                                 </tr>
                                 <tr>
                                   <td>备注</td>
                                   <td>
-                                    <el-input v-model="item.note" v-if="tisShow"></el-input>
-                                    <div v-else>{{item.note}}</div>
+                                    <div>{{item.note}}</div>
                                   </td>
                                 </tr>
                               </table>
@@ -622,26 +558,22 @@
                     <tr>
                       <td width="35%">是否为累犯</td>
                       <td width="65%">
-                        <el-radio-group v-model="item.isRecidivism" v-if="tisShow">
-                          <el-radio :label="true">是</el-radio>
-                          <el-radio :label="false">否</el-radio>
-                        </el-radio-group>
-                        <div v-else>{{item.isRecidivism === true ? '是':'否' }}</div>
+                        <div>{{item.isRecidivism === true ? '是':'否' }}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">备注</td>
                       <td width="65%">
-                        <el-input v-model="item.note" v-if="tisShow"></el-input>
-                        <div v-else>{{item.note}}</div>
+                        <div>{{item.note}}</div>
                       </td>
                     </tr>
                   </table>
-                  <el-button slot="reference">详情</el-button>
+                  <el-button size="mini" slot="reference">详情</el-button>
                 </el-popover>
               </td>
               <td class="tb" width="20%">关联公司</td>
               <td width="30%">
+                <span>{{titem.affiliateCompany[0].companyName}} </span>
                 <el-popover trigger="click" width="800" placement="right">
                   <table
                     class="ntable"
@@ -652,8 +584,7 @@
                     <tr>
                       <td width="35%">公司名称</td>
                       <td width="65%">
-                        <el-input v-model="aitem.companyName" v-if="tisShow"></el-input>
-                        <div v-else>{{aitem.companyName}}</div>
+                        <div>{{aitem.companyName}}</div>
                       </td>
                     </tr>
                     <tr>
@@ -664,22 +595,19 @@
                           <tr>
                             <td>姓名</td>
                             <td>
-                              <el-input v-model="pitem.name" v-if="tisShow"></el-input>
-                              <div v-else>{{pitem.name}}</div>
+                              <div>{{pitem.name}}</div>
                             </td>
                           </tr>
                           <tr>
                             <td>职位</td>
                             <td>
-                              <el-input v-model="pitem.position" v-if="tisShow"></el-input>
-                              <div v-else>{{pitem.position}}</div>
+                              <div>{{pitem.position}}</div>
                             </td>
                           </tr>
                           <tr>
                             <td>证件号码</td>
                             <td>
-                              <el-input v-model="pitem.iDCard" v-if="tisShow"></el-input>
-                              <div v-else>{{pitem.iDCard}}</div>
+                              <div>{{pitem.iDCard}}</div>
                             </td>
                           </tr>
                           <tr>
@@ -695,15 +623,13 @@
                                 <tr>
                                   <td>目标电话</td>
                                   <td>
-                                    <el-input v-model="citem.phone" v-if="tisShow"></el-input>
-                                    <div v-else>{{citem.phone}}</div>
+                                    <div>{{citem.phone}}</div>
                                   </td>
                                 </tr>
                                 <tr>
                                   <td>目标邮箱</td>
                                   <td>
-                                    <el-input v-model="citem.email" v-if="tisShow"></el-input>
-                                    <div v-else>{{citem.email}}</div>
+                                    <div>{{citem.email}}</div>
                                   </td>
                                 </tr>
                                 <tr>
@@ -717,22 +643,19 @@
                                       <tr>
                                         <td>社交工具</td>
                                         <td>
-                                          <el-input v-model="nitem.networkName" v-if="tisShow"></el-input>
-                                          <div v-else>{{nitem.networkName}}</div>
+                                          <div>{{nitem.networkName}}</div>
                                         </td>
                                       </tr>
                                       <tr>
                                         <td>号码</td>
                                         <td>
-                                          <el-input v-model="nitem.networkNo" v-if="tisShow"></el-input>
-                                          <div v-else>{{nitem.networkNo}}</div>
+                                          <div>{{nitem.networkNo}}</div>
                                         </td>
                                       </tr>
                                       <tr>
                                         <td>备注</td>
                                         <td>
-                                          <el-input v-model="nitem.note" v-if="tisShow"></el-input>
-                                          <div v-else>{{nitem.note}}</div>
+                                          <div>{{nitem.note}}</div>
                                         </td>
                                       </tr>
                                     </table>
@@ -741,8 +664,7 @@
                                 <tr>
                                   <td>备注</td>
                                   <td>
-                                    <el-input v-model="citem.note" v-if="tisShow"></el-input>
-                                    <div v-else>{{citem.note}}</div>
+                                    <div>{{citem.note}}</div>
                                   </td>
                                 </tr>
                               </table>
@@ -752,56 +674,53 @@
                       </td>
                     </tr>
                   </table>
-                  <el-button slot="reference">详情</el-button>
+                  <el-button size="mini" slot="reference">详情</el-button>
                 </el-popover>
               </td>
             </tr>
             <tr>
               <td class="tb" width="20%">目标产品信息</td>
               <td width="30%">
+                <span>{{titem.productInfo[0].productName}}{{titem.productInfo[0].productNo}}</span>
                 <el-popover trigger="click" width="800" placement="right">
                   <table class="ntable" v-for="(item,index) in titem.productInfo" :key="index">
                     <p v-show="false" v-if="item.id">{{item.id}}</p>
                     <tr>
                       <td width="35%">产品名称/服务</td>
                       <td width="65%">
-                        <el-input v-model="item.productName" v-if="tisShow"></el-input>
-                        <div v-else>{{item.productName}}</div>
+                        <div>{{item.productName}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">产品型号</td>
                       <td width="65%">
-                        <el-input v-model="item.productNo" v-if="tisShow"></el-input>
-                        <div v-else>{{item.productNo}}</div>
+                        <div>{{item.productNo}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">产品数量</td>
                       <td width="65%">
-                        <el-input v-model="item.productQty" v-if="tisShow"></el-input>
-                        <div v-else>{{item.productQty}}</div>
+                        <div>{{item.productQty}}</div>
                       </td>
                     </tr>
                     <tr>
                       <td width="35%">备注</td>
                       <td width="65%">
-                        <el-input v-model="item.note" v-if="tisShow"></el-input>
-                        <div v-else>{{item.note}}</div>
+                        <div>{{item.note}}</div>
                       </td>
                     </tr>
                   </table>
-                  <el-button slot="reference">详情</el-button>
+                  <el-button size="mini" slot="reference">详情</el-button>
                 </el-popover>
               </td>
               <td class="tb" width="20%">备注</td>
               <td width="30%">
-                <el-input v-model="titem.note" v-if="tisShow"></el-input>
-                <div v-else>{{titem.note}}</div>
+                <div>{{titem.note}}</div>
               </td>
             </tr>
-            <!-- <el-button @click="delTar(index)">删除</el-button> -->
           </table>
+          </div>
+          
         </form>
       </el-tab-pane>
 
@@ -809,26 +728,26 @@
       <el-tab-pane label="财务信息" :disabled="roleShow">
         <form :model="accounting" v-if="accounting">
           <div class="clearfix btn-border">
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="editA()"
             >编辑</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="editAno()"
             >取消编辑</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="updateA(accounting)"
             >更新信息</el-button>
 
             <!-- 消息对话框 -->
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               @click="dialogFormVisible = true"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
@@ -886,7 +805,7 @@
                       </td>
                     </tr>
                   </table>
-                  <el-button slot="reference">详情</el-button>
+                  <el-button size="mini" slot="reference">详情</el-button>
                 </el-popover>
               </td>
               <td class="tb" width="20%">预付款</td>
@@ -943,7 +862,7 @@
                       </td>
                     </tr>
                   </table>
-                  <el-button slot="reference">详情</el-button>
+                  <el-button size="mini" slot="reference">详情</el-button>
                 </el-popover>
               </td>
             </tr>
@@ -999,7 +918,7 @@
                       </td>
                     </tr>
                   </table>
-                  <el-button slot="reference">详情</el-button>
+                  <el-button size="mini" slot="reference">详情</el-button>
                 </el-popover>
               </td>
               <td class="tb" width="20%">报销</td>
@@ -1042,7 +961,7 @@
                       </td>
                     </tr>
                   </table>
-                  <el-button slot="reference">详情</el-button>
+                  <el-button size="mini" slot="reference">详情</el-button>
                 </el-popover>
               </td>
             </tr>
@@ -1095,7 +1014,7 @@
                       </td>
                     </tr>
                   </table>
-                  <el-button slot="reference">详情</el-button>
+                  <el-button size="mini" slot="reference">详情</el-button>
                 </el-popover>
               </td>
               <td class="tb" width="20%">备注</td>
@@ -1112,26 +1031,26 @@
       <el-tab-pane label="案件流程">
         <el-collapse v-model="activeNames">
           <div class="clearfix btn-border">
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="editP()"
             >编辑</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="editPno()"
             >取消编辑</el-button>
 
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
               @click="updateP()"
             >更新信息</el-button>
 
             <!-- 消息对话框 -->
-            <el-button
+            <el-button size="mini"
               class="detail-btn"
               @click="dialogFormVisible = true"
               style="color:#409EFF;font-size:14px;cursor: pointer;"
@@ -1232,7 +1151,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
               </tr>
@@ -1296,7 +1215,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
                 <td class="tb" width="20%">附件</td>
@@ -1344,7 +1263,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
               </tr>
@@ -1454,7 +1373,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
               </tr>
@@ -1518,7 +1437,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
                 <td class="tb" width="20%">附件</td>
@@ -1566,7 +1485,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
               </tr>
@@ -1670,7 +1589,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
               </tr>
@@ -1734,7 +1653,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
                 <td class="tb" width="20%">附件</td>
@@ -1782,7 +1701,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
               </tr>
@@ -1886,7 +1805,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
               </tr>
@@ -1950,7 +1869,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
                 <td class="tb" width="20%">附件</td>
@@ -1998,7 +1917,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
               </tr>
@@ -2108,7 +2027,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
               </tr>
@@ -2166,7 +2085,7 @@
                         </td>
                       </tr>
                     </table>
-                    <el-button slot="reference">详情</el-button>
+                    <el-button size="mini" slot="reference">详情</el-button>
                   </el-popover>
                 </td>
                 <td class="tb" width="20%">备注</td>
@@ -2208,7 +2127,8 @@ import {
   _detailCaseR,
   _updateCaseA,
   _updateCaseS,
-  _updateCaseR
+  _updateCaseR,
+  _postUpload
 } from "../../services/service";
 
 import { mytoString, mytimeFormat } from "../../../static/js/common.js";
@@ -2491,6 +2411,7 @@ export default {
           {
             attachments: [
               {
+                attachmentName: null,
                 attachmentPath: null,
                 attachmentType: null,
                 id: null,
@@ -2511,7 +2432,28 @@ export default {
         id: null,
         instructions: null,
         note: null
-      }, //客户信息null,
+      },
+      diaDocObj: {
+        attachments: [
+          {
+            attachmentPath: null,
+            attachmentType: null,
+            id: null,
+            note: null
+          }
+        ],
+        content: null,
+        documentName: null,
+        documentPath: null,
+        documentType: null,
+        id: null,
+        issueDate: null,
+        note: null,
+        receiveDate: null,
+        sendDate: null
+      },
+
+      //客户信息null,
       targetInfo: [
         {
           affiliateCompany: [
@@ -2657,13 +2599,13 @@ export default {
       isShow: true,
       bisShow: false,
       cisShow: false,
-      tisShow: false,
       aisShow: false,
       pisShow: false,
 
       pdisShow: false,
       /* dia */
       diaClient: false,
+      diaCliDoc: false,
       dialogComplete: false,
       completeTask: "",
       user_role: "",
@@ -2684,7 +2626,7 @@ export default {
       if (!user_role) {
         this.$message({
           showClose: true,
-          message: "你没有权限，请重新登陆",
+          message: "没有身份，请重新登陆",
           type: "error"
         });
         this.$router.push("/login");
@@ -2701,9 +2643,8 @@ export default {
 
     /* 获取案件流程数据 flowPath */
     getPaticipants() {
-      debugger
       if (this.user_role === "Admin") {
-      this.takeObj.case_type = "flowPath";
+        this.takeObj.case_type = "flowPath";
         _detailCaseA(this.takeObj).then(res => {
           this.paticipants.id = res.data.id;
           if (res.data.discoverer.length === 0) {
@@ -2754,24 +2695,31 @@ export default {
             if (res.data[item.id] !== null) {
               if (res.data[item.id][0].progress === "进行中") {
                 item.isshow = true;
+                item.isshowg = false;
               } else if (res.data[item.id][0].progress === "已完成") {
                 item.isshowg = true;
+                item.isshow = false;
+              } else if (res.data[item.id][0].progress === "未开始") {
+                item.isshowg = false;
+                item.isshow = false;
               }
             }
           });
         });
       } else if (this.user_role === "Supervisor") {
-      this.takeObj.case_type = "flowPath";
+        this.takeObj.case_type = "flowPath";
         _detailCaseS(this.takeObj).then(res => {
           this.paticipants.id = res.data.id;
-          if (res.data.discoverer.length === 0) {
-            res.data.discoverer = null;
-            this.discoverer = Object.assign(
-              this.discoverer,
-              res.data.discoverer
-            );
-          } else {
-            this.discoverer = res.data.discoverer.concat();
+          if (res.data.discoverer != null) {
+            if (res.data.discoverer.length === 0) {
+              res.data.discoverer = null;
+              this.discoverer = Object.assign(
+                this.discoverer,
+                res.data.discoverer
+              );
+            } else {
+              this.discoverer = res.data.discoverer.concat();
+            }
           }
 
           if (res.data.investigator.length === 0) {
@@ -2808,6 +2756,7 @@ export default {
             res.data.organ = null;
           }
 
+          debugger;
           this.stage.forEach(item => {
             if (res.data[item.id] !== null) {
               if (res.data[item.id][0].progress === "进行中") {
@@ -2819,73 +2768,77 @@ export default {
           });
         });
       } else if (this.user_role === "ReportingStaff") {
-      this.takeObj.case_type = "flowPath";
+        this.takeObj.case_type = "flowPath";
         _detailCaseR(this.takeObj).then(res => {
-          
           if (res.data.id) {
             this.paticipants.id = res.data.id;
           }
-          if (res.data.discoverer.length === 0) {
-            // res.data.discoverer = null;
-            // this.discoverer = Object.assign(
-            //   this.discoverer,
-            //   res.data.discoverer
-            // );
-            mergeJSON(this.discoverer,res.data.discoverer)
-          } else {
-            this.discoverer = res.data.discoverer.concat();
-          }
-
-          if (res.data.investigator.length === 0) {
-            res.data.investigator = null;
-            this.investigator = Object.assign(
-              this.investigator,
-              res.data.investigator
-            );
-          } else {
-            this.investigator = res.data.investigator.concat();
-          }
-
-          if (res.data.reports.length === 0) {
-            res.data.reports = null;
-            this.reports = Object.assign(this.reports, res.data.reports);
-          } else {
-            this.reports = res.data.reports.concat();
-          }
-
-          if (res.data.raider.length === 0) {
-            res.data.raider = null;
-            this.raider = Object.assign(this.raider, res.data.raider);
-          } else {
-            this.raider = res.data.raider.concat();
-          }
-
-          if (res.data.litigator.length === 0) {
-            res.data.litigator = null;
-            this.litigator = Object.assign(this.litigator, res.data.litigator);
-          } else {
-            this.litigator = res.data.litigator.concat();
-          }
-          if (res.data.organ.length === 0) {
-            res.data.organ = null;
-          }
-
-          this.stage.forEach(item => {
-            if (res.data[item.id] !== null) {
-              if (res.data[item.id][0].progress === "进行中") {
-                item.isshow = true;
-              } else if (res.data[item.id][0].progress === "已完成") {
-                item.isshowg = true;
-              }
+          if (res.data.discoverer != null) {
+            if (res.data.discoverer.length === 0) {
+              // res.data.discoverer = null;
+              // this.discoverer = Object.assign(
+              //   this.discoverer,
+              //   res.data.discoverer
+              // );
+              // mergeJSON(this.discoverer,res.data.discoverer)
+            } else {
+              this.discoverer = res.data.discoverer.concat();
             }
-          });
+
+            if (res.data.investigator.length === 0) {
+              res.data.investigator = null;
+              this.investigator = Object.assign(
+                this.investigator,
+                res.data.investigator
+              );
+            } else {
+              this.investigator = res.data.investigator.concat();
+            }
+
+            if (res.data.reports.length === 0) {
+              res.data.reports = null;
+              this.reports = Object.assign(this.reports, res.data.reports);
+            } else {
+              this.reports = res.data.reports.concat();
+            }
+
+            if (res.data.raider.length === 0) {
+              res.data.raider = null;
+              this.raider = Object.assign(this.raider, res.data.raider);
+            } else {
+              this.raider = res.data.raider.concat();
+            }
+
+            if (res.data.litigator.length === 0) {
+              res.data.litigator = null;
+              this.litigator = Object.assign(
+                this.litigator,
+                res.data.litigator
+              );
+            } else {
+              this.litigator = res.data.litigator.concat();
+            }
+            if (res.data.organ.length === 0) {
+              res.data.organ = null;
+            }
+
+            this.stage.forEach(item => {
+              if (res.data[item.id] !== null) {
+                if (res.data[item.id][0].progress === "进行中") {
+                  item.isshow = true;
+                } else if (res.data[item.id][0].progress === "已完成") {
+                  item.isshowg = true;
+                }
+              }
+            });
+          }
         });
       }
     },
     /* caseBase */
     getbaseInfo() {
       this.takeObj.case_type = "caseBase";
-
+      this.takeObj.case_id=sessionStorage.getItem("id")
       if (this.user_role === "Admin") {
         _detailCaseA(this.takeObj).then(res => {
           this.baseInfo = Object.assign(this.baseInfo, res.data);
@@ -2903,6 +2856,7 @@ export default {
     /* client */
     getclientInfo() {
       this.takeObj.case_type = "client";
+      this.takeObj.case_id=sessionStorage.getItem("id")
 
       if (this.user_role === "Admin") {
         _detailCaseA(this.takeObj).then(res => {
@@ -2921,45 +2875,48 @@ export default {
     /* target */
     gettargetInfo() {
       this.takeObj.case_type = "target";
-      debugger
+      this.takeObj.case_id=sessionStorage.getItem("id")
       if (this.user_role === "Admin") {
         _detailCaseA(this.takeObj).then(res => {
           // this.targetInfo = Object.assign(this.targetInfo, res.data);
-          this.targetInfo =res.data.concat()
+          this.targetInfo = res.data.concat();
         });
       } else if (this.user_role === "Supervisor") {
         _detailCaseS(this.takeObj).then(res => {
           // this.targetInfo = Object.assign(this.targetInfo, res.data);
-          this.targetInfo =res.data.concat()
+          this.targetInfo = res.data.concat();
         });
       } else if (this.user_role === "ReportingStaff") {
         _detailCaseR(this.takeObj).then(res => {
           // this.targetInfo = Object.assign(this.targetInfo, res.data);
-          this.targetInfo =res.data.concat()
+          this.targetInfo = res.data.concat();
         });
       }
     },
     /* finance 财务*/
     getaccounting() {
       this.takeObj.case_type = "finance";
+      this.takeObj.case_id=sessionStorage.getItem("id")
       if (this.user_role === "Admin") {
         _detailCaseA(this.takeObj).then(res => {
-          if (res.data.advancePayment.length == 0) {
-            res.data.advancePayment = this.accounting.advancePayment;
+          if (res.data.advancePayment != null) {
+            if (res.data.advancePayment.length == 0) {
+              res.data.advancePayment = this.accounting.advancePayment;
+            }
+            if (res.data.deposit.length == 0) {
+              res.data.deposit = this.accounting.deposit;
+            }
+            if (res.data.invoice.length == 0) {
+              res.data.invoice = this.accounting.invoice;
+            }
+            if (res.data.refund.length == 0) {
+              res.data.refund = this.accounting.refund;
+            }
+            if (res.data.repay.length == 0) {
+              res.data.repay = this.accounting.repay;
+            }
+            this.accounting = Object.assign(this.accounting, res.data);
           }
-          if (res.data.deposit.length == 0) {
-            res.data.deposit = this.accounting.deposit;
-          }
-          if (res.data.invoice.length == 0) {
-            res.data.invoice = this.accounting.invoice;
-          }
-          if (res.data.refund.length == 0) {
-            res.data.refund = this.accounting.refund;
-          }
-          if (res.data.repay.length == 0) {
-            res.data.repay = this.accounting.repay;
-          }
-          this.accounting = Object.assign(this.accounting, res.data);
         });
       } else if (this.user_role === "Supervisor") {
         _detailCaseS(this.takeObj).then(res => {
@@ -2982,25 +2939,6 @@ export default {
           }
         });
       }
-
-      // _detailCase(this.takeObj).then(res => {
-      //   if (res.data.advancePayment.length==0) {
-      //     res.data.advancePayment=this.accounting.advancePayment
-      //   }
-      //   if (res.data.deposit.length==0) {
-      //    res.data.deposit= this.accounting.deposit
-      //   }
-      //   if (res.data.invoice.length==0) {
-      //    res.data.invoice= this.accounting.invoice
-      //   }
-      //   if (res.data.refund.length==0) {
-      //    res.data.refund= this.accounting.refund
-      //   }
-      //   if (res.data.repay.length==0) {
-      //    res.data.repay= this.accounting.repay
-      //   }
-      //   this.accounting = Object.assign(this.accounting, res.data);
-      // });
     },
 
     /* 锚点跳转 */
@@ -3015,16 +2953,33 @@ export default {
       this.bisShow = true;
     },
     editC() {
-      this.cisShow = true;
+      this.$router.push({
+        name:'detailclient',
+        params: { obj : this.clientInfo ,
+        takeObj:this.takeObj}
+      })
     },
     editT() {
       this.tisShow = true;
+      this.$router.push({
+        name:'detailtarget',
+        params: { obj : this.targetInfo ,
+        takeObj:this.takeObj}
+      })
     },
     editA() {
       this.aisShow = true;
     },
     editP() {
+      debugger
       this.pisShow = true;
+      this.$router.push({
+        name:'detailcase',
+        params: { 
+          obj : this.paticipants ,
+          id:this.takeObj.id
+        }
+      })
     },
     /* 取消编辑 */
     editCno() {
@@ -3044,7 +2999,7 @@ export default {
     },
     /* 更新信息 */
     updateB(item) {
-      debugger
+      debugger;
       console.info(item);
 
       if (this.user_role === "Admin") {
@@ -3107,7 +3062,7 @@ export default {
       }
     },
     updateC(item) {
-      debugger
+      debugger;
       if (this.user_role === "Admin") {
         _updateCaseA(this.takeObj, item)
           .then(res => {
@@ -3168,7 +3123,7 @@ export default {
       }
     },
     updateT(item) {
-      debugger
+      debugger;
       if (this.user_role === "Admin") {
         _updateCaseA(this.takeObj, item)
           .then(res => {
@@ -3292,67 +3247,88 @@ export default {
       }
     },
     updateP() {
-      if (this.user_role === "Admin") {
-        _updateCaseA(this.takeObj, this.paticipants)
-          .then(res => {
-            if (res.status === 200) {
-              this.$message({
-                showClose: true,
-                message: "恭喜你，更新成功！！",
-                type: "success"
-              });
-              this.pisShow = false;
-              this.getPaticipants();
-            }
-          })
-          .catch(err => {
-            this.$message({
-              showClose: true,
-              message: "更新有误，回到首页",
-              type: "error"
-            });
-          });
-      } else if (this.user_role === "Supervisor") {
-        _updateCaseS(this.takeObj, this.paticipants)
-          .then(res => {
-            if (res.status === 200) {
-              this.$message({
-                showClose: true,
-                message: "恭喜你，更新成功！！",
-                type: "success"
-              });
-              this.pisShow = false;
-              this.getPaticipants();
-            }
-          })
-          .catch(err => {
-            this.$message({
-              showClose: true,
-              message: "更新有误，回到首页",
-              type: "error"
-            });
-          });
-      } else if (this.user_role === "ReportingStaff") {
-        _updateCaseR(this.takeObj, this.paticipants)
-          .then(res => {
-            if (res.status === 200) {
-              this.$message({
-                showClose: true,
-                message: "恭喜你，更新成功！！",
-                type: "success"
-              });
-              this.pisShow = false;
-              this.getPaticipants();
+      var arr = "";
+      this.stage.forEach(item => {
+        if (this.paticipants[item.id] !== undefined) {
+          if (this.paticipants[item.id][0].progress == null) {
+            arr += item.id;
+            delete this.paticipants[item.id];
+          } else {
+            this.paticipants[item.id] = this.paticipants[item.id];
+          }
+        }
+        // console.info(this.paticipants)
+      });
+      if (arr != "") {
+        this.$message({
+          showClose: true,
+          message: "请填写" + arr + "中的进行情况",
+          type: "error"
+        });
+      } else {
+        if (this.user_role === "Admin") {
+          _updateCaseA(this.takeObj, this.paticipants)
+            .then(res => {
               console.info(this.paticipants);
-            }
-          })
-          .catch(err => {
-            this.$message({
-              showClose: true,
-              message: "更新有误，回到首页",
-              type: "error"
+              this.getPaticipants();
+              if (res.status === 200) {
+                this.$message({
+                  showClose: true,
+                  message: "恭喜你，更新成功！！",
+                  type: "success"
+                });
+                this.pisShow = false;
+              }
+            })
+            .catch(err => {
+              this.$message({
+                showClose: true,
+                message: "更新有误，回到首页",
+                type: "error"
+              });
             });
-          });
+        } else if (this.user_role === "Supervisor") {
+          _updateCaseS(this.takeObj, this.paticipants)
+            .then(res => {
+              if (res.status === 200) {
+                this.$message({
+                  showClose: true,
+                  message: "恭喜你，更新成功！！",
+                  type: "success"
+                });
+                this.pisShow = false;
+                this.getPaticipants();
+              }
+            })
+            .catch(err => {
+              this.$message({
+                showClose: true,
+                message: "更新有误，回到首页",
+                type: "error"
+              });
+            });
+        } else if (this.user_role === "ReportingStaff") {
+          _updateCaseR(this.takeObj, this.paticipants)
+            .then(res => {
+              if (res.status === 200) {
+                this.$message({
+                  showClose: true,
+                  message: "恭喜你，更新成功！！",
+                  type: "success"
+                });
+                this.pisShow = false;
+                this.getPaticipants();
+                console.info(this.paticipants);
+              }
+            })
+            .catch(err => {
+              this.$message({
+                showClose: true,
+                message: "更新有误，回到首页",
+                type: "error"
+              });
+            });
+        }
       }
     },
     handleClick(tab, event) {
@@ -3377,39 +3353,32 @@ export default {
       alert("提交成功" + item);
       this.dialogFormVisible = false;
     },
-
-    // 遇到相同元素级属性，以（minor）为准 // 不返还新Object，而是main改变
-             mergeJSON(minor, main) {
-                for(var key in minor) {
-                    if(main[key] === undefined) { // 不冲突的，直接赋值 
-                        main[key] = minor[key];
-                        continue;
-                    }
-                    // 冲突了，如果是Object，看看有么有不冲突的属性
-                    // 不是Object 则以（minor）为准为主，
-                    console.log(key)
-                    if(isJSON(minor[key])||isArray(minor[key])) { // arguments.callee 递归调用，并且与函数名解耦 
-                        console.log("is json")
-                        //arguments.callee(minor[key], main[key]);
-                        mergeJSON(minor[key], main[key]);
-                    }else{
-                        main[key] = minor[key];
-                    }
-                }
-            },
-
-
-             isJSON(target) {
-                
-                return typeof target == "object" && target.constructor == Object;
-            },
-
-
-             isArray(o) {
-                return Object.prototype.toString.call(o) == '[object Array]';
-            },
+    uploadf(event) {
+      this.$confirm("是否上传文件?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          var obj = { file: event.target.files[0] };
+          _postUpload(obj).then(res => {
+            this.clientAttCon.attachmentPath = res;
+            this.$refs.pathClear.value = null;
+            this.$message({
+              type: "success",
+              message: "上传成功"
+            });
+          });
+        })
+        .catch(() => {
+          this.$refs.pathClear.value = null;
+          this.$message({
+            type: "info",
+            message: "取消上传"
+          });
+        });
+    },
     readPath(src) {
-      console.info(src);
       this.completeTask =
         "http://172.16.5.240:8083/fileConventer?filePath=http://172.16.6.228:7104/case/file/" +
         src;
@@ -3424,15 +3393,35 @@ export default {
     delTar(index) {
       this.targetInfo.splice(index, 1);
       console.info(this.targetInfo);
+    },
+    /* 法律文书 附件 */
+    delCliAtt(index) {
+      console.info(index, this.attachments);
+    },
+
+    addCliAtt(item) {
+      console.info(item);
+    },
+    /* 覆盖数组 */
+    coverArr(obj1, obj2) {
+      const result = obj1.map(item1 => {
+        return Object.assign(
+          item1,
+          obj2.find(item2 => {
+            return item2 && item1.value === item2.value;
+          })
+        );
+      });
     }
   },
   created() {
+    debugger
     console.info(this.$route.params.id);
     this.user_role = sessionStorage.getItem("user_role");
     if (this.user_role === "Admin") {
       this.roleShow = false;
     }
-    this.takeObj.case_id = this.$route.params.id;
+    this.takeObj.case_id = sessionStorage.getItem("id");
     this.getPaticipants();
     this.getUserRole();
     this.getbaseInfo();
@@ -3455,7 +3444,6 @@ export default {
     investigator: {
       handler(val, oldVal) {
         this.paticipants.investigator = this.investigator.concat();
-        console.info(this.paticipants);
       },
       deep: true
     },
@@ -3534,7 +3522,7 @@ export default {
   margin: 0 auto;
   margin: 10px 0;
   td {
-    padding: 12px 10px 12px 10px;
+    padding: 5px;
     border: #e4eef6 1px solid;
     word-break: break-all;
     font-size: 14px;
@@ -3567,5 +3555,15 @@ table {
   right: 0;
   height: 90%;
   padding: 5px;
+}
+.dtable{
+  display: flex;
+    align-items: stretch;
+    p{
+margin: 10px 0;
+    width: 50px;
+    text-align: center;
+    line-height: 11.5;
+    }
 }
 </style>

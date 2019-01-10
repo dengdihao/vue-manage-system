@@ -132,3 +132,16 @@ export function _updateCaseS(urls, param) {
 export function _updateCaseR(urls, param) {
     return jointUrlPost('/case/reportingStaff/caseUpdate/:case_id/:case_type', urls, param)
 }
+
+
+
+/* 查看自己的案件 */
+export function _getCaseListA(param) {
+    return get('case/admin/caseList',param)
+}
+export function _getCaseListS(param) {
+    return get('case/supervisor/caseList', param)
+}
+export function _getCaseListR(param) {
+    return get('case/reportingStaff/caseList', param)
+}

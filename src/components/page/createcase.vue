@@ -3,17 +3,20 @@
     <el-card>
       <div slot="header" class="clearfix">
         <span>新建案件</span>
-        <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
       </div>
       <el-form label-width="150px" :model="ruleForm" ref="ruleForm">
         <div>
           <el-card>
             <div slot="header" class="clearfix">
               <span>基本信息</span>
-              <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
             </div>
             <div>
-              <el-form-item label="优先级">
+              <el-form-item
+                label="优先级"
+                :rules="[
+      { required: true, message: '请输入优先级', trigger: 'blur' },
+    ]"
+              >
                 <!--  紧急,高,一般,低,不重要; -->
                 <el-select placeholder="请选择" v-model="ruleForm.baseInfo.priority">
                   <el-option label="紧急" value="紧急"></el-option>
@@ -23,14 +26,24 @@
                   <el-option label="不重要" value="不重要"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="案件状态">
+              <el-form-item
+                label="案件状态"
+                :rules="[
+      { required: true, message: '请输入案件状态', trigger: 'blur' },
+    ]"
+              >
                 <el-select placeholder="请选择" v-model="ruleForm.baseInfo.status">
                   <el-option label="进行中" value="进行中"></el-option>
                   <el-option label="已完成" value="已完成"></el-option>
                   <el-option label="未开始" value="未开始"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="立案日期">
+              <el-form-item
+                label="立案日期"
+                :rules="[
+      { required: true, message: '请输入日期', trigger: 'blur' },
+    ]"
+              >
                 <el-date-picker
                   type="date"
                   placeholder="选择日期"
@@ -55,28 +68,29 @@
                 </el-select>
               </el-form-item>
             </div>
-          </el-card>
-          <el-card>
-            <div slot="header" class="clearfix">
-              <span>案件信息</span>
-              <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
-            </div>
             <div>
-              <el-form-item label="案件号">
+              <el-form-item
+                label="案件号"
+                :rules="[
+      { required: true, message: '请输入案件号', trigger: 'blur' },
+    ]"
+              >
                 <el-input placeholder="请输入" v-model="ruleForm.caseInfo.caseNo"></el-input>
               </el-form-item>
-              <el-form-item label="案件名称" prop="caseName">
+              <el-form-item
+                label="案件名称"
+                :rules="[
+      { required: true, message: '请输入案件名称', trigger: 'blur' },
+    ]"
+              >
                 <el-input placeholder="请输入" v-model="ruleForm.caseInfo.caseName"></el-input>
               </el-form-item>
-              <el-form-item label="案件类型" prop="type">
-                <el-select placeholder="请选择" v-model="ruleForm.caseInfo.type">
-                  <el-option label="调查" value="调查"></el-option>
-                  <el-option label="行政" value="行政"></el-option>
-                  <el-option label="诉讼" value="诉讼"></el-option>
-                  <el-option label="其他" value="其他"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="案由" prop="reason">
+              <el-form-item
+                label="案由"
+                :rules="[
+      { required: true, message: '请输入案由', trigger: 'blur' },
+    ]"
+              >
                 <el-input placeholder="请输入" v-model="ruleForm.caseInfo.reason"></el-input>
               </el-form-item>
             </div>
@@ -106,25 +120,13 @@
               <el-form-item label="备注">
                 <el-input placeholder="请输入" v-model="ruleForm.clientInfo.note"></el-input>
               </el-form-item>
-              <el-form-item label="出具法律文书">
+              <el-form-item label="上传文书">
                 <div v-for="(item,index) in ruleForm.clientInfo.documents" :key="index">
                   <table class="ntable">
-                    <tr>
-                      <td width="35%">文书号</td>
-                      <td width="65%">
-                        <div v-text="item.documentNo"></div>
-                      </td>
-                    </tr>
                     <tr>
                       <td width="35%">文书名称</td>
                       <td width="65%">
                         <div v-text="item.documentName"></div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="35%">文书类型</td>
-                      <td width="65%">
-                        <div>{{item.documentType}}</div>
                       </td>
                     </tr>
                     <tr>
@@ -149,12 +151,6 @@
                       <td width="35%">收到时间</td>
                       <td width="65%">
                         <div>{{item.receiveDate}}</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="35%">发送时间</td>
-                      <td width="65%">
-                        <div>{{item.sendDate}}</div>
                       </td>
                     </tr>
                     <tr>
@@ -184,7 +180,6 @@
                         </table>
                       </td>
                     </tr>
-
                     <tr>
                       <td width="35%">备注</td>
                       <td width="65%">{{item.note}}</td>
@@ -199,32 +194,9 @@
                     <el-form :model="documentForm" ref="documentForm">
                       <table class="ntable">
                         <tr>
-                          <td width="35%">文书号</td>
-                          <td width="65%">
-                            <el-input v-model="documentForm.documentNo"></el-input>
-                          </td>
-                        </tr>
-                        <tr>
                           <td width="35%">文书名称</td>
                           <td width="65%">
                             <el-input v-model="documentForm.documentName"></el-input>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="35%">文书类型</td>
-                          <td width="65%">
-                            <el-select
-                              placeholder="请选择"
-                              v-model="documentForm.documentType"
-                              style="width: 100%;"
-                            >
-                              <el-option label="鉴定书" value="鉴定书"></el-option>
-                              <el-option label="价格单" value="价格单"></el-option>
-                              <el-option label="授权书" value="授权书"></el-option>
-                              <el-option label="营业执照" value="营业执照"></el-option>
-                              <el-option label="商标注册证" value="商标注册证"></el-option>
-                              <el-option label="其他" value="其他"></el-option>
-                            </el-select>
                           </td>
                         </tr>
                         <tr>
@@ -258,17 +230,6 @@
                               type="date"
                               placeholder="选择日期"
                               v-model="documentForm.receiveDate"
-                              style="width: 100%;"
-                            ></el-date-picker>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="35%">发送时间</td>
-                          <td width="65%">
-                            <el-date-picker
-                              type="date"
-                              placeholder="选择日期"
-                              v-model="documentForm.sendDate"
                               style="width: 100%;"
                             ></el-date-picker>
                           </td>
@@ -377,13 +338,22 @@
           <el-card>
             <div slot="header" class="clearfix">
               <span>目标信息</span>
-              <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
             </div>
             <div>
-              <el-form-item label="目标名称" prop="targetName">
+              <el-form-item
+                label="目标名称"
+                :rules="[
+      { required: true, message: '请输入目标名称', trigger: 'blur' },
+    ]"
+              >
                 <el-input placeholder="请输入" v-model="ruleForm.targetInfo[0].targetName" required></el-input>
               </el-form-item>
-              <el-form-item label="目标类型" prop="targetType">
+              <el-form-item
+                label="目标类型"
+                :rules="[
+      { required: true, message: '请输入目标类型', trigger: 'blur' },
+    ]"
+              >
                 <el-input placeholder="请输入" v-model="ruleForm.targetInfo[0].targetType" required></el-input>
               </el-form-item>
 
@@ -488,6 +458,7 @@
                                   <td>备注</td>
                                   <td>{{items.note}}</td>
                                 </tr>
+                                <el-button @click="delNetWork(index)">删除上面信息</el-button>
                               </table>
                             </div>
                             <!-- dialogNetworks = true -->
@@ -942,6 +913,7 @@
                                   </div>
                                 </td>
                               </tr>
+                              <el-button @click="delaffPricForm(index)">删除以上信息</el-button>
                             </table>
                             <el-button @click="dialogAffPrincipal = true">添 加</el-button>
                             <el-dialog title="添加主要成员" :visible="dialogAffPrincipal" append-to-body>
@@ -1023,7 +995,7 @@
                                                 </table>
                                               </td>
                                             </tr>
-                                            <el-button @click="delaffNetWork(index)">删除以上信息</el-button>
+                                            <el-button @click="delaffContacts(index)">删除以上信息</el-button>
                                           </table>
                                         </div>
                                         <el-button @click="dialogaffContacts = true">添加联系方式</el-button>
@@ -1238,7 +1210,6 @@
         </div>
         <div>
           <el-button @click="submit('ruleForm')">提交</el-button>
-          <el-button>创建</el-button>
         </div>
       </el-form>
     </el-card>
@@ -1268,7 +1239,7 @@ export default {
         caseInfo: {
           caseNo: null,
           caseName: null,
-          type: null,
+          // type: null,
           reason: null
         },
         clientInfo: {
@@ -1427,6 +1398,9 @@ export default {
     deletecontacts(index) {
       this.ruleForm.targetInfo[0].contacts.splice(index, 1);
     },
+    delNetWork(index) {
+      this.contactsForm.networks.splice(index, 1);
+    },
     deleteprincipal(index) {
       this.ruleForm.targetInfo[0].principal.splice(index, 1);
     },
@@ -1456,10 +1430,15 @@ export default {
       this.ruleForm.targetInfo[0].affiliateCompany.splice(index, 1);
     },
 
-    delaffContacts(index) {
-      this.affContacts;
+    delaffPricForm(index) {
+      this.affForm.principal.splice(index, 1);
     },
-    delaffNetWork(index) {},
+    delaffContacts(index) {
+      this.affprincipalForm.contacts.splice(index, 1);
+    },
+    delaffNetWork(index) {
+      this.affContacts.networks.splice(index, 1);
+    },
     affNetworkadd(item) {
       let obj = JSON.parse(JSON.stringify(item));
       this.affContacts.networks.push(obj);
@@ -1495,23 +1474,23 @@ export default {
       this.$refs[item].validate(valid => {
         if (valid) {
           if (
-            this.ruleForm.baseInfo.priority === null && 
-            this.ruleForm.baseInfo.openDate === null && 
-            this.ruleForm.baseInfo.status === null &&
-            this.ruleForm.caseInfo.caseNo === null &&
-            this.ruleForm.caseInfo.caseName === null &&
-            this.ruleForm.caseInfo.type === null &&
-            this.ruleForm.caseInfo.reason === null &&
-            this.ruleForm.targetInfo[0].targetName === null &&
+            this.ruleForm.baseInfo.priority === null ||
+            this.ruleForm.baseInfo.openDate === null ||
+            this.ruleForm.baseInfo.status === null ||
+            this.ruleForm.caseInfo.caseNo === null ||
+            this.ruleForm.caseInfo.caseName === null ||
+            this.ruleForm.caseInfo.reason === null ||
+            this.ruleForm.targetInfo[0].targetName === null ||
             this.ruleForm.targetInfo[0].targetType === null
+            /* this.ruleForm.caseInfo.type === null || */
           ) {
             this.$message({
               showClose: true,
-              message: "请输入 案件号，案件名称，案件类型，目标名称，目标类型",
+              message: "请输入必填字段",
               type: "error"
             });
           } else {
-            console.info(this.ruleForm.clientInfo);
+            console.info(this.ruleForm.baseInfo.priority);
             debugger;
             if (this.ruleForm.clientInfo.documents.length == 0) {
               this.ruleForm.clientInfo.documents.push(this.documentForm);
@@ -1561,7 +1540,7 @@ export default {
                     message: "恭喜你，这是一条成功消息",
                     type: "success"
                   });
-                  this.$router.push({ path:'/'});
+                  this.$router.push({ path: "/" });
                 })
                 .catch(err => {
                   this.$message.error("创建有误，请核对信息");
@@ -1574,12 +1553,13 @@ export default {
                     message: "恭喜你，这是一条成功消息",
                     type: "success"
                   });
-                  this.$router.push({ path:'/'});
+                  this.$router.push({ path: "/" });
                 })
                 .catch(err => {
                   this.$message.error("创建有误，请核对信息");
                 });
             } else if (this.user_role === "ReportingStaff") {
+              console.info(this.ruleForm);
               _createcaseR(this.ruleForm)
                 .then(res => {
                   console.info(res);
@@ -1587,7 +1567,7 @@ export default {
                     message: "恭喜你，这是一条成功消息",
                     type: "success"
                   });
-                  this.$router.push({ path:'/'});
+                  this.$router.push({ path: "/" });
                 })
                 .catch(err => {
                   this.$message.error("创建有误，请核对信息");
@@ -1671,11 +1651,11 @@ export default {
         });
         this.$router.push("/");
       }
-    },
+    }
   },
   created() {
     this.user_role = sessionStorage.getItem("user_role");
-    this.getUserRole()
+    this.getUserRole();
   }
 };
 </script>

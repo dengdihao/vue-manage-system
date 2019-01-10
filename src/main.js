@@ -31,8 +31,14 @@ import {
 axios.defaults.headers['Authorization'] = window.localStorage.getItem("token")
 
 router.beforeEach((to,from,next)=>{
+    
     if (localStorage.getItem("token")) {
-        next()
+        _userinfo().then(res=>{
+            store.commit("set_userRole", res.data.role);
+            if (store.state.userRole) {
+                 next()
+            }
+        })
     }else{
          if (to.path === "/login" || to.path === '/register') {
             next()

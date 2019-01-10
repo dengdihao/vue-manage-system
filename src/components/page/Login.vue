@@ -67,24 +67,18 @@ export default {
           console.info(this.ruleForm)
           _loginpost(this.ruleForm)
             .then(res => {
-              debugger
               console.info(res);
               if (res.status === 401) {
                 this.$message.error("账号或密码错误");
               }
               this.$store.commit("set_token", res.token);
-              sessionStorage.setItem("user_role",res.data.role)
+              // sessionStorage.setItem("user_role",res.data.role)
               if (store.state.token) {
                 this.$message({
                   message: "恭喜你，这是一条成功消息",
                   type: "success"
                 });
-                _userinfo().then(res=>{
-                  console.info(res)
-                  
-                })
                 this.$router.push("/dashboard");
-                
               } else {  
                 this.$router.replace("/login");
               }
@@ -101,7 +95,6 @@ export default {
       });
     },
     register() {
-      // console.info(11)
       this.$router.push("/register");
     }
   },

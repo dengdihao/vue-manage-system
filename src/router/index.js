@@ -8,14 +8,6 @@ Vue.use(Router);
 import store from "../store/store";
 
 
-
-// 页面刷新时，重新赋值token
-// if (localStorage.getItem('token')) {
-//     store.commit('set_token', localStorage.getItem('token'))
-// }
-
-
-
 export default new Router({
     mode: 'history',
     routes: [{
@@ -223,6 +215,22 @@ export default new Router({
                     component: resolve => require(['../components/page/403.vue'], resolve),
                     meta: {
                         title: '403'
+                    }
+                },
+                {
+                    path: '/detailclient',
+                    name: 'detailclient',
+                    component: resolve => require(['../components/page/detail/detailclient.vue'], resolve),
+                    meta: {
+                        title: '编辑客户信息'
+                    }
+                },
+                {
+                    path: '/detailtarget',
+                    name: 'detailtarget',
+                    component: resolve => require(['../components/page/detail/detailtarget.vue'], resolve),
+                    meta: {
+                        title: '编辑目标信息'
                     }
                 }
             ]

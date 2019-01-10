@@ -5,7 +5,6 @@ import config from './config'
 import router from '../router';
 import store from '../store/store'
 
-console.info(window.localStorage.getItem('token'))
 let instance = axios.create({
     baseURL: config.baseURL, // api的base_url
     timeout: 15000, // 请求超时时间
@@ -32,24 +31,41 @@ instance.interceptors.request.use(
 /* 拦截响应 */
 instance.interceptors.response.use(
     response => {
-        // console.info(response)
         Loading.close()
+        if (response.data.status ===400) {
+            localStorage.removeItem("token")
+            router.replace({
+                path: '/login',
+                query: {
+                    redirect: router.currentRoute.fullPath
+                } //登录成功后跳入浏览的当前页面
+            });
+        } else if (response.data.status === 205){
+            localStorage.removeItem("token")
+            this.$message({
+                showClose: true,
+                message: response.data.msg,
+                type: 'error'
+            });
+        } else if (response.data.token){
+            // localStorage.setItem("token") = response.data.token
+        }
         return response.data
     },
 
     error => {
         Loading.close()
         if (error.response) {
-            switch (error.response.status) {
-
-                case 401:
-                    this.$store.commit('del_token', localStorage.getItem('token'));
-                    router.replace({
-                        path: '/login',
-                        query: {
-                            redirect: router.currentRoute.fullPath
-                        } //登录成功后跳入浏览的当前页面
-                    })
+            if (error.response.status === 200) {
+                
+            } else {
+                this.$store.commit('del_token', localStorage.getItem('token'));
+                router.replace({
+                    path: '/login',
+                    query: {
+                        redirect: router.currentRoute.fullPath
+                    } //登录成功后跳入浏览的当前页面
+                });
             }
         }
         return Promise.reject(error)
@@ -86,14 +102,14 @@ export function getUrl(url, body = {}) {
 }
 
 export function jointUrl(url, urls, body = {}, config = {}) {
-    url=restful(url,urls)
+    url = restful(url, urls)
     config.params = body;
     return instance.get(url, config)
 }
 
-export function jointUrlPost(url,urls, body={},config={}) {
-    url=restful(url,urls)
-    return instance.post(url,body,config)
+export function jointUrlPost(url, urls, body = {}, config = {}) {
+    url = restful(url, urls)
+    return instance.post(url, body, config)
 }
 
 

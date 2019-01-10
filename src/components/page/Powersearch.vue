@@ -9,6 +9,9 @@
           <el-form-item label="关键词：">
             <el-input v-model="form.keyword"></el-input>
           </el-form-item>
+           <el-form-item label="案件号：">
+            <el-input v-model="form.caseNo"></el-input>
+          </el-form-item>
           <el-form-item label="网址：">
             <el-input v-model="form.website"></el-input>
           </el-form-item>
@@ -151,6 +154,7 @@ export default {
         website: null,
         phone: null,
         email: null,
+        caseNo:null,
         priority: null,
         status: null,
         open: null,
@@ -233,7 +237,7 @@ export default {
             if (res.data.length === 0) {
               this.$message({
                 showClose: true,
-                message: "查询null",
+                message: "查询为空",
                 type: "err"
               });
             } else {
@@ -267,7 +271,7 @@ export default {
             if (res.data.length === 0) {
               this.$message({
                 showClose: true,
-                message: "查询null",
+                message: "查询为空",
                 type: "err"
               });
             } else {
@@ -301,7 +305,7 @@ export default {
             if (res.data.length === 0) {
               this.$message({
                 showClose: true,
-                message: "查询null",
+                message: "查询为空",
                 type: "err"
               });
             } else {
